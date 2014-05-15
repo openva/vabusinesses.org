@@ -4,16 +4,38 @@
 	<meta charset="utf-8" />
 	<title>Virginia Businesses</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css" />
+	<style>
+		body {
+			margin: 0 1em;
+		}
+		#updated {
+			margin-top: 1em;
+			font-size: .85em;
+		}
+		thead {
+			background-color: #999;
+			color: #eee;
+		}
+		td, th {
+			padding: .5em 0 .5em 1em;
+		}
+		tr:nth-child(even) {
+			background-color: #eee;
+		}
+	</style>
 </head>
 <body>
 
+<header>
 <a href="https://github.com/openva/business.openva.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 
 <h1>Virginia Businesses</h1>
 
 <p>Data <a href="https://www.scc.virginia.gov/clk/purch.aspx">purchased from the Virginia State
 Corporation Commission</a> and parsed with <a href="https://github.com/openva/crump/">Crump</a>.</p>
+</head>
 
+<article>
 <table>
 	<thead>
 		<tr>
@@ -69,8 +91,11 @@ Corporation Commission</a> and parsed with <a href="https://github.com/openva/cr
 		</tr>
 	</tbody>
 </table>
+</article>
 
-<p><em>Last updated <?php echo date('F d, Y H:i', filectime('1_tables.csv') ); ?>.</em></p>
+<footer>
+<p id="updated"><em>Last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.</em></p>
+</footer>
 
 </body>
 </html>
