@@ -1,9 +1,87 @@
+<?php
+
+function human_filesize($bytes, $decimals = 0)
+{
+	$sz = 'BKMGTP';
+	$factor = floor((strlen($bytes) - 1) / 3);
+	return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+}
+
+class Businesses
+{
+
+	/*
+	 * Declare the list of files.
+	 */
+	public $files = array(
+		array(
+			'name'	=> 'Corporate',
+			'csv'	=> '2_corporate.csv',
+			'json'	=> '2_corporate.json'),
+		array(
+			'name'	=> 'Limited Partnership',
+			'csv'	=> '3_lp.csv',
+			'json'	=> '3_lp.json'),
+		array(
+			'name'	=> 'Corporate/Limited Partnership/Limited Liability Company',
+			'csv'	=> '4_amendments.csv',
+			'json'	=> '4_amendments.json'),
+		array(
+			'name'	=> 'Corporate Officer',
+			'csv'	=> '5_officers.csv',
+			'json'	=> '5_officers.json'),
+		array(
+			'name'	=> 'Corporate/Limited Partnership/Limited Liability Company Name',
+			'csv'	=> '6_name.csv',
+			'json'	=> '6_name.json'),
+		array(
+			'name'	=> 'Merger',
+			'csv'	=> '7_merger.csv',
+			'json'	=> '7_merger.json'),
+		array(
+			'name'	=> 'Corporate/Limited Partnership/Limited Liability Company Reserved/Registered Name',
+			'csv'	=> '8_registered_names.csv',
+			'json'	=> '8_registered_names.json'),
+		array(
+			'name'	=> 'Limited Liability Company',
+			'csv'	=> '9_llc.csv',
+			'json'	=> '9_llc.json')
+	);
+	
+	/*
+	 * List the names, dates, and size of all CSV and JSON files.
+	 */
+	function list_files()
+	{
+		
+		/*
+		 * Iterate through all of the files to get their creation dates and sizes.
+		 */
+		foreach ($this->files as &$file)
+		{
+			$file['csv_size'] = filesize($file['csv']);
+			$file['csv_date'] = filectime($file['csv']);
+			$file['json_size'] = filesize($file['json']);
+			$file['json_date'] = filectime($file['json']);
+		}
+		
+		return TRUE;
+		
+	}
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Virginia Businesses</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 	<style>
 		body {
 			margin: 0 1em;
@@ -21,6 +99,9 @@
 		}
 		tr:nth-child(even) {
 			background-color: #eee;
+		}
+		#master-file {
+			border-top: 1px solid #666;
 		}
 	</style>
 </head>
@@ -44,50 +125,29 @@ Corporation Commission</a> and parsed with <a href="https://github.com/openva/cr
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
-			<td>Table</td>
-			<td><a href="1_tables.csv">CSV</a></td>
-			<td><a href="1_tables.json">JSON</a></td>
-		</tr>
-		<tr>
-			<td>Corporate</td>
-			<td><a href="2_corporate.csv">CSV</a></td>
-			<td><a href="2_corporate.json">JSON</a></td>
-		</tr>
-		<tr>
-			<td>Limited Partnership</td>
-			<td><a href="3_lp.csv">CSV</a></td>
-			<td><a href="3_lp.json">JSON</a></td>
-		</tr>
-		<tr>
-			<td>Corporate/Limited Partnership/Limited Liability Company</td>
-			<td><a href="4_amendments.csv">CSV</a></td>
-			<td><a href="4_amendments.json">JSON</a></td>
-		</tr>
-		<tr>
-			<td>Corporate Officer</td>
-			<td><a href="5_officers.csv">CSV</a></td>
-			<td><a href="5_officers.json">JSON</a></td>
-		</tr>
-		<tr>
-			<td>Corporate/Limited Partnership/Limited Liability Company Name</td>
-			<td><a href="6_name.csv">CSV</a></td>
-			<td><a href="6_name.json">JSON</a></td>
-		</tr>
-		<tr>
-			<td>Merger</td>
-			<td><a href="7_merger.csv">CSV</a></td>
-			<td><a href="7_merger.json">JSON</a></td>
-		</tr>
-		<tr>
-			<td>Corporate/Limited Partnership/Limited Liability Company Reserved/Registered Name</td>
-			<td><a href="8_registered_names.csv">CSV</a></td>
-			<td><a href="8_registered_names.json">JSON</a></td>
-		</tr>
-		<tr>
-			<td>Limited Liability Company</td>
-			<td><a href="9_llc.csv">CSV</a></td>
-			<td><a href="9_llc.json">JSON</a></td>
+		<?php
+	
+		$businesses = new Businesses;
+		if ($businesses->list_files() === TRUE)
+		{
+			
+			foreach ($businesses->files as $file)
+			{
+		
+				echo '<tr>
+				<td>' . $file['name'] . '</td>
+				<td><a href="' . $file['csv']  . '">CSV</a> (' . human_filesize($file['csv_size']) . ')</td>
+				<td><a href="' . $file['json']  . '">JSON</a> (' . human_filesize($file['json_size']) . ')</td>
+				</tr>';
+			
+			}
+		
+		}
+	
+		?>
+		<tr id="master-file">
+			<td>SCC Master File (Contains All Data)</td>
+			<td colspan="2"><a href="https://s3.amazonaws.com/virginia-business/current.zip">Fixed-Width</a></td>
 		</tr>
 	</tbody>
 </table>
