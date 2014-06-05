@@ -103,6 +103,10 @@ class Businesses
 		#master-file {
 			border-top: 1px solid #666;
 		}
+		#search {
+			text-align: right;
+			margin: 0 2em .5em 0;
+		}
 	</style>
 </head>
 <body>
@@ -117,6 +121,12 @@ Corporation Commission</a> and parsed with <a href="https://github.com/openva/cr
 </head>
 
 <article>
+
+<form method="get" action="/search.php" id="search">
+	<input type="text" name="q" />
+	<input type="submit" value="Search" />
+</form>
+
 <table>
 	<thead>
 		<tr>
