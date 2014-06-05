@@ -157,7 +157,7 @@ if ($results['hits']['total'] > ($p * $per_page) )
 	
 	$total_pages = ceil($results['hits']['total'] / $per_page);
 	echo '<ul class="paging">';
-	for ($i=1; $i<$total_pages; $i++)
+	for ($i=1; $i<=$total_pages; $i++)
 	{
 		if ($i != $p)
 		{
