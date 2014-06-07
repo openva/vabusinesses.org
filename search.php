@@ -162,7 +162,14 @@ echo '
  */
 $results = $client->search($params);
 
-echo '<p>' . number_format($results['hits']['total']) . ' results found.</p>';
+if ( ($result === FALSE) || ($results['hits']['total'] == 0) )
+{
+	echo '<p>No results found.</p>';
+}
+else
+{
+	echo '<p>' . number_format($results['hits']['total']) . ' results found.</p>';
+}
 
 /*
  * If we have any results, display them.
