@@ -107,6 +107,9 @@ class Businesses
 			text-align: right;
 			margin: 0 2em .5em 0;
 		}
+		#shuttleworth {
+			float: right;
+		}
 	</style>
 </head>
 <body>
@@ -165,6 +168,7 @@ Corporation Commission</a> and parsed with <a href="https://github.com/openva/cr
 
 <footer>
 <p id="updated"><em>Last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.</em></p>
+<a href="https://www.shuttleworthfoundation.org/fellowship/fellows/grantees/"><img src="/shuttleworth.gif" width="250" height="71" alt="Shuttleworth Funded" id="shuttleworth" /></a>
 </footer>
 
 </body>
