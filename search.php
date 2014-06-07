@@ -70,7 +70,7 @@
 /*
  * Sanitize input.
  */
-if (isset($_GET['q']))
+if (!empty($_GET['q']))
 {
 	$q = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_SPECIAL_CHARS);
 	if (strlen($q) > 120)
@@ -78,7 +78,7 @@ if (isset($_GET['q']))
 		die();
 	}
 }
-if (isset($_GET['p']))
+if (!empty($_GET['p']))
 {
 	$p = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_SPECIAL_CHARS);
 	if ( (strlen($p) > 4) || !is_numeric($p) )
