@@ -93,6 +93,18 @@ else
 $per_page = 10;
 
 /*
+ * If this is requesting a particular type of data.
+ */
+if (!empty($_GET['type']))
+{
+	$type = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_SPECIAL_CHARS);
+	if ( (strlen($type) > 1) || !is_numeric($type) )
+	{
+		die();
+	}
+}
+
+/*
  * Create an instance of Elasticsearch.
  */
 require 'vendor/autoload.php';
@@ -102,6 +114,14 @@ $client = new Elasticsearch\Client();
  * Search the business index.
  */
 $params['index'] = 'business';
+
+/*
+ * If a particular type of result has been requested.
+ */
+if (isset($type))
+{
+	$params['type'] = $type;
+}
 
 $params['size'] = $per_page;
 
@@ -118,6 +138,17 @@ echo '
 <form method="get" action="/search.php">
 	<input type="text" name="q" value="' . $q . '" />
 	<input type="submit" value="Search" />
+	<!--<select name="type">
+		<option></option>
+		<option value="2">Corporate</option>
+		<option value="3">LP</option>
+		<option value="4">Amendments</option>
+		<option value="5">Officers</option>
+		<option value="6">Name</option>
+		<option value="7">Merger</option>
+		<option value="8">Registered Names</option>
+		<option value="9">LLC</option>
+	</select>-->
 </form>';
 
 $results = $client->search($params);
