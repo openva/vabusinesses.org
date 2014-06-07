@@ -123,6 +123,9 @@ if (isset($type))
 	$params['type'] = $type;
 }
 
+/*
+ * These many results.
+ */
 $params['size'] = $per_page;
 
 if (isset($q))
@@ -134,6 +137,9 @@ if (isset($p))
 	$params['from'] = $p * $per_page;
 }
 
+/*
+ * Display the search form.
+ */
 echo '
 <form method="get" action="/search.php">
 	<input type="text" name="q" value="' . $q . '" />
@@ -151,6 +157,9 @@ echo '
 	</select>-->
 </form>';
 
+/*
+ * Execute the search.
+ */
 $results = $client->search($params);
 
 echo '<p>' . number_format($results['hits']['total']) . ' results found.</p>';
