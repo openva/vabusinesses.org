@@ -134,7 +134,7 @@ if (isset($q))
 }
 if (isset($p))
 {
-	$params['from'] = $p * $per_page;
+	$params['from'] = ($p - 1) * $per_page;
 }
 
 /*
@@ -162,7 +162,7 @@ echo '
  */
 $results = $client->search($params);
 
-if ( ($result === FALSE) || ($results['hits']['total'] == 0) )
+if ( ($results === FALSE) || ($results['hits']['total'] == 0) )
 {
 	echo '<p>No results found.</p>';
 }
@@ -174,11 +174,12 @@ else
 /*
  * If we have any results, display them.
  */
-if ($results['hits']['total'] > 0)
+if (count($results['hits']['hits']) > 0)
 {
-
+	
 	foreach ($results['hits']['hits'] as $result)
 	{
+	
 		echo '<dl>';
 		foreach ($result['_source'] as $key => $value)
 		{
@@ -192,6 +193,7 @@ if ($results['hits']['total'] > 0)
 			}
 		}
 		echo '</dl>';
+		
 	}
 
 }
@@ -199,16 +201,16 @@ if ($results['hits']['total'] > 0)
 /*
  * Display pagination.
  */
-if ($results['hits']['total'] > ($p * $per_page) )
+if ($results['hits']['total'] > (($p - 1) * $per_page) )
 {
 	
 	$total_pages = ceil($results['hits']['total'] / $per_page);
 	echo '<ul class="paging">';
-	for ($i=1; $i<=$total_pages; $i++)
+	for ($i=1; $i<$total_pages; $i++)
 	{
 		if ($i != $p)
 		{
-			echo '<li><a href="/search.php?q=' . $q . '&amp;p=' . $i . '">' . $i . '</a></li>';
+			echo '<li><a href="/search.php?q=' . urlencode($q) . '&amp;p=' . $i . '">' . $i . '</a></li>';
 		}
 		else
 		{
