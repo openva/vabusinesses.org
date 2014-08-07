@@ -107,6 +107,9 @@ class Businesses
 			text-align: right;
 			margin: 0 2em .5em 0;
 		}
+		footer {
+			margin-top: 2em;
+		}
 		#shuttleworth {
 			float: right;
 		}
@@ -167,8 +170,9 @@ Corporation Commission</a> and parsed with <a href="https://github.com/openva/cr
 </article>
 
 <footer>
+<a href="https://www.shuttleworthfoundation.org/fellowship/fellows/grantees/"><img src="/shuttleworth.gif" width="150" height="43" alt="Shuttleworth Funded" id="shuttleworth" /></a>
+<a href="http://www.briworks.com/"><img src="/bri.gif" width="100" height="35" alt="Hosting Donated By Blue Ridge InternetWorks" id="bri" /></a>
 <p id="updated"><em>Last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.</em></p>
-<a href="https://www.shuttleworthfoundation.org/fellowship/fellows/grantees/"><img src="/shuttleworth.gif" width="250" height="71" alt="Shuttleworth Funded" id="shuttleworth" /></a>
 </footer>
 
 </body>
