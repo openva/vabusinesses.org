@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Virginia Businesses</title>
@@ -143,9 +143,8 @@ if (isset($p))
 echo '
 <form method="get" action="/search.php">
 	<input type="text" name="q" value="' . $q . '" />
-	<input type="submit" value="Search" />
-	<!--<select name="type">
-		<option></option>
+	<select name="type">
+		<option value="">Type</option>
 		<option value="2">Corporate</option>
 		<option value="3">LP</option>
 		<option value="4">Amendments</option>
@@ -154,7 +153,8 @@ echo '
 		<option value="7">Merger</option>
 		<option value="8">Registered Names</option>
 		<option value="9">LLC</option>
-	</select>-->
+	</select>
+	<input type="submit" value="Search" />
 </form>';
 
 /*
@@ -179,17 +179,20 @@ if (count($results['hits']['hits']) > 0)
 	
 	foreach ($results['hits']['hits'] as $result)
 	{
-	
 		echo '<dl>';
 		foreach ($result['_source'] as $key => $value)
 		{
 			if (!empty($value))
 			{
-				$tmp = explode('-', $key);
-				unset($tmp[0]);
-				$key = implode(' ', $tmp);
+
+				$key = str_replace('_', ' ', $key);
 				$key = ucwords($key);
+				if (strtolower($key) == 'id')
+				{
+					$value = '<a href="/search.php?q=' . urlencode($value) . '">' . $value . '</a>';
+				}
 				echo '<dt>' . $key . '</dt><dd>' . $value . '</dd>';
+				
 			}
 		}
 		echo '</dl>';
