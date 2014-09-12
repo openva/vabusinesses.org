@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+	<meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Virginia Businesses</title>
@@ -44,7 +44,7 @@
 		dt {
 			float: left;
 			clear: left;
-			width: 100px;
+			width: 10em;
 			text-align: right;
 			font-weight: bold;
 			color: green;
@@ -53,7 +53,7 @@
 			content: ":";
 		}
 		dd {
-			margin: 0 0 0 110px;
+			margin: 0 0 0 11em;
 			padding: 0 0 0.5em 0;
 		}
 	</style>
@@ -66,6 +66,18 @@
 <h1>Virginia Businesses</h1>
 <article>
 <?php
+
+/*
+ * Establish the sort order of fields.
+ *
+ * TODO
+ * * Move this outside of this file and to a general include file.
+ * * complete this to include all tables (grep out of the YAML).
+ */
+$sort_order = array();
+$sort_order[2] = array('id','name','status','status_date','expiration_date','incorporation_date','state_formed','industry','street_1','street_2','city','state','zip','address_date','agent_name','agent_street_1','agent_street_2','agent_city','agent_state','agent_zip','agent_date','agent_status','agent_court_locality','stock_ind','total_shares','merged','assessment','stock_class','number_shares');
+$sort_order[3] = array('domestic','id','name','status','status_date','expiration_date','incorporation_date','state_formed','industry','street_1','street_2','city','state','zip','address_date','agent_name','agent_street_1','agent_street_2','agent_city','agent_state','agent_zip','agent_date','agent_status','agent_court_locality');
+$sort_order[9] = array('id','name','status','status-date','expiration-date','date','state-formed','industry','street-1','street-2','city','state','zip','address-date','agent-name','agent-street-1','agent-street-2','agent-city','agent-state','agent_zip','agent_date','agent_status','agent_court_locality');
 
 /*
  * Sanitize input.
@@ -91,6 +103,22 @@ else
 	$p = 1;
 }
 $per_page = 10;
+if (!empty($_GET['sort_by']))
+{
+	$sort_by = filter_input(INPUT_GET, 'sort_by', FILTER_SANITIZE_SPECIAL_CHARS);
+	if (strlen($sort_by) > 120)
+	{
+		die();
+	}
+}
+if (!empty($_GET['order']))
+{
+	$order = filter_input(INPUT_GET, 'order', FILTER_SANITIZE_SPECIAL_CHARS);
+	if (strlen($order) > 4)
+	{
+		die();
+	}
+}
 
 /*
  * If this is requesting a particular type of data.
@@ -137,6 +165,28 @@ if (isset($p))
 	$params['from'] = ($p - 1) * $per_page;
 }
 
+if (isset($sort_by))
+{
+	if (!isset($order))
+	{
+		$order = 'asc';
+	}
+	else
+	{
+		if (($order != 'asc') && ($order != 'desc'))
+		{
+			$order = 'asc';
+		}
+	}
+	/*
+	 * Replace this with a check against all fieldnames.
+	 */
+	if ($sort_by == 'incorporation_date')
+	{
+		$params['body']['sort']['incorporation_date'] = $order;
+	}
+}
+
 /*
  * Display the search form.
  */
@@ -179,14 +229,48 @@ if (count($results['hits']['hits']) > 0)
 	
 	foreach ($results['hits']['hits'] as $result)
 	{
+		
+		/*
+		 * If we have a prescribed key order for this type of record, rearrange the entries.
+		 */
+		if (isset($sort_order[$result{'_type'}]))
+		{
+			
+			$ordered_result = array();
+			foreach ($sort_order[$result{'_type'}] as $key)
+			{
+				
+				$ordered_result[$key] = $result['_source'][$key];
+				
+			}
+			
+			/*
+			 * Replace the result with the newly ordered result.
+			 */
+			$result['_source'] = $ordered_result;
+			unset($ordered_result);
+			
+		}
+		else
+		{
+			ksort($result['_source']);
+		}
+		
 		echo '<dl>';
+		
 		foreach ($result['_source'] as $key => $value)
 		{
+			
 			if (!empty($value))
 			{
 
 				$key = str_replace('_', ' ', $key);
+				$key = str_replace('-', ' ', $key);
 				$key = ucwords($key);
+				if ($key == 'Id')
+				{
+					$key = 'ID';
+				}
 				if (strtolower($key) == 'id')
 				{
 					$value = '<a href="/search.php?q=' . urlencode($value) . '">' . $value . '</a>';
@@ -194,6 +278,7 @@ if (count($results['hits']['hits']) > 0)
 				echo '<dt>' . $key . '</dt><dd>' . $value . '</dd>';
 				
 			}
+			
 		}
 		echo '</dl>';
 		
