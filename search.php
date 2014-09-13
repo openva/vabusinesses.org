@@ -9,63 +9,7 @@
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-	<style>
-		body {
-			margin: 0 1em;
-		}
-		#updated {
-			margin-top: 1em;
-			font-size: .85em;
-		}
-		thead {
-			background-color: #999;
-			color: #eee;
-		}
-		td, th {
-			padding: .5em 0 .5em 1em;
-		}
-		tr:nth-child(even) {
-			background-color: #eee;
-		}
-		#master-file {
-			border-top: 1px solid #666;
-		}
-		.paging {
-			list-style-type: none;
-		}
-			.paging li {
-				display: inline;
-				padding-right: 1em;
-			}
-		dl {
-			padding: 0.5em;
-			border-bottom: 1px solid #000;
-		}
-		dt {
-			float: left;
-			clear: left;
-			width: 13em;
-			text-align: right;
-			font-weight: bold;
-		}
-		dt:after {
-			content: ":";
-		}
-		dd {
-			margin: 0 0 0 14em;
-			padding: 0 0 0.5em 0;
-		}
-		dd:nth-child(odd) {
-			background-color: #eee;
-		}
-		h1 a {
-			color: black;
-		}
-			h1 a:hover {
-				color: black;
-				text-decoration: none;
-			}
-	</style>
+	<link rel="stylesheet" href="/styles.css">
 </head>
 <body id="page-search">
 
