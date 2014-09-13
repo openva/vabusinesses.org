@@ -104,7 +104,7 @@ class Businesses
 			border-top: 1px solid #666;
 		}
 		#search {
-			text-align: right;
+			text-align: left;
 			margin: 0 2em .5em 0;
 		}
 		footer {
@@ -133,7 +133,13 @@ Corporation Commission</a> and parsed with <a href="https://github.com/openva/cr
 	<input type="submit" value="Search" />
 </form>
 
+<ul>
+	<li><a href="/search.php?sort_by=incorporation_date&order=desc">Newest Businesses</a></li>
+	<li><a href="/search.php?sort_by=incorporation_date&order=asc">Oldest Businesses</a></li>
+</ul>
+
 <table>
+	<caption>Bulk Data</caption>
 	<thead>
 		<tr>
 			<th>File</th>
