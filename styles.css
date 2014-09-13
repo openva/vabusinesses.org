@@ -1,0 +1,66 @@
+body {
+	margin: 0 1em;
+}
+#updated {
+	margin-top: 1em;
+	font-size: .85em;
+}
+#page-home thead {
+	background-color: #999;
+	color: #eee;
+}
+#page-home td, th {
+	padding: .5em 0 .5em 1em;
+}
+#page-home tr:nth-child(even) {
+	background-color: #eee;
+}
+#page-home #master-file {
+	border-top: 1px solid #666;
+}
+#search {
+	text-align: left;
+	margin: 0 2em .5em 0;
+}
+footer {
+	margin-top: 2em;
+}
+#page-home #shuttleworth {
+	float: right;
+}
+h1 a {
+	color: black;
+}
+	h1 a:hover {
+		color: black;
+		text-decoration: none;
+	}
+
+.paging {
+	list-style-type: none;
+}
+	.paging li {
+		display: inline;
+		padding-right: 1em;
+	}
+dl {
+	padding: 0.5em;
+	border-bottom: 1px solid #000;
+}
+dt {
+	float: left;
+	clear: left;
+	width: 13em;
+	text-align: right;
+	font-weight: bold;
+}
+dt:after {
+	content: ":";
+}
+dd {
+	margin: 0 0 0 14em;
+	padding: 0 0 0.5em 0;
+}
+dd:nth-child(odd) {
+	background-color: #eee;
+}
