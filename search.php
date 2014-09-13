@@ -80,6 +80,19 @@ $sort_order[3] = array('domestic','id','name','status','status_date','expiration
 $sort_order[9] = array('id','name','status','status-date','expiration-date','date','state-formed','industry','street-1','street-2','city','state','zip','address-date','agent-name','agent-street-1','agent-street-2','agent-city','agent-state','agent_zip','agent_date','agent_status','agent_court_locality');
 
 /*
+ * Create a list of all valid field names.
+ */
+$valid_fields = array();
+foreach($sort_order as $file)
+{
+	foreach ($file as $field)
+	{
+		$valid_fields[] = $field;
+	}
+}
+$valid_fields = array_unique($valid_fields);
+
+/*
  * Sanitize input.
  */
 if (!empty($_GET['q']))
@@ -108,7 +121,11 @@ if (!empty($_GET['sort_by']))
 	$sort_by = filter_input(INPUT_GET, 'sort_by', FILTER_SANITIZE_SPECIAL_CHARS);
 	if (strlen($sort_by) > 120)
 	{
-		die();
+		unset($sort_by);
+	}
+	elseif (in_array($sort_by, $valid_fields) === FALSE)
+	{
+		unset($sort_by);
 	}
 }
 if (!empty($_GET['order']))
@@ -165,8 +182,15 @@ if (isset($p))
 	$params['from'] = ($p - 1) * $per_page;
 }
 
+/*
+ * If we have a sort_by attribute.
+ */
 if (isset($sort_by))
 {
+
+	/*
+	 * If we haven't specified a sort order.
+	 */
 	if (!isset($order))
 	{
 		$order = 'asc';
@@ -178,13 +202,12 @@ if (isset($sort_by))
 			$order = 'asc';
 		}
 	}
+	
 	/*
-	 * Replace this with a check against all fieldnames.
+	 * If $sort_by contains a valid value.
 	 */
-	if ($sort_by == 'incorporation_date')
-	{
-		$params['body']['sort']['incorporation_date'] = $order;
-	}
+	$params['body']['sort'][$sort_by] = $order;
+	
 }
 
 /*
