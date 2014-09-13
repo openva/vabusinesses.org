@@ -15,15 +15,15 @@ class Businesses
 	 */
 	public $files = array(
 		array(
-			'name'	=> 'Corporate',
+			'name'	=> 'Inc. Registrations',
 			'csv'	=> '2_corporate.csv',
 			'json'	=> '2_corporate.json'),
 		array(
-			'name'	=> 'Limited Partnership',
+			'name'	=> 'LP Registrations',
 			'csv'	=> '3_lp.csv',
 			'json'	=> '3_lp.json'),
 		array(
-			'name'	=> 'Corporate/Limited Partnership/Limited Liability Company',
+			'name'	=> 'Inc./LP/LLC Amendments',
 			'csv'	=> '4_amendments.csv',
 			'json'	=> '4_amendments.json'),
 		array(
@@ -31,19 +31,19 @@ class Businesses
 			'csv'	=> '5_officers.csv',
 			'json'	=> '5_officers.json'),
 		array(
-			'name'	=> 'Corporate/Limited Partnership/Limited Liability Company Name',
+			'name'	=> 'Inc./LP/LLC Names',
 			'csv'	=> '6_name.csv',
 			'json'	=> '6_name.json'),
 		array(
-			'name'	=> 'Merger',
+			'name'	=> 'Mergers',
 			'csv'	=> '7_merger.csv',
 			'json'	=> '7_merger.json'),
 		array(
-			'name'	=> 'Corporate/Limited Partnership/Limited Liability Company Reserved/Registered Name',
+			'name'	=> 'Inc./LP/LLC Reserved/Registered Names',
 			'csv'	=> '8_registered_names.csv',
 			'json'	=> '8_registered_names.json'),
 		array(
-			'name'	=> 'Limited Liability Company',
+			'name'	=> 'LLC Registrations',
 			'csv'	=> '9_llc.csv',
 			'json'	=> '9_llc.json')
 	);
@@ -82,40 +82,9 @@ class Businesses
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-	<style>
-		body {
-			margin: 0 1em;
-		}
-		#updated {
-			margin-top: 1em;
-			font-size: .85em;
-		}
-		thead {
-			background-color: #999;
-			color: #eee;
-		}
-		td, th {
-			padding: .5em 0 .5em 1em;
-		}
-		tr:nth-child(even) {
-			background-color: #eee;
-		}
-		#master-file {
-			border-top: 1px solid #666;
-		}
-		#search {
-			text-align: left;
-			margin: 0 2em .5em 0;
-		}
-		footer {
-			margin-top: 2em;
-		}
-		#shuttleworth {
-			float: right;
-		}
-	</style>
+	<link rel="stylesheet" href="/styles.css">
 </head>
-<body>
+<body id="page-home">
 
 <header>
 <a href="https://github.com/openva/business.openva.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
@@ -134,8 +103,8 @@ Corporation Commission</a> and parsed with <a href="https://github.com/openva/cr
 </form>
 
 <ul>
-	<li><a href="/search.php?sort_by=incorporation_date&order=desc">Newest Businesses</a></li>
-	<li><a href="/search.php?sort_by=incorporation_date&order=asc">Oldest Businesses</a></li>
+	<li><a href="/search.php?sort_by=incorporation_date&amp;order=desc&amp;type=2%2C3%2C9">Newest Businesses</a></li>
+	<li><a href="/search.php?sort_by=incorporation_date&amp;order=asc&amp;type=2%2C3%2C9">Oldest Businesses</a></li>
 </ul>
 
 <table>
