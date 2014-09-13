@@ -166,8 +166,16 @@ class Businesses
 				</article>
 				
 				<aside>
-					<h3>aside</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+					<!--<h3>aside</h3>-->
+					
+					<p>Data <a href="https://www.scc.virginia.gov/clk/purch.aspx">purchased from the
+					Virginia State Corporation Commission</a> and parsed with <a href="https://github.com/openva/crump/">Crump</a>.</p>
+					
+					<div id="sponsors">
+						<a href="https://www.shuttleworthfoundation.org/fellowship/fellows/grantees/"><img src="/shuttleworth.gif" width="150" height="43" alt="Shuttleworth Funded" id="shuttleworth" /></a>
+						<a href="http://www.briworks.com/"><img src="/bri.gif" width="100" height="35" alt="Hosting Donated By Blue Ridge InternetWorks" id="bri" /></a>
+					</div>
+					
 				</aside>
 
 			</div> <!-- #main -->
@@ -175,8 +183,6 @@ class Businesses
 
 		<div class="footer-container">
 			<footer class="wrapper">
-				<a href="https://www.shuttleworthfoundation.org/fellowship/fellows/grantees/"><img src="/shuttleworth.gif" width="150" height="43" alt="Shuttleworth Funded" id="shuttleworth" /></a>
-				<a href="http://www.briworks.com/"><img src="/bri.gif" width="100" height="35" alt="Hosting Donated By Blue Ridge InternetWorks" id="bri" /></a>
 				<p id="updated"><em>Last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.</em></p>
 			</footer>
 		</div>
