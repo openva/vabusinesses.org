@@ -72,83 +72,129 @@ class Businesses
 }
 ?>
 <!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <html lang="en">
-<head>
-	<meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Virginia Businesses</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="/styles.css">
-</head>
-<body id="page-home">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Virginia Businesses</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<header>
-<a href="https://github.com/openva/business.openva.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+        <link rel="stylesheet" href="css/normalize.min.css">
+        <link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="/styles.css">
 
-<h1>Virginia Businesses</h1>
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    
+	<body id="page-home">
 
-<p>Data <a href="https://www.scc.virginia.gov/clk/purch.aspx">purchased from the Virginia State
-Corporation Commission</a> and parsed with <a href="https://github.com/openva/crump/">Crump</a>.</p>
-</head>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
 
-<article>
+        <div class="header-container">
+            <header class="wrapper clearfix">
+				<a href="https://github.com/openva/business.openva.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+                <h1 class="title">Virginia Businesses</h1>
+                <nav>
+                    <ul>
+                        <li><a href="#">nav ul li a</a></li>
+                        <li><a href="#">nav ul li a</a></li>
+                        <li><a href="#">nav ul li a</a></li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+        <div class="main-container">
+            <div class="main wrapper clearfix">
 
-<form method="get" action="/search.php" id="search">
-	<input type="text" name="q" />
-	<input type="submit" value="Search" />
-</form>
+				<p>Data <a href="https://www.scc.virginia.gov/clk/purch.aspx">purchased from the Virginia State
+				Corporation Commission</a> and parsed with <a href="https://github.com/openva/crump/">Crump</a>.</p>
 
-<ul>
-	<li><a href="/search.php?sort_by=incorporation_date&amp;order=desc&amp;type=2%2C3%2C9">Newest Businesses</a></li>
-	<li><a href="/search.php?sort_by=incorporation_date&amp;order=asc&amp;type=2%2C3%2C9">Oldest Businesses</a></li>
-</ul>
+				<article>
 
-<table>
-	<caption>Bulk Data</caption>
-	<thead>
-		<tr>
-			<th>File</th>
-			<th colspan="2">Download</th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php
+				<form method="get" action="/search.php" id="search">
+					<input type="text" name="q" />
+					<input type="submit" value="Search" />
+				</form>
+
+				<ul>
+					<li><a href="/search.php?sort_by=incorporation_date&amp;order=desc&amp;type=2%2C3%2C9">Newest Businesses</a></li>
+					<li><a href="/search.php?sort_by=incorporation_date&amp;order=asc&amp;type=2%2C3%2C9">Oldest Businesses</a></li>
+				</ul>
+
+				<table>
+					<caption>Bulk Data</caption>
+					<thead>
+						<tr>
+							<th>File</th>
+							<th colspan="2">Download</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
 	
-		$businesses = new Businesses;
-		if ($businesses->list_files() === TRUE)
-		{
+						$businesses = new Businesses;
+						if ($businesses->list_files() === TRUE)
+						{
 			
-			foreach ($businesses->files as $file)
-			{
+							foreach ($businesses->files as $file)
+							{
 		
-				echo '<tr>
-				<td>' . $file['name'] . '</td>
-				<td><a href="' . $file['csv']  . '">CSV</a> (' . human_filesize($file['csv_size']) . ')</td>
-				<td><a href="' . $file['json']  . '">JSON</a> (' . human_filesize($file['json_size']) . ')</td>
-				</tr>';
+								echo '<tr>
+								<td>' . $file['name'] . '</td>
+								<td><a href="' . $file['csv']  . '">CSV</a> (' . human_filesize($file['csv_size']) . ')</td>
+								<td><a href="' . $file['json']  . '">JSON</a> (' . human_filesize($file['json_size']) . ')</td>
+								</tr>';
 			
-			}
+							}
 		
-		}
+						}
 	
-		?>
-		<tr id="master-file">
-			<td>SCC Master File (Contains All Data)</td>
-			<td colspan="2"><a href="https://s3.amazonaws.com/virginia-business/current.zip">Fixed-Width</a></td>
-		</tr>
-	</tbody>
-</table>
-</article>
+						?>
+						<tr id="master-file">
+							<td>SCC Master File (Contains All Data)</td>
+							<td colspan="2"><a href="https://s3.amazonaws.com/virginia-business/current.zip">Fixed-Width</a></td>
+						</tr>
+					</tbody>
+				</table>
+				</article>
+				
+				<aside>
+                    <h3>aside</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+                </aside>
 
-<footer>
-<a href="https://www.shuttleworthfoundation.org/fellowship/fellows/grantees/"><img src="/shuttleworth.gif" width="150" height="43" alt="Shuttleworth Funded" id="shuttleworth" /></a>
-<a href="http://www.briworks.com/"><img src="/bri.gif" width="100" height="35" alt="Hosting Donated By Blue Ridge InternetWorks" id="bri" /></a>
-<p id="updated"><em>Last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.</em></p>
-</footer>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
 
-</body>
+        <div class="footer-container">
+            <footer class="wrapper">
+				<a href="https://www.shuttleworthfoundation.org/fellowship/fellows/grantees/"><img src="/shuttleworth.gif" width="150" height="43" alt="Shuttleworth Funded" id="shuttleworth" /></a>
+				<a href="http://www.briworks.com/"><img src="/bri.gif" width="100" height="35" alt="Hosting Donated By Blue Ridge InternetWorks" id="bri" /></a>
+				<p id="updated"><em>Last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.</em></p>
+            </footer>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
+
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-76084-7');ga('send','pageview');
+        </script>
+    </body>
 </html>
+
