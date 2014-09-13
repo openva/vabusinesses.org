@@ -113,9 +113,6 @@ class Businesses
 		<div class="main-container">
 			<div class="main wrapper clearfix">
 
-				<p>Data <a href="https://www.scc.virginia.gov/clk/purch.aspx">purchased from the Virginia State
-				Corporation Commission</a> and parsed with <a href="https://github.com/openva/crump/">Crump</a>.</p>
-
 				<article>
 
 				<form method="get" action="/search.php" id="search">
@@ -183,7 +180,7 @@ class Businesses
 
 		<div class="footer-container">
 			<footer class="wrapper">
-				<p id="updated"><em>Last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.</em></p>
+				<p id="updated"><em>Data last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.</em></p>
 			</footer>
 		</div>
 
