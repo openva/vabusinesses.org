@@ -38,32 +38,41 @@
 				padding-right: 1em;
 			}
 		dl {
-			border: 3px double #ccc;
 			padding: 0.5em;
+			border-bottom: 1px solid #000;
 		}
 		dt {
 			float: left;
 			clear: left;
-			width: 10em;
+			width: 13em;
 			text-align: right;
 			font-weight: bold;
-			color: green;
 		}
 		dt:after {
 			content: ":";
 		}
 		dd {
-			margin: 0 0 0 11em;
+			margin: 0 0 0 14em;
 			padding: 0 0 0.5em 0;
 		}
+		dd:nth-child(odd) {
+			background-color: #eee;
+		}
+		h1 a {
+			color: black;
+		}
+			h1 a:hover {
+				color: black;
+				text-decoration: none;
+			}
 	</style>
 </head>
-<body>
+<body id="page-search">
 
 <header>
 <a href="https://github.com/openva/business.openva.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 
-<h1>Virginia Businesses</h1>
+<h1><a href="/">Virginia Businesses</a></h1>
 <article>
 <?php
 
@@ -217,12 +226,12 @@ echo '
 <form method="get" action="/search.php">
 	<input type="text" name="q" value="' . $q . '" />
 	<select name="type">
-		<option value="">Type</option>
-		<option value="2,3,9">Businesses</option>
-		<option value="6,8">Registered Names</option>
-		<option value="4">Amendments</option>
-		<option value="5">Officers</option>
-		<option value="7">Mergers</option>
+		<option value=""></option>
+		<option value="2,3,9"' . (($type == '2,3,9') ? ' selected' : '') . '>Businesses</option>
+		<option value="6,8"' . (($type == '6,8') ? ' selected' : '') . '>Registered Names</option>
+		<option value="4"' . (($type == '4') ? ' selected' : '') . '>Amendments</option>
+		<option value="5"' . (($type == '5') ? ' selected' : '') . '>Officers</option>
+		<option value="7"' . (($type == '7') ? ' selected' : '') . '>Mergers</option>
 	</select>
 	<input type="submit" value="Search" />
 </form>';
@@ -318,7 +327,24 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 	{
 		if ($i != $p)
 		{
-			echo '<li><a href="/search.php?q=' . urlencode($q) . '&amp;p=' . $i . '">' . $i . '</a></li>';
+			echo '<li><a href="/search.php?';
+			if (isset($q))
+			{
+				echo 'q=' . urlencode($q) . '&amp;';
+			}
+			if (isset($sort_by))
+			{
+				echo 'sort_by=' . urlencode($sort_by) . '&amp;';
+			}
+			if (isset($order))
+			{
+				echo 'order=' . urlencode($order) . '&amp;';
+			}
+			if (isset($type))
+			{
+				echo 'type=' . urlencode($type) . '&amp;';
+			}
+			echo 'p=' . $i . '">' . $i . '</a></li>';
 		}
 		else
 		{
