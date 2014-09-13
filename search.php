@@ -244,10 +244,23 @@ if (count($results['hits']['hits']) > 0)
 				{
 					$key = 'ID';
 				}
+				
+				/*
+				 * Make IDs search links.
+				 */
 				if (strtolower($key) == 'id')
 				{
 					$value = '<a href="/search.php?q=' . urlencode($value) . '">' . $value . '</a>';
 				}
+				
+				/*
+				 * Format dates.
+				 */
+				if (stripos($key, 'date') !== FALSE)
+				{
+					$value = date('M. j, Y', strtotime($value));
+				}
+				 
 				echo '<dt>' . $key . '</dt><dd>' . $value . '</dd>';
 				
 			}
