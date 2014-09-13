@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Virginia Businesses</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -143,7 +143,7 @@ if (!empty($_GET['order']))
 if (!empty($_GET['type']))
 {
 	$type = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_SPECIAL_CHARS);
-	if ( (strlen($type) > 1) || !is_numeric($type) )
+	if ( (strlen($type) > 15) || preg_match('/[a-z]/', $type) !== 0 )
 	{
 		die();
 	}
@@ -218,14 +218,11 @@ echo '
 	<input type="text" name="q" value="' . $q . '" />
 	<select name="type">
 		<option value="">Type</option>
-		<option value="2">Corporate</option>
-		<option value="3">LP</option>
+		<option value="2,3,9">Businesses</option>
+		<option value="6,8">Registered Names</option>
 		<option value="4">Amendments</option>
 		<option value="5">Officers</option>
-		<option value="6">Name</option>
-		<option value="7">Merger</option>
-		<option value="8">Registered Names</option>
-		<option value="9">LLC</option>
+		<option value="7">Mergers</option>
 	</select>
 	<input type="submit" value="Search" />
 </form>';
