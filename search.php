@@ -266,9 +266,7 @@ if (count($results['hits']['hits']) > 0)
 			$ordered_result = array();
 			foreach ($sort_order[$result{'_type'}] as $key)
 			{
-				
-				$ordered_result[$key] = $result['_source'][$key];
-				
+				$ordered_result[$key] = $result['_source'][$key];	
 			}
 			
 			/*
@@ -318,7 +316,6 @@ if (count($results['hits']['hits']) > 0)
 				{
 					$value = date('M. j, Y', strtotime($value));
 				}
-				 
 				
 				/*
 				 * Display the field name (e.g., "Name," "Industry," etc.)
