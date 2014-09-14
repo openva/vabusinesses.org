@@ -58,11 +58,8 @@ dt {
 	float: left;
 	clear: left;
 	width: 13em;
-	text-align: right;
+	text-align: left;
 	font-weight: bold;
-}
-dt:after {
-	content: ":";
 }
 dd {
 	margin: 0 0 0 14em;
