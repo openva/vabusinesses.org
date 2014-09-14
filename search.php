@@ -69,10 +69,6 @@ foreach ($files as $file)
 	$tables[$file_number] = yaml_parse_file($dir . $file);
 
 }
-if ($_SERVER['REMOTE_ADDR'] = '67.233.74.37')
-{
-	echo '<pre>' . print_r($tables, TRUE) . '</pre>';
-}
 echo '<script>tables = \'' . json_encode($tables) . '\'</script>';
 
 /*
