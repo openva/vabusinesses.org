@@ -258,7 +258,7 @@ if (count($results['hits']['hits']) > 0)
 	{
 
 		/*
-		 * If we have a prescribed key order for this type of record, rearrange the entries.
+		 * Rearrange the fields per the prescribed key order for this type of record.
 		 */
 		if (isset($sort_order[$result{'_type'}]))
 		{
@@ -316,13 +316,17 @@ if (count($results['hits']['hits']) > 0)
 				}
 				
 				/*
-				 * Format dates.
+				 * If this is a date field, format it.
 				 */
 				if (stripos($key, 'date') !== FALSE)
 				{
 					$value = date('M. j, Y', strtotime($value));
 				}
 				 
+				
+				/*
+				 * Display the field name (e.g., "Name," "Industry," etc.)
+				 */
 				echo '<dt';
 				if (isset($description))
 				{
