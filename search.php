@@ -279,6 +279,9 @@ if (count($results['hits']['hits']) > 0)
 		
 		echo '<dl>';
 		
+		/*
+		 * Iterate through every key/value pair contained within this result.
+		 */
 		foreach ($result['_source'] as $key => $value)
 		{
 			
@@ -290,6 +293,10 @@ if (count($results['hits']['hits']) > 0)
 					if ($field['alt_name'] == $key)
 					{
 						$description = $field['description'];
+						if (isset($field['group']))
+						{
+							$group = $field['group'];
+						}
 					}
 				}
 				
@@ -325,6 +332,11 @@ if (count($results['hits']['hits']) > 0)
 				{
 					echo ' data-description="' . $description . ' "';
 				}
+				if (isset($group))
+				{
+					echo ' class="' . $group . '"';
+				}
+				echo '>' . $key . '</dt>';
 				
 				/*
 				 * Display the value (e.g., the name of the business, the name of the RA, etc.)
