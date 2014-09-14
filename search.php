@@ -290,7 +290,15 @@ if (count($results['hits']['hits']) > 0)
 			
 			if (!empty($value))
 			{
-
+				
+				foreach ($tables[$result{'_type'}] as $field)
+				{
+					if ($field['alt_name'] == $key)
+					{
+						$description = $field['description'];
+					}
+				}
+				
 				$key = str_replace('_', ' ', $key);
 				$key = str_replace('-', ' ', $key);
 				$key = ucwords($key);
@@ -315,7 +323,12 @@ if (count($results['hits']['hits']) > 0)
 					$value = date('M. j, Y', strtotime($value));
 				}
 				 
-				echo '<dt>' . $key . '</dt><dd>' . $value . '</dd>';
+				echo '<dt';
+				if (isset($description))
+				{
+					echo ' data-description="' . $description . ' "';
+				}
+				echo '>' . $key . '</dt><dd>' . $value . '</dd>';
 				
 			}
 			
@@ -384,8 +397,9 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 			</footer>
 		</div>
 
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
 
 		<script src="js/main.js"></script>
 
