@@ -51,24 +51,50 @@
  * TODO
  * * Move this outside of this file and to a general include file.
  * * complete this to include all tables (grep out of the YAML).
+/*
+ * Import all YAML table maps and turn them into PHP arrays.
  */
-$sort_order = array();
-$sort_order[2] = array('id','name','status','status_date','expiration_date','incorporation_date','state_formed','industry','street_1','street_2','city','state','zip','address_date','agent_name','agent_street_1','agent_street_2','agent_city','agent_state','agent_zip','agent_date','agent_status','agent_court_locality','stock_ind','total_shares','merged','assessment','stock_class','number_shares');
-$sort_order[3] = array('domestic','id','name','status','status_date','expiration_date','incorporation_date','state_formed','industry','street_1','street_2','city','state','zip','address_date','agent_name','agent_street_1','agent_street_2','agent_city','agent_state','agent_zip','agent_date','agent_status','agent_court_locality');
-$sort_order[9] = array('id','name','status','status-date','expiration-date','date','state-formed','industry','street-1','street-2','city','state','zip','address-date','agent-name','agent-street-1','agent-street-2','agent-city','agent-state','agent_zip','agent_date','agent_status','agent_court_locality');
+$dir = '../crump/table_maps/';
+$files = scandir($dir);
+foreach ($files as $file)
+{
+
+	if ( ($file == '.') || ($file == '..') || ($file == '1_tables.yaml') )
+	{
+		continue;
+	}
+	$file_number = $file[0];
+	$tables[$file_number] = yaml_parse_file($dir . $file);
+
+}
+if ($_SERVER['REMOTE_ADDR'] = '67.233.74.37')
+{
+	echo '<pre>' . print_r($tables, TRUE) . '</pre>';
+}
+echo '<script>tables = \'' . json_encode($tables) . '\'</script>';
 
 /*
- * Create a list of all valid field names.
+ * Iterate through every field in every table map and use them to establish the proper sort order
+ * for field names and a list of all valid field names (which we use for input sanitation).
  */
+$sort_order = array();
 $valid_fields = array();
-foreach($sort_order as $file)
+foreach($tables as $table_number => $fields)
 {
-	foreach ($file as $field)
+
+	foreach ($fields as $field)
 	{
-		$valid_fields[] = $field;
+
+		$sort_order[$table_number][] = $field['alt_name'];
+
+		/*
+		 * Create a list of every valid field name.
+		 */
+		$valid_fields[] = $field['alt_name'];
+
 	}
+
 }
-$valid_fields = array_unique($valid_fields);
 
 /*
  * Sanitize input.
