@@ -46,11 +46,13 @@
 <?php
 
 /*
- * Establish the sort order of fields.
- *
- * TODO
- * * Move this outside of this file and to a general include file.
- * * complete this to include all tables (grep out of the YAML).
+define('INCLUDE_PATH', $_SERVER['DOCUMENT_ROOT'] . 'includes/');
+
+$tables = new TableMaps();
+$tables->import_files();
+*/
+
+/////////////////////////////////
 /*
  * Import all YAML table maps and turn them into PHP arrays.
  */
@@ -95,6 +97,7 @@ foreach($tables as $table_number => $fields)
 	}
 
 }
+/////////////////////////////////
 
 /*
  * Sanitize input.
@@ -253,7 +256,7 @@ if (count($results['hits']['hits']) > 0)
 	
 	foreach ($results['hits']['hits'] as $result)
 	{
-		
+
 		/*
 		 * If we have a prescribed key order for this type of record, rearrange the entries.
 		 */
