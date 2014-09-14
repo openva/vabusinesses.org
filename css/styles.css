@@ -61,6 +61,12 @@ dt {
 	text-align: left;
 	font-weight: bold;
 }
+	dt.grouped {
+		background-color: #eee;
+	}
+		dt.grouped+dd {
+			background-color: #eee;
+		}
 dd {
 	margin: 0 0 0 14em;
 	padding: 0 0 0.5em 0;
