@@ -278,10 +278,6 @@ if (count($results['hits']['hits']) > 0)
 			unset($ordered_result);
 			
 		}
-		else
-		{
-			ksort($result['_source']);
-		}
 		
 		echo '<dl>';
 		
