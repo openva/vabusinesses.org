@@ -328,7 +328,11 @@ if (count($results['hits']['hits']) > 0)
 				{
 					echo ' data-description="' . $description . ' "';
 				}
-				echo '>' . $key . '</dt><dd>' . $value . '</dd>';
+				
+				/*
+				 * Display the value (e.g., the name of the business, the name of the RA, etc.)
+				 */
+				echo '<dd>' . $value . '</dd>';
 				
 			}
 			
