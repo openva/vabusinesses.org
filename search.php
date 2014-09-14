@@ -69,6 +69,10 @@ foreach ($files as $file)
 	$tables[$file_number] = yaml_parse_file($dir . $file);
 
 }
+
+/*
+ * Make the table data available as JSON.
+ */
 echo '<script>tables = \'' . json_encode($tables) . '\'</script>';
 
 /*
