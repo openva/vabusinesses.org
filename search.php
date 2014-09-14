@@ -338,6 +338,12 @@ if (count($results['hits']['hits']) > 0)
 				 */
 				echo '<dd>' . $value . '</dd>';
 				
+				/*
+				 * Unset variables that we don't want to reuse on the next iteration.
+				 */
+				unset($group);
+				unset($description);
+				
 			}
 			
 		}
