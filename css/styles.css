@@ -65,9 +65,9 @@ dd {
 	margin: 0 0 0 14em;
 	padding: 0 0 0.5em 0;
 }
-dd:nth-child(odd) {
-	background-color: #eee;
-}
+	dd:nth-child(odd) {
+		background-color: #eee;
+	}
 
 
 aside a {
