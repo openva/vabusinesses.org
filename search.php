@@ -372,7 +372,7 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 
 ?>
 
-
+				</article>
 			</div> <!-- #main -->
 		</div> <!-- #main-container -->
 
