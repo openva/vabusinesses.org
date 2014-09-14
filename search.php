@@ -285,8 +285,8 @@ if (count($results['hits']['hits']) > 0)
 		foreach ($result['_source'] as $key => $value)
 		{
 			
-			if (!empty($value))
-			{
+			//if (!empty($value))
+			//{
 				
 				foreach ($tables[$result{'_type'}] as $field)
 				{
@@ -319,7 +319,7 @@ if (count($results['hits']['hits']) > 0)
 				/*
 				 * If this is a date field, format it.
 				 */
-				if (stripos($key, 'date') !== FALSE)
+				if ( (stripos($key, 'date') !== FALSE) && !empty($value) )
 				{
 					$value = date('M. j, Y', strtotime($value));
 				}
@@ -341,6 +341,10 @@ if (count($results['hits']['hits']) > 0)
 				/*
 				 * Display the value (e.g., the name of the business, the name of the RA, etc.)
 				 */
+				if (empty($value))
+				{
+					$value = '-';
+				}
 				echo '<dd>' . $value . '</dd>';
 				
 				/*
@@ -349,7 +353,7 @@ if (count($results['hits']['hits']) > 0)
 				unset($group);
 				unset($description);
 				
-			}
+			//}
 			
 		}
 		echo '</dl>';
