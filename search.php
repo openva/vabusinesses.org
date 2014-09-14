@@ -334,7 +334,7 @@ if (count($results['hits']['hits']) > 0)
 				}
 				if (isset($group))
 				{
-					echo ' class="' . $group . '"';
+					echo ' class="grouped ' . $group . '"';
 				}
 				echo '>' . $key . '</dt>';
 				
