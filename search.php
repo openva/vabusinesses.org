@@ -54,20 +54,35 @@ $tables->import_files();
 
 /////////////////////////////////
 /*
- * Import all YAML table maps and turn them into PHP arrays.
+ * Import all YAML table maps and turn them into PHP arrays. First, check Memcached.
  */
-$dir = '../crump/table_maps/';
-$files = scandir($dir);
-foreach ($files as $file)
+$mc = new Memcached();
+$mc->addServer("127.0.0.1", 11211);
+$tables = $mc->get('table-maps');
+if ($tables !== FALSE)
 {
-
-	if ( ($file == '.') || ($file == '..') || ($file == '1_tables.yaml') )
+	$tables = unserialize($tables);
+}
+else
+{
+	$dir = '../crump/table_maps/';
+	$files = scandir($dir);
+	foreach ($files as $file)
 	{
-		continue;
-	}
-	$file_number = $file[0];
-	$tables[$file_number] = yaml_parse_file($dir . $file);
 
+		if ( ($file == '.') || ($file == '..') || ($file == '1_tables.yaml') )
+		{
+			continue;
+		}
+		$file_number = $file[0];
+		$tables[$file_number] = yaml_parse_file($dir . $file);
+
+	}
+
+	/*
+	 * Cache the table maps in Memcached, for 24 hours.
+	 */
+	$mc->set('table-maps', serialize($tables), 86400);
 }
 
 /*
