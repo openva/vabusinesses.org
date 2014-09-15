@@ -172,6 +172,18 @@ if (!empty($_GET['type']))
 }
 
 /*
+ * If this is searching a particular field.
+ */
+if (!empty($_GET['field']))
+{
+	$search_field = filter_input(INPUT_GET, 'field', FILTER_SANITIZE_SPECIAL_CHARS);
+	if (strlen($search_field) > 128)
+	{
+		die();
+	}
+}
+
+/*
  * Create an instance of Elasticsearch.
  */
 require 'vendor/autoload.php';
@@ -195,10 +207,32 @@ if (isset($type))
  */
 $params['size'] = $per_page;
 
+/*
+ * If we have a query.
+ */
 if (isset($q))
 {
-	$params['body']['query']['match']['_all'] = $q;
+
+	/*
+	 * If this is a general search -- that is, not against a specific field.
+	 */
+	if (empty($search_field))
+	{
+		$params['body']['query']['match']['_all'] = $q;
+	}
+	
+	/*
+	 * If a specific field is being searched.
+	 */
+	else
+	{
+		$params['body']['query']['match'][$search_field] = $q;
+	}
 }
+
+/*
+ * Paging.
+ */
 if (isset($p))
 {
 	$params['from'] = ($p - 1) * $per_page;
@@ -277,7 +311,6 @@ if (count($results['hits']['hits']) > 0)
 		 */
 		if (isset($sort_order[$result{'_type'}]))
 		{
-			
 			$ordered_result = array();
 			foreach ($sort_order[$result{'_type'}] as $key)
 			{
@@ -405,6 +438,10 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 			if (isset($type))
 			{
 				echo 'type=' . urlencode($type) . '&amp;';
+			}
+			if (isset($search_field))
+			{
+				echo 'field=' . urlencode($search_field) . '&amp;';
 			}
 			echo 'p=' . $i . '">' . $i . '</a></li>';
 		}
