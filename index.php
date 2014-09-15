@@ -115,7 +115,7 @@ class Businesses
 
 				<article>
 
-				<form method="get" action="/search.php" id="search">
+				<form method="get" action="/search/" id="search">
 					<input type="text" name="q" />
 					<input type="submit" value="Search" />
 				</form>
