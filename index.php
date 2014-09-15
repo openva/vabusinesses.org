@@ -117,6 +117,8 @@ class Businesses
 
 				<form method="get" action="/search/" id="search">
 					<input type="text" name="q" />
+					<input type="hidden" name="type" value="2,3,9" />
+					<input type="hidden" name="field" value="name" />
 					<input type="submit" value="Search" />
 				</form>
 
