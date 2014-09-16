@@ -270,7 +270,7 @@ if (isset($sort_by))
  * Display the search form.
  */
 echo '
-<form method="get" action="/search.php">
+<form method="get" action="/search/">
 	<input type="text" name="q" value="' . $q . '" />
 	<select name="type">
 		<option value=""></option>
@@ -361,7 +361,7 @@ if (count($results['hits']['hits']) > 0)
 				 */
 				if (strtolower($key) == 'id')
 				{
-					$value = '<a href="/search.php?q=' . urlencode($value) . '">' . $value . '</a>';
+					$value = '<a href="/search/?q=' . urlencode($value) . '">' . $value . '</a>';
 				}
 				
 				/*
@@ -422,7 +422,7 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 	{
 		if ($i != $p)
 		{
-			echo '<li><a href="/search.php?';
+			echo '<li><a href="/search/?';
 			if (isset($q))
 			{
 				echo 'q=' . urlencode($q) . '&amp;';
