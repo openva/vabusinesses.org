@@ -165,14 +165,18 @@ class Businesses
 				</article>
 				
 				<aside>
-					<!--<h3>aside</h3>-->
+				
+					<h3>Intro</h3>	
+					<p>Data is <a href="https://www.scc.virginia.gov/clk/purch.aspx">purchased from
+					the Virginia State Corporation Commission</a> and parsed with
+					<a href="https://github.com/openva/crump/">Crump</a>. Records are updated at
+					2:00 AM each Wednesday morning. I buy the data for $150/month so that you don’t
+					have to. –<a href="http://waldo.jaquith.org/">Waldo Jaquith</a></p>
 					
-					<p>Data <a href="https://www.scc.virginia.gov/clk/purch.aspx">purchased from the
-					Virginia State Corporation Commission</a> and parsed with <a href="https://github.com/openva/crump/">Crump</a>.</p>
-					
+					<h3>Sponsors</h3>
 					<div id="sponsors">
-						<a href="https://www.shuttleworthfoundation.org/fellowship/fellows/grantees/"><img src="/shuttleworth.gif" width="150" height="43" alt="Shuttleworth Funded" id="shuttleworth" /></a>
-						<a href="http://www.briworks.com/"><img src="/bri.gif" width="100" height="35" alt="Hosting Donated By Blue Ridge InternetWorks" id="bri" /></a>
+						<a href="https://www.shuttleworthfoundation.org/fellowship/fellows/grantees/"><img src="/img/shuttleworth.gif" width="150" height="43" alt="Shuttleworth Funded" id="shuttleworth" /></a>
+						<a href="http://www.briworks.com/"><img src="/img/bri.gif" width="100" height="35" alt="Hosting Donated By Blue Ridge InternetWorks" id="bri" /></a>
 					</div>
 					
 				</aside>
