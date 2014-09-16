@@ -466,9 +466,14 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 
 		<div class="footer-container">
 			<footer class="wrapper">
-				<a href="https://www.shuttleworthfoundation.org/fellowship/fellows/grantees/"><img src="/img/shuttleworth.gif" width="150" height="43" alt="Shuttleworth Funded" id="shuttleworth" /></a>
-				<a href="http://www.briworks.com/"><img src="/img/bri.gif" width="100" height="35" alt="Hosting Donated By Blue Ridge InternetWorks" id="bri" /></a>
-				<p id="updated"><em>Data last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.</em></p>
+				Data last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.
+				All business records are created by the Virginia State Corporation Commission, and
+				are thus without copyright protection, so may be reused and reproduced freely,
+				without seeking any form of permission from anybody. All other website content is
+				published under <a href="http://opensource.org/licenses/MIT">the MIT license</a>.
+				This website is an independent, private effort, created and run as a hobby, and is
+				in no way affiliated with the Commonwealth of Virginia or the State Corporation
+				Commission.
 			</footer>
 		</div>
 

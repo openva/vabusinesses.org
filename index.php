@@ -186,7 +186,14 @@ class Businesses
 
 		<div class="footer-container">
 			<footer class="wrapper">
-				<p id="updated"><em>Data last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.</em></p>
+				Data last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.
+				All business records are created by the Virginia State Corporation Commission, and
+				are thus without copyright protection, so may be reused and reproduced freely,
+				without seeking any form of permission from anybody. All other website content is
+				published under <a href="http://opensource.org/licenses/MIT">the MIT license</a>.
+				This website is an independent, private effort, created and run as a hobby, and is
+				in no way affiliated with the Commonwealth of Virginia or the State Corporation
+				Commission.
 			</footer>
 		</div>
 
