@@ -61,8 +61,6 @@ $tables->import_files();
 /*
  * Import all YAML table maps and turn them into PHP arrays. First, check Memcached.
  */
-$mc = new Memcached();
-$mc->addServer("127.0.0.1", 11211);
 $tables = $mc->get('table-maps');
 if ($tables !== FALSE)
 {
