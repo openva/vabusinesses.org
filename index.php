@@ -128,7 +128,7 @@ class Businesses
 				</ul>
 
 				<table>
-					<caption>Bulk Data</caption>
+					<caption>Download Bulk Data</caption>
 					<thead>
 						<tr>
 							<th>File</th>
