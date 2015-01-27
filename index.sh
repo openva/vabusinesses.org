@@ -21,8 +21,6 @@ curl -v --data-binary "@8.json" -XPUT localhost:9200/business/8/_mapping
 curl -v --data-binary "@9.json" -XPUT localhost:9200/business/9/_mapping
 cd ..
 
-# Omit 1_tables.json somehow
-
 ## TODO: Only index Elasticsearch files. Right now, it's trying to index *everything*.
-find . -maxdepth 1 -name "*.json" -print0 | xargs -0 -I file curl -v --data-binary "@file" -XPOST localhost:9200/_bulk/
+find . -maxdepth 1 -name "[!1]_*.json" -print0 | xargs -0 -I file curl -v --data-binary "@file" -XPOST localhost:9200/_bulk/
 
