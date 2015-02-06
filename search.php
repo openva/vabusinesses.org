@@ -78,7 +78,7 @@ else
 			continue;
 		}
 		$file_number = $file[0];
-		$tables[$file_number] = yaml_parse_file($dir . $file);
+		$tables[$file_number] = spyc_load_file($dir . $file);
 
 	}
 
