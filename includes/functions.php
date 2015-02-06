@@ -27,3 +27,23 @@ function human_filesize($bytes, $decimals = 0)
 	$factor = floor((strlen($bytes) - 1) / 3);
 	return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
 }
+
+/*
+ * Import the list of place names.
+ */
+function import_place_names()
+{
+
+	$json = file_get_contents('includes/place_names.json');
+	if ($json == FALSE)
+	{
+		return FALSE;
+	}
+	$places = json_decode($json);
+	$places = (array) $places;
+	asort($places);
+	$places = (object) $places;
+	return $places;
+	
+}
+ 

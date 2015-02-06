@@ -2,7 +2,14 @@
 
 require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 
+/*
+ * We use output buffering because we export JSON on this page, if the parameter is present. There's
+ * no way to echo JSON (meaningfully) without clearing the buffer first.
+ */
+ob_start();
+
 ?>
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>	  <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>		 <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -19,6 +26,15 @@ require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 		<link rel="stylesheet" href="/css/normalize.min.css">
 		<link rel="stylesheet" href="/css/main.css">
 		<link rel="stylesheet" href="/css/styles.css">
+		
+		<!-- Leaflet -->
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+		<script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+		<style>
+			#map {
+				height: 200px;
+			}
+		</style>
 
 		<script src="/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 	</head>
@@ -43,9 +59,6 @@ require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 		</div>
 		<div class="main-container">
 			<div class="main wrapper clearfix">
-
-				<p>Data <a href="https://www.scc.virginia.gov/clk/purch.aspx">purchased from the Virginia State
-				Corporation Commission</a> and parsed with <a href="https://github.com/openva/crump/">Crump</a>.</p>
 
 				<article>
 <?php
@@ -187,10 +200,36 @@ if (!empty($_GET['field']))
 }
 
 /*
+ * If this is limiting the search to a particular place.
+ */
+if (!empty($_GET['place']))
+{
+	$gnis_id = filter_input(INPUT_GET, 'place', FILTER_SANITIZE_SPECIAL_CHARS);
+	if ( strlen($gnis_id) > 5 || !is_numeric($gnis_id) )
+	{
+		die();
+	}
+	
+	/*
+	 * GNIS IDs are left-padded with zeros to make them at least 3 digits.
+	 */
+	$gnis_id = str_pad($gnis_id, 3, '0', STR_PAD_LEFT);
+	
+	if (strlen($gnis_id) < 5)
+	{
+		$gnis_type = 'municipalities';
+	}
+	else
+	{
+		$gnis_type = 'towns';
+	}
+}
+
+/*
  * Create an instance of Elasticsearch.
  */
 require 'vendor/autoload.php';
-$client = new Elasticsearch\Client();
+$es = new Elasticsearch\Client();
 
 /*
  * Search the business index.
@@ -203,6 +242,25 @@ $params['index'] = 'business';
 if (isset($type))
 {
 	$params['type'] = $type;
+}
+
+/*
+ * In this place.
+ */
+if (isset($gnis_id))
+{
+
+	$filter = array();
+	$filter['geo_shape'] = array();
+	$filter['geo_shape']['location'] = array();
+	$filter['geo_shape']['location']['indexed_shape'] =
+		array(
+			'id' => $gnis_id,
+			'type' => $gnis_type,
+			'index' => 'shapes',
+			'path' => 'geometry'
+		);
+				
 }
 
 /*
@@ -221,7 +279,8 @@ if (isset($q))
 	 */
 	if (empty($search_field))
 	{
-		$params['body']['query']['match']['_all'] = $q;
+		$params['body']['query']['match']['_all']['query'] = $q;
+		$params['body']['query']['match']['_all']['operator'] = 'and';
 	}
 	
 	/*
@@ -229,7 +288,8 @@ if (isset($q))
 	 */
 	else
 	{
-		$params['body']['query']['match'][$search_field] = $q;
+		$params['body']['query']['match'][$search_field]['query'] = $q;
+		$params['body']['query']['match'][$search_field]['operator'] = 'and';
 	}
 }
 
@@ -276,20 +336,57 @@ echo '
 <form method="get" action="/search/">
 	<input type="text" name="q" value="' . $q . '" />
 	<select name="type">
-		<option value=""></option>
+		<option value="">Type</option>
 		<option value="2,3,9"' . (($type == '2,3,9') ? ' selected' : '') . '>Businesses</option>
 		<option value="6,8"' . (($type == '6,8') ? ' selected' : '') . '>Registered Names</option>
 		<option value="4"' . (($type == '4') ? ' selected' : '') . '>Amendments</option>
 		<option value="5"' . (($type == '5') ? ' selected' : '') . '>Officers</option>
 		<option value="7"' . (($type == '7') ? ' selected' : '') . '>Mergers</option>
 	</select>
+	<select name="place">
+		<option value="" disabled' . (empty($gnis_id) ? ' selected' : '') . '>Place</option>';
+$places = import_place_names();
+foreach ($places as $id => $name)
+{
+	echo '<option value="' . $id . '"' . (($gnis_id == $id) ? ' selected' : '') . '>' . $name . '</option>';
+}
+echo '
+	</select>
 	<input type="submit" value="Search" />
 </form>';
 
 /*
+ * If we have a filter, apply it to the params.
+ */
+if (isset($filter))
+{
+	$params['body']['query']['filtered'] = array(
+		'filter' => $filter);
+	if (isset($params['body']['query']['match']))
+	{
+		$params['body']['query']['filtered']['query'] = $params['body']['query']['match'];
+	}
+	unset($params['body']['query']['match']);
+}
+
+//////////////////////////////
+// This is not the right place to put this or way to do this.
+//////////////////////////////
+if (isset($_GET['download']))
+{
+	ob_end_clean();
+	$businesses = new Businesses;
+	$businesses->params = $params;
+	$businesses->export_results();
+	exit();
+	
+}
+//////////////////////////////
+
+/*
  * Execute the search.
  */
-$results = $client->search($params);
+$results = $es->search($params);
 
 if ( ($results === FALSE) || ($results['hits']['total'] == 0) )
 {
@@ -297,7 +394,12 @@ if ( ($results === FALSE) || ($results['hits']['total'] == 0) )
 }
 else
 {
-	echo '<p>' . number_format($results['hits']['total']) . ' results found.</p>';
+	echo '<p>' . number_format($results['hits']['total']) . ' results found.';
+	if ($results['hits']['total'] < 6000)
+	{
+		echo ' <a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=y">Download results all as JSON</a>';
+	}
+	echo '</p>';
 }
 
 /*
@@ -306,14 +408,45 @@ else
 if (count($results['hits']['hits']) > 0)
 {
 	
+	echo '
+		<div id="map"></div>
+		<script>
+			var map = L.map(\'map\').setView([37.99920, -79.46565], 6);
+			L.tileLayer(\'https://{s}.tiles.mapbox.com/v3/waldoj.k2cmnij6/{z}/{x}/{y}.png\', {
+				attribution: \'Map data &copy; <a href=http://openstreetmap.org>OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>\',
+				maxZoom: 18
+			}).addTo(map);
+			var resultLatLngs = []
+		</script>';
+	
 	foreach ($results['hits']['hits'] as $result)
 	{
-
+		
+		/*
+		 * The SCC has records that erroneously list an incorporation date in the distant future.
+ 		 * These permanently top the list of recent incorporations. Solution: don't show any records
+ 		 * that claim future incorporation dates.
+		 */
+		if (strtotime($result['_source']['incorporation_date']) > time())
+		{
+			continue;
+		}
+		
+		/*
+		 * Raise coordinates up a level in the array structure.
+		 */
+		if (isset($result['_source']['location']['coordinates']))
+		{
+			$result['_source']['coordinates'] = $result['_source']['location']['coordinates'];
+			unset($result['_source']['location']);
+		}
+		
 		/*
 		 * Rearrange the fields per the prescribed key order for this type of record.
 		 */
 		if (isset($sort_order[$result{'_type'}]))
 		{
+		
 			$ordered_result = array();
 			foreach ($sort_order[$result{'_type'}] as $key)
 			{
@@ -328,83 +461,98 @@ if (count($results['hits']['hits']) > 0)
 			
 		}
 		
+		if (!empty($result['_source']['coordinates']))
+		{
+			$id = $result['_source']['id'];
+			echo '
+			<script>
+				var marker_' . $id . ' = L.marker([' . $result['_source']['coordinates'][1] . ','
+					. $result['_source']['coordinates'][0] . ']).addTo(map);
+				marker_' . $id . '.bindPopup("<a href=\"/search/?q=' . $result['_source']['id']
+					. '\">' . $result['_source']['name'] . '</a><br />' . $result['_source']['city'] . '");
+				resultLatLngs.push([' . $result['_source']['coordinates'][1] . ',' . $result['_source']['coordinates'][0] . ']);
+			</script>';
+		}
+		
 		echo '<dl>';
 		
 		/*
-		 * Iterate through every key/value pair contained within this result.
+		 * Iterate through every key/value pair contained within each result.
 		 */
 		foreach ($result['_source'] as $key => $value)
 		{
+							
+			foreach ($tables[$result{'_type'}] as $field)
+			{
 			
-			//if (!empty($value))
-			//{
-				
-				foreach ($tables[$result{'_type'}] as $field)
+				if ($field['alt_name'] == $key)
 				{
-					if ($field['alt_name'] == $key)
+					$description = $field['description'];
+					if (isset($field['group']))
 					{
-						$description = $field['description'];
-						if (isset($field['group']))
-						{
-							$group = $field['group'];
-						}
+						$group = $field['group'];
 					}
 				}
 				
-				$key = str_replace('_', ' ', $key);
-				$key = str_replace('-', ' ', $key);
-				$key = ucwords($key);
-				if ($key == 'Id')
-				{
-					$key = 'ID';
-				}
-				
-				/*
-				 * Make IDs search links.
-				 */
-				if (strtolower($key) == 'id')
-				{
-					$value = '<a href="/search/?q=' . urlencode($value) . '">' . $value . '</a>';
-				}
-				
-				/*
-				 * If this is a date field, format it.
-				 */
-				if ( (stripos($key, 'date') !== FALSE) && !empty($value) )
-				{
-					$value = date('M. j, Y', strtotime($value));
-				}
-				
-				/*
-				 * Display the field name (e.g., "Name," "Industry," etc.)
-				 */
-				echo '<dt';
-				if (isset($description))
-				{
-					echo ' data-description="' . $description . ' "';
-				}
-				if (isset($group))
-				{
-					echo ' class="grouped ' . $group . '"';
-				}
-				echo '>' . $key . '</dt>';
-				
-				/*
-				 * Display the value (e.g., the name of the business, the name of the RA, etc.)
-				 */
-				if (empty($value))
-				{
-					$value = '-';
-				}
-				echo '<dd>' . $value . '</dd>';
-				
-				/*
-				 * Unset variables that we don't want to reuse on the next iteration.
-				 */
-				unset($group);
-				unset($description);
-				
-			//}
+			}
+			
+			if ( ($key == 'coordinates') && is_array($value) )
+			{
+				$value = round($value[1], 4) . ', ' . round($value[0], 4);
+			}
+			
+			$key = str_replace('_', ' ', $key);
+			$key = str_replace('-', ' ', $key);
+			$key = ucwords($key);
+			if ($key == 'Id')
+			{
+				$key = 'ID';
+			}
+			
+			/*
+			 * Make IDs search links.
+			 */
+			if (strtolower($key) == 'id')
+			{
+				$value = '<a href="/search/?q=' . urlencode($value) . '">' . $value . '</a>';
+			}
+			
+			/*
+			 * If this is a date field, format it.
+			 */
+			if ( (stripos($key, 'date') !== FALSE) && !empty($value) )
+			{
+				$value = date('M. j, Y', strtotime($value));
+			}
+			
+			/*
+			 * Display the field name (e.g., "Name," "Industry," etc.)
+			 */
+			echo '<dt';
+			if (isset($description))
+			{
+				echo ' data-description="' . $description . ' "';
+			}
+			if (isset($group))
+			{
+				echo ' class="grouped ' . $group . '"';
+			}
+			echo '>' . $key . '</dt>';
+			
+			/*
+			 * Display the value (e.g., the name of the business, the name of the RA, etc.)
+			 */
+			if (empty($value))
+			{
+				$value = '-';
+			}
+			echo '<dd>' . $value . '</dd>';
+			
+			/*
+			 * Unset variables that we don't want to reuse on the next iteration.
+			 */
+			unset($group);
+			unset($description);
 			
 		}
 		echo '</dl>';
@@ -421,10 +569,21 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 	
 	$total_pages = ceil($results['hits']['total'] / $per_page);
 	echo '<ul class="paging">';
-	for ($i=1; $i<$total_pages; $i++)
+	if ($p > 9)
 	{
+		$start_page = $p - 10;
+	}
+	else
+	{
+		$start_page = $p;
+	}
+	$j=0;
+	for ($i=$start_page; $i<$total_pages; $i++)
+	{
+	
 		if ($i != $p)
 		{
+		
 			echo '<li><a href="/search/?';
 			if (isset($q))
 			{
@@ -446,18 +605,35 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 			{
 				echo 'field=' . urlencode($search_field) . '&amp;';
 			}
+			if (isset($gnis_id))
+			{
+				echo 'place=' . urlencode($gnis_id) . '&amp;';
+			}
 			echo 'p=' . $i . '">' . $i . '</a></li>';
 		}
 		else
 		{
 			echo '<li>' . $i . '</li>';
 		}
-		if ($i == 20)
-		{
+		
+		if ($j == 20)
+		{	
 			break;
 		}
+		
+		$j++;
+		
 	}
 	echo '</ul>';
+	
+	/*
+	 * This is the JavaScript that adjusts the map's boundaries to shrink to fit its markers.
+	 */
+	echo '
+		<script>
+			var bounds = new L.LatLngBounds(resultLatLngs);
+			map.fitBounds(bounds)
+		</script>';
 	
 }
 
