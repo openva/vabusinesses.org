@@ -96,7 +96,8 @@ class Businesses
 		 * Normally we limit the number of Elasticsearch results to something small, but we want
 		 * to be able to export a great many records here. So we set a high ceiling.
 		 */
-		$this->params['size'] = 100000;
+		$this->params['from'] = 0;
+		$this->params['size'] = 5000;
 		
 		/*
 		 * Bring the Memcached connection into the scope of this method.
@@ -127,7 +128,12 @@ class Businesses
 		 */
 		$results = $es->search($this->params);
 
-		if ( ($results === FALSE) || ($results['hits']['total'] == 0) )
+		/*
+		 * We need the number of hits in case we need to paginate the results.
+		 */
+		$hits = $results['hits']['total'];
+
+		if ( ($results === FALSE) || ($hits == 0) )
 		{
 			return FALSE;
 		}
@@ -181,59 +187,73 @@ class Businesses
 		$i=0;
 
 		/*
-		 * Walk through all of the results.
+		 * Step through paginated Elasticsearch results.
 		 */
-		foreach ($results['hits']['hits'] as $result)
+		while ( $this->params['from'] <= $hits )
 		{
-			
+
 			/*
-			 * Raise coordinates up a level in the array structure.
+			 * If this isn't our first set of results from Elasticsearch, issue a query to get the
+			 * subsequent set of results.
 			 */
-			if (isset($result['_source']['location']['coordinates']))
+			if ($this->params['from'] > 0)
 			{
-				$result['_source']['coordinates'] = $result['_source']['location']['coordinates'];
-				unset($result['_source']['location']);
+				echo 'Submitting results';
+				$results = $es->search($this->params);
 			}
-		
+
 			/*
-			 * Rearrange the fields per the prescribed key order for this type of record.
+			 * Walk through all of the results.
 			 */
-			if (isset($sort_order[$result{'_type'}]))
+			foreach ($results['hits']['hits'] as $result)
 			{
-		
-				$ordered_result = array();
-				foreach ($sort_order[$result{'_type'}] as $key)
+				
+				/*
+				 * Raise coordinates up a level in the array structure.
+				 */
+				if (isset($result['_source']['location']['coordinates']))
 				{
-					$ordered_result[$key] = $result['_source'][$key];	
+					$result['_source']['coordinates'] = $result['_source']['location']['coordinates'];
+					unset($result['_source']['location']);
 				}
 			
 				/*
-				 * Replace the result with the newly ordered result.
+				 * Rearrange the fields per the prescribed key order for this type of record.
 				 */
 				if (isset($sort_order[$result{'_type'}]))
 				{
 			
-				echo json_encode($result['_source']);
-				if ( ($i+1) < $results['hits']['total'])
-				{
-
-					echo ',';
+					$ordered_result = array();
+					foreach ($sort_order[$result{'_type'}] as $key)
+					{
+						$ordered_result[$key] = $result['_source'][$key];	
+					}
+				
+					/*
+					 * Replace the result with the newly ordered result.
+					 */
+					$result['_source'] = $ordered_result;
+					unset($ordered_result);
+				
 				}
 				
-			}
-			
-			/*
-			 * If we're producing CSV, we need to collapse the nested "coordinates" field into a
-			 * single field before outputting the line.
-			 */
-			elseif ($this->format == 'csv')
-			{
-			
-				$result['_source']['coordinates'] = $result['_source']['coordinates'][1] . ',' . $result['_source']['coordinates'][0];
+				/*
+				 * If it's JSON, we only need to encode it and append a comma (except to the final line,
+				 * because that would produce invalid JSON).
+				 */
+				if ($this->format == 'json')
+				{
+				
+					echo json_encode($result['_source']);
+					if ( ($i+1) < $hits)
+					{
+
+						echo ',';
+					}
+					
+				}
 				
 				/*
-				 * If this query is only of business registration records (tables 2, 3, and 9), then
-				 * homogenize them so that they all share the same field names.
 				 * If we're producing CSV, we need to collapse the nested "coordinates" field into a
 				 * single field before outputting the line.
 				 */
@@ -242,34 +262,48 @@ class Businesses
 				
 					$result['_source']['coordinates'] = $result['_source']['coordinates'][1] . ',' . $result['_source']['coordinates'][0];
 					
-					foreach($result['_source'] as $key => $value)
+					/*
+					 * If this query is only of business registration records (tables 2, 3, and 9), then
+					 * homogenize them so that they all share the same field names.
+					 */
+					if ($this->params['type'] == '2,3,9')
 					{
 						
-						/*
-						 * Eliminate any field that isn't common to all types of business
-						 * registration records.
-						 */
-						if (array_search($key, $cols) === FALSE)
+						foreach($result['_source'] as $key => $value)
 						{
-							unset($result['_source'][$key]);
+							
+							/*
+							 * Eliminate any field that isn't common to all types of business
+							 * registration records.
+							 */
+							if (array_search($key, $cols) === FALSE)
+							{
+								unset($result['_source'][$key]);
+							}
+							
 						}
 						
 					}
 					
+					fputcsv($fp, $result['_source']);
+					
 				}
 				
-				fputcsv($fp, $result['_source']);
-				
-			}
-			
-			/*
-			 * Force PHP to send the data to the browser, rather than hold it in memory.
-			 */
-			flush();
+				/*
+				 * Force PHP to send the data to the browser, rather than hold it in memory.
+				 */
+				flush();
 
-			$i++;
-			
-		}
+				$i++;
+				
+			} // end foreach() of current window of search results
+
+			/*
+			 * Advance our Elasticsearch results pagination window.
+			 */
+			$this->params['from'] = $this->params['from'] + $this->params['size'];
+
+		} // end while() of all search results
 		
 		if ($this->format == 'json')
 		{
