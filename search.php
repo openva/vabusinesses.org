@@ -150,7 +150,7 @@ if (!empty($_GET['field']))
 if (!empty($_GET['place']))
 {
 	$gnis_id = filter_input(INPUT_GET, 'place', FILTER_SANITIZE_SPECIAL_CHARS);
-	if ( strlen($gnis_id) > 5 || !is_numeric($gnis_id) )
+	if ( strlen($gnis_id) > 7 || !is_numeric($gnis_id) )
 	{
 		die();
 	}
@@ -295,7 +295,7 @@ echo '
 </form>';
 
 /*
- * If we have a filter, apply it to the params.
+ * If we have a filter, apply it to the parameters.
  */
 if (isset($filter))
 {
