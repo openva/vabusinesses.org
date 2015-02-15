@@ -70,6 +70,8 @@ class Businesses
 	 *
 	 * TO DO
 	 * - Add CSV support.
+	 * - Get this to support indefinite numbers of records. It runs out of memory now, as a result
+	 *   of elasticsearch-php json_decoding() all records en masse. (Use paging to get around this.)
 	 */
 	function export_results()
 	{
@@ -140,6 +142,40 @@ class Businesses
 		}
 		
 		/*
+		 * Else if CSV has been requested.
+		 */
+		elseif ($this->format == 'csv')
+		{
+		
+			/*
+			 * Use PHP's CSV functionality, but using its output-to-browser pseudo-file.
+			 */
+			header('Content-Type: text/csv');
+			$fp = fopen("php://output", 'w');
+			
+			/*
+			 * If this query is only of business registration records (tables 2, 3, and 9), then
+			 * homogenize them so that they all share the same field names.
+			 */
+			if ($this->params['type'] == '2,3,9')
+			{
+				
+				/*
+				 * Only return these columns, in this order.
+				 */
+				$cols = array('id','name','status','status_date','expiration_date',
+					'incorporation_date','state_formed','industry','street_1','street_2','city',
+					'state','zip','coordinates','address_date','agent_name','agent_street_1',
+					'agent_street_2','agent_city','agent_state','agent_zip','agent_date',
+					'agent_status','agent_court_locality');
+				
+			}
+			
+			fputcsv($fp, $cols);
+			
+		}
+		
+		/*
 		 * Count loops, so that we don't append a comma after the final JSON element.
 		 */
 		$i=0;
@@ -178,31 +214,144 @@ class Businesses
 				unset($ordered_result);
 			
 			}
-		
+			
+			/*
+			 * If it's JSON, we only need to encode it and append a comma (except to the final line,
+			 * because that would produce invalid JSON).
+			 */
 			if ($this->format == 'json')
 			{
+			
 				echo json_encode($result['_source']);
 				if ( ($i+1) < $results['hits']['total'])
 				{
 
 					echo ',';
 				}
+				
 			}
+			
+			/*
+			 * If we're producing CSV, we need to collapse the nested "coordinates" field into a
+			 * single field before outputting the line.
+			 */
+			elseif ($this->format == 'csv')
+			{
+			
+				$result['_source']['coordinates'] = $result['_source']['coordinates'][1] . ',' . $result['_source']['coordinates'][0];
+				
+				/*
+				 * If this query is only of business registration records (tables 2, 3, and 9), then
+				 * homogenize them so that they all share the same field names.
+				 */
+				if ($this->params['type'] == '2,3,9')
+				{
+					
+					foreach($result['_source'] as $key => $value)
+					{
+						
+						/*
+						 * Eliminate any field that isn't common to all types of business
+						 * registration records.
+						 */
+						if (array_search($key, $cols) === FALSE)
+						{
+							unset($result['_source'][$key]);
+						}
+						
+					}
+					
+				}
+				
+				fputcsv($fp, $result['_source']);
+				
+			}
+			
+			/*
+			 * Force PHP to send the data to the browser, rather than hold it in memory.
+			 */
+			flush();
 
 			$i++;
 			
 		}
 		
-		/*
-		 * If JSON has been requested.
-		 */
 		if ($this->format == 'json')
 		{
 			echo ']';
+		}
+		
+		elseif ($this->format == 'csv')
+		{
+			fclose($fp);
 		}
 			
 		return TRUE;
 	
 	} // end export_results()
+
+	/**
+	 * Get a record for a single business.
+	 *
+	 * Requires $this->id, return TRUE or FALSE, sets $this->record.
+	 */
+	function get_record()
+	{
+
+
+		if (!isset($this->id))
+		{
+			return FALSE;
+		}
+
+		/*
+		 * This is where we'll store our search parameters.
+		 */
+		$params = array();
+
+		/*
+		 * The name of our Elasticsearch index.
+		 */
+		$params['index'] = 'business';
+
+		/*
+		 * Search for this ID, limit our search to the business records (as opposed to shareholder
+		 * records, officers, mergers, etc.)
+		 */
+		$params['type'] = '2,3,9';
+		$params['body']['query']['match']['_id']['query'] = $this->id;
+		$params['body']['query']['match']['_id']['operator'] = 'and';
+
+		/*
+		 * Execute the search.
+		 */
+		$results = $es->search($params);
+
+		if ( ($results === FALSE) || ($results['hits']['total'] == 0) )
+		{
+			return FALSE;
+		}
+
+		/*
+		 * We'll only have one result, so pull it out of Elasticsearch's array structure.
+		 */
+		$result = $results['hits']['hits'][0];
+		
+		/*
+		 * Raise coordinates up a level in the array structure.
+		 */
+		if (isset($result['_source']['location']['coordinates']))
+		{
+			$result['_source']['coordinates'] = $result['_source']['location']['coordinates'];
+			unset($result['_source']['location']);
+		}
+
+		/*
+		 * Retrieve additional data about this business: amendments, officers, DBAs, etc.
+		 */
+
+		return TRUE;
+
+	}
 
 }
