@@ -313,8 +313,13 @@ if (isset($filter))
 //////////////////////////////
 if (isset($_GET['download']))
 {
+	if ( ($_GET['download'] != 'csv') && ($_GET['download'] != 'json') )
+	{
+		$_GET['download'] = 'json';
+	}
 	ob_end_clean();
 	$businesses = new Businesses;
+	$businesses->format = $_GET['download'];
 	$businesses->params = $params;
 	$businesses->export_results();
 	exit();
@@ -334,10 +339,8 @@ if ( ($results === FALSE) || ($results['hits']['total'] == 0) )
 else
 {
 	echo '<p>' . number_format($results['hits']['total']) . ' results found.';
-	if ($results['hits']['total'] < 6000)
-	{
-		echo ' <a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=y">Download results all as JSON</a>';
-	}
+	echo ' Download results: <a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=json">JSON</a>,
+			<a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=csv">CSV</a>';
 	echo '</p>';
 }
 
@@ -357,7 +360,7 @@ if (count($results['hits']['hits']) > 0)
 			}).addTo(map);
 			var resultLatLngs = []
 		</script>';
-	
+
 	foreach ($results['hits']['hits'] as $result)
 	{
 		

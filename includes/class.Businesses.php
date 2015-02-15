@@ -210,17 +210,8 @@ class Businesses
 				/*
 				 * Replace the result with the newly ordered result.
 				 */
-				$result['_source'] = $ordered_result;
-				unset($ordered_result);
-			
-			}
-			
-			/*
-			 * If it's JSON, we only need to encode it and append a comma (except to the final line,
-			 * because that would produce invalid JSON).
-			 */
-			if ($this->format == 'json')
-			{
+				if (isset($sort_order[$result{'_type'}]))
+				{
 			
 				echo json_encode($result['_source']);
 				if ( ($i+1) < $results['hits']['total'])
@@ -243,9 +234,13 @@ class Businesses
 				/*
 				 * If this query is only of business registration records (tables 2, 3, and 9), then
 				 * homogenize them so that they all share the same field names.
+				 * If we're producing CSV, we need to collapse the nested "coordinates" field into a
+				 * single field before outputting the line.
 				 */
-				if ($this->params['type'] == '2,3,9')
+				elseif ($this->format == 'csv')
 				{
+				
+					$result['_source']['coordinates'] = $result['_source']['coordinates'][1] . ',' . $result['_source']['coordinates'][0];
 					
 					foreach($result['_source'] as $key => $value)
 					{
