@@ -64,71 +64,16 @@ ob_start();
 <?php
 
 /*
-define('INCLUDE_PATH', $_SERVER['DOCUMENT_ROOT'] . 'includes/');
-
-$tables = new TableMaps();
-$tables->import_files();
-*/
-
-/////////////////////////////////
-/*
- * Import all YAML table maps and turn them into PHP arrays. First, check Memcached.
+ * We've already set both of these values in bootstrap.php.
  */
-$tables = $mc->get('table-maps');
-if ($tables !== FALSE)
-{
-	$tables = unserialize($tables);
-}
-else
-{
-	$dir = '../crump/table_maps/';
-	$files = scandir($dir);
-	foreach ($files as $file)
-	{
+global $tables;
+global $valid_fields;
 
-		if ( ($file == '.') || ($file == '..') || ($file == '1_tables.yaml') )
-		{
-			continue;
-		}
-		$file_number = $file[0];
-		$tables[$file_number] = spyc_load_file($dir . $file);
-
-	}
-
-	/*
-	 * Cache the table maps in Memcached, for 24 hours.
-	 */
-	$mc->set('table-maps', serialize($tables), 86400);
-}
 
 /*
  * Make the table data available as JSON.
  */
 echo '<script>tables = \'' . json_encode($tables) . '\'</script>';
-
-/*
- * Iterate through every field in every table map and use them to establish the proper sort order
- * for field names and a list of all valid field names (which we use for input sanitation).
- */
-$sort_order = array();
-$valid_fields = array();
-foreach($tables as $table_number => $fields)
-{
-
-	foreach ($fields as $field)
-	{
-
-		$sort_order[$table_number][] = $field['alt_name'];
-
-		/*
-		 * Create a list of every valid field name.
-		 */
-		$valid_fields[] = $field['alt_name'];
-
-	}
-
-}
-/////////////////////////////////
 
 /*
  * Sanitize input.
@@ -224,12 +169,6 @@ if (!empty($_GET['place']))
 		$gnis_type = 'towns';
 	}
 }
-
-/*
- * Create an instance of Elasticsearch.
- */
-require 'vendor/autoload.php';
-$es = new Elasticsearch\Client();
 
 /*
  * Search the business index.
