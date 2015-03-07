@@ -56,7 +56,7 @@ ob_start();
 				<nav>
 					<ul>
 						<li><a href="/">Home</a></li>
-						<li><a href="/data/">Download</a></li>
+						<li><a href="/data/">Data</a></li>
 						<li><a href="/localities/">Localities</a></li>
 					</ul>
 				</nav>
