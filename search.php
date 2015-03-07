@@ -103,7 +103,18 @@ else
 {
 	$p = 1;
 }
-$per_page = 10;
+if (!empty($_GET['per_page']))
+{
+	$per_page = filter_input(INPUT_GET, 'per_page', FILTER_SANITIZE_SPECIAL_CHARS);
+	if ( (strlen($per_page) > 5) || !is_numeric($per_page) )
+	{
+		die();
+	}
+}
+else
+{
+	$per_page = 10;
+}
 if (!empty($_GET['sort_by']))
 {
 	$sort_by = filter_input(INPUT_GET, 'sort_by', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -354,8 +365,9 @@ else
  */
 if (count($results['hits']['hits']) > 0)
 {
-	
-	echo '
+	echo '<p>' . number_format($results['hits']['total']) . ' results found.
+		Download results: <a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=json">JSON</a>,
+			<a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=csv">CSV</a></p>
 		<div id="map"></div>
 		<script>
 			var map = L.map(\'map\').setView([37.99920, -79.46565], 6);
