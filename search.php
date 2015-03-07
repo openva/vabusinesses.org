@@ -365,7 +365,7 @@ if (count($results['hits']['hits']) > 0)
 			}).addTo(map);
 			var resultLatLngs = []
 		</script>';
-
+	
 	foreach ($results['hits']['hits'] as $result)
 	{
 		
@@ -599,7 +599,8 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 				published under <a href="http://opensource.org/licenses/MIT">the MIT license</a>.
 				This website is an independent, private effort, created and run as a hobby, and is
 				in no way affiliated with the Commonwealth of Virginia or the State Corporation
-				Commission.
+				Commission. <a href="https://github.com/openva/vabusinesses.org">All site source
+				code is on GitHub</a>—pull requests welcome.
 			</footer>
 		</div>
 
