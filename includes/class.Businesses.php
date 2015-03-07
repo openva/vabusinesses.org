@@ -67,7 +67,6 @@ class Businesses
 	 *
 	 * Requires $this->params, which is an elasticsearch-php-ready set of Elasticsearch parameters.
 	 * Returns TRUE/FALSE, echoing results directly to the browser.
-	 *
 	 * TO DO
 	 * - Add CSV support.
 	 * - Get this to support indefinite numbers of records. It runs out of memory now, as a result
@@ -111,7 +110,7 @@ class Businesses
 
 		/*
 		 * TO DO: Take the below out of this method. Both the table maps line, which should be its
-		 * own nethod, and also the sort order code, which I guess should also be its own method.
+		 * own method, and also the sort order code, which I guess should also be its own method.
 		 */
 		$tables = unserialize($mc->get('table-maps'));
 		$sort_order = array();
