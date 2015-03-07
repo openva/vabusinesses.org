@@ -67,10 +67,6 @@ class Businesses
 	 *
 	 * Requires $this->params, which is an elasticsearch-php-ready set of Elasticsearch parameters.
 	 * Returns TRUE/FALSE, echoing results directly to the browser.
-	 * TO DO
-	 * - Add CSV support.
-	 * - Get this to support indefinite numbers of records. It runs out of memory now, as a result
-	 *   of elasticsearch-php json_decoding() all records en masse. (Use paging to get around this.)
 	 */
 	function export_results()
 	{
@@ -84,7 +80,7 @@ class Businesses
 		}
 		
 		/*
-		 * Only supports JSON at the moment.
+		 * Export JSON by default.
 		 */
 		if (!isset($this->format))
 		{
