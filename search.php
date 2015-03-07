@@ -326,11 +326,21 @@ if (isset($filter))
 	unset($params['body']['query']['match']);
 }
 
+/*
+ * Set up query highlighting.
+ */
+$params['body']['highlight'] = array();
+$params['body']['highlight']['pre_tags'] = '<mark>';
+$params['body']['highlight']['post_tags'] = '</mark>';
+
+$params['sort'] = '_score:desc';
+
 //////////////////////////////
 // This is not the right place to put this or way to do this.
 //////////////////////////////
 if (isset($_GET['download']))
 {
+
 	if ( ($_GET['download'] != 'csv') && ($_GET['download'] != 'json') )
 	{
 		$_GET['download'] = 'json';
