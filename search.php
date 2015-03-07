@@ -376,11 +376,6 @@ else
 	echo '</p>';
 }
 
-/*
- * If we have any results, display them.
- */
-if (count($results['hits']['hits']) > 0)
-{
 	echo '<p>' . number_format($results['hits']['total']) . ' results found.
 		Download results: <a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=json">JSON</a>,
 			<a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=csv">CSV</a></p>
