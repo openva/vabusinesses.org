@@ -1,5 +1,11 @@
 <?php
 
+if ($_GET['debug'] == 'y')
+{
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+}
+
 require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 
 /*
