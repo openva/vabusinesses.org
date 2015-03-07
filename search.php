@@ -284,6 +284,8 @@ if (isset($sort_by))
 	
 }
 
+//$params['body']['query']['match']['status']['query'] = 'ACTIVE';
+
 /*
  * Display the search form.
  */
