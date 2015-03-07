@@ -349,6 +349,10 @@ if (isset($_GET['download']))
 	$businesses = new Businesses;
 	$businesses->format = $_GET['download'];
 	$businesses->params = $params;
+	if (isset($_GET['place']))
+	{
+		$businesses->filename = $places->$_GET['place'];
+	}
 	$businesses->export_results();
 	exit();
 	

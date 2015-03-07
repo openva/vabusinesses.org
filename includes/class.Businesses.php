@@ -152,6 +152,7 @@ class Businesses
 			 * Use PHP's CSV functionality, but using its output-to-browser pseudo-file.
 			 */
 			header('Content-Type: text/csv');
+			header('Content-Disposition: attachment; filename="' . $this->filename . '.csv"');
 			$fp = fopen("php://output", 'w');
 			
 			/*
