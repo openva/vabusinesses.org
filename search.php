@@ -370,11 +370,6 @@ if ( ($results === FALSE) || ($results['hits']['total'] == 0) )
 }
 else
 {
-	echo '<p>' . number_format($results['hits']['total']) . ' results found.';
-	echo ' Download results: <a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=json">JSON</a>,
-			<a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=csv">CSV</a>';
-	echo '</p>';
-}
 
 	echo '<p>' . number_format($results['hits']['total']) . ' results found.
 		Download results: <a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=json">JSON</a>,
