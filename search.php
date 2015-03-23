@@ -165,6 +165,7 @@ if (!empty($_GET['field']))
  */
 if (!empty($_GET['place']))
 {
+
 	$gnis_id = filter_input(INPUT_GET, 'place', FILTER_SANITIZE_SPECIAL_CHARS);
 	if ( strlen($gnis_id) > 7 || !is_numeric($gnis_id) )
 	{
@@ -184,6 +185,7 @@ if (!empty($_GET['place']))
 	{
 		$gnis_type = 'towns';
 	}
+	
 }
 
 /*
@@ -359,6 +361,11 @@ if (isset($_GET['download']))
 }
 //////////////////////////////
 
+if (isset($_GET['debug']) == 'y')
+{
+	echo '<pre>' . print_r($params, TRUE) . '</pre>';
+}
+
 /*
  * Execute the search.
  */
@@ -374,6 +381,7 @@ else
 	echo '<p>' . number_format($results['hits']['total']) . ' results found.
 		Download results: <a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=json">JSON</a>,
 			<a href="' . $_SERVER['REQUEST_URI'] . '&amp;download=csv">CSV</a></p>
+
 		<div id="map"></div>
 		<script>
 			var map = L.map(\'map\').setView([37.99920, -79.46565], 6);
@@ -386,7 +394,7 @@ else
 	
 	foreach ($results['hits']['hits'] as $result)
 	{
-		
+
 		/*
 		 * The SCC has records that erroneously list an incorporation date in the distant future.
  		 * These permanently top the list of recent incorporations. Solution: don't show any records
@@ -438,8 +446,27 @@ else
 				resultLatLngs.push([' . $result['_source']['coordinates'][1] . ',' . $result['_source']['coordinates'][0] . ']);
 			</script>';
 		}
-		
-		echo '<dl>';
+
+		/*
+		 * If this is a business record, show an abbreviated version.
+		 */
+		if ( ($result['_type'] == 9) || ($result['_type'] == 2) || ($result['_type'] == 3) )
+		{
+
+			echo '<div class="result">
+			<h2><a href="/business/' . $result['_source']['id'] . '/">' . $result['_source']['name'] . '</a></h2>
+			<p>' . $result['_source']['city'] . ', ' . $result['_source']['state'];
+			if ($result['_source']['status'] != 'ACTIVE')
+			{
+				echo '<br /><em>Business is Inactive</em>';
+			}
+			echo  '</p>
+			</div>';
+			continue;
+
+		}
+
+		echo '<dl class="result">';
 		
 		/*
 		 * Iterate through every key/value pair contained within each result.

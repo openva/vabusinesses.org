@@ -329,51 +329,71 @@ class Businesses
 			return FALSE;
 		}
 
-		/*
-		 * This is where we'll store our search parameters.
-		 */
-		$params = array();
+		$ch = curl_init();
+		$url = 'http://api.vabusinesses.org/businesses?id=' . $this->id;
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($ch);
+		
+		if (curl_errno($ch) != FALSE)
+		{
+			return FALSE;
+		}
 
-		/*
-		 * The name of our Elasticsearch index.
-		 */
-		$params['index'] = 'business';
+		curl_close($ch);
 
-		/*
-		 * Search for this ID, limit our search to the business records (as opposed to shareholder
-		 * records, officers, mergers, etc.)
-		 */
-		$params['type'] = '2,3,9';
-		$params['body']['query']['match']['_id']['query'] = $this->id;
-		$params['body']['query']['match']['_id']['operator'] = 'and';
-
-		/*
-		 * Execute the search.
-		 */
-		$results = $es->search($params);
-
-		if ( ($results === FALSE) || ($results['hits']['total'] == 0) )
+		$this->record = json_decode($result);
+		if ($this->record == FALSE)
 		{
 			return FALSE;
 		}
 
 		/*
-		 * We'll only have one result, so pull it out of Elasticsearch's array structure.
+		 * We only want the top result.
 		 */
-		$result = $results['hits']['hits'][0];
-		
+		$this->record = $this->record[0];
+
 		/*
-		 * Raise coordinates up a level in the array structure.
+		 * Move all address data into an address array, assuming that we have address data at
+		 * all.
 		 */
-		if (isset($result['_source']['location']['coordinates']))
+		if (isset($this->record->street_1))
 		{
-			$result['_source']['coordinates'] = $result['_source']['location']['coordinates'];
-			unset($result['_source']['location']);
+
+			$this->record->address = array(
+				'street_1' => $this->record->street_1,
+				'street_2' => $this->record->street_2,
+				'city' => $this->record->city,
+				'state' => $this->record->state,
+				'zip' => $this->record->zip
+			);
+			unset($this->record->street_1);
+			unset($this->record->street_2);
+			unset($this->record->city);
+			unset($this->record->state);
+			unset($this->record->zip);
+
 		}
 
 		/*
-		 * Retrieve additional data about this business: amendments, officers, DBAs, etc.
+		 * Group like fields together.
 		 */
+		$this->record->agent = array();
+		foreach ($this->record as $key => $value)
+		{
+
+			/*
+			 * Move all agent-related fields into an agent array.
+			 */
+			if (strpos($key, 'agent_') !== FALSE)
+			{
+
+				$new_key = str_replace('agent_', '', $key);
+				$this->record->agent[$new_key] = $value;
+				unset($this->record->$key);
+
+			}
+		}
 
 		return TRUE;
 
