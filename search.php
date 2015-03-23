@@ -540,7 +540,11 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 	}
 	else
 	{
-		$start_page = $p;
+		$start_page = $p - 5;
+	}
+	if ($start_page < 1)
+	{
+		$start_page = 1;
 	}
 	$j=0;
 	for ($i=$start_page; $i<$total_pages; $i++)
