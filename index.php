@@ -71,7 +71,6 @@ else
 
 		<div class="header-container">
 			<header class="wrapper clearfix">
-				<a href="https://github.com/openva/business.openva.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 				<h1 class="title">Virginia Businesses</h1>
 				<!--<nav>
 					<ul>
@@ -165,7 +164,8 @@ else
 				published under <a href="http://opensource.org/licenses/MIT">the MIT license</a>.
 				This website is an independent, private effort, created and run as a hobby, and is
 				in no way affiliated with the Commonwealth of Virginia or the State Corporation
-				Commission.
+				Commission. <a href="https://github.com/openva/vabusinesses.org">All site source
+				code is on GitHub</a>—pull requests welcome.
 			</footer>
 		</div>
 
