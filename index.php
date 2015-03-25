@@ -47,6 +47,20 @@ else
 		<link rel="stylesheet" href="css/styles.css">
 
 		<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+<script type="application/ld+json">
+{
+   "@context": "http://schema.org",
+   "@type": "WebSite",
+   "url": "https://vabusinesses.org/",
+   "potentialAction": {
+     "@type": "SearchAction",
+     "target": "https://vabusinesses.org/search/?q={search_term_string}",
+     "query-input": "required name=search_term_string"
+   }
+}
+</script>
+
 	</head>
 	
 	<body id="page-home">
