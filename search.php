@@ -641,7 +641,7 @@ if ($results['hits']['total'] > (($p - 1) * $per_page) )
 
 		<div class="footer-container">
 			<footer class="wrapper">
-				Data last updated on <?php echo date('F d, Y, g:i a', filectime('1_tables.csv') ); ?>.
+				Data last updated on <?php echo date('F d, Y, g:i a', filectime('data/1_tables.csv') ); ?>.
 				All business records are created by the Virginia State Corporation Commission, and
 				are thus without copyright protection, so may be reused and reproduced freely,
 				without seeking any form of permission from anybody. All other website content is
