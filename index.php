@@ -86,6 +86,14 @@ else
 
 				<article>
 
+				
+				<?php
+					if (isset($biz_count))
+					{
+						echo '<p>' . number_format($biz_count) . ' businesses listed.</p>';
+					}
+				?>
+				
 				<form method="get" action="/search/" id="search">
 					<input type="text" name="q" />
 					<input type="hidden" name="type" value="2,3,9" />
