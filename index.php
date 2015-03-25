@@ -102,6 +102,7 @@ else
 				</form>
 
 				<ul>
+					<li><a href="/search.php?type=2%2C3%2C9">List All Businesses</a></li>
 					<li><a href="/search.php?sort_by=incorporation_date&amp;order=desc&amp;type=2%2C3%2C9">Newest Businesses</a></li>
 					<li><a href="/search.php?sort_by=incorporation_date&amp;order=asc&amp;type=2%2C3%2C9">Oldest Businesses</a></li>
 				</ul>
