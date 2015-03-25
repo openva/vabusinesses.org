@@ -2,6 +2,32 @@
 
 require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 
+/*
+ * Get a count of all business records from Elasticsearch.
+ */
+$biz_count = $mc->get('biz-count');
+if ($biz_count !== FALSE)
+{
+	$biz_count = unserialize($biz_count);
+}
+else
+{
+	require 'vendor/autoload.php';
+	$client = new Elasticsearch\Client();
+	$params['index'] = 'business';
+	$params['type'] = '2,3,9';
+	$results = $client->search($params);
+	if ( ($results !== FALSE) && ($results['hits']['total'] > 0) )
+	{
+		$biz_count = $results['hits']['total'];
+		
+		/*
+		 * Cache the business count in Memcached for 24 hours.
+		 */
+		$mc->set('biz-count', serialize($biz_count), 86400);
+	}
+}
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>	  <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
