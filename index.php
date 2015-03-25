@@ -85,7 +85,6 @@ else
 			<div class="main wrapper clearfix">
 
 				<article>
-
 				
 				<?php
 					if (isset($biz_count))
