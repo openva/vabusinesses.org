@@ -127,8 +127,8 @@ else
 		
 								echo '<tr>
 								<td>' . $file['name'] . '</td>
-								<td><a href="' . $file['csv']  . '">CSV</a> (' . human_filesize($file['csv_size']) . ')</td>
-								<td><a href="' . $file['json']  . '">JSON</a> (' . human_filesize($file['json_size']) . ')</td>
+								<td><a href="data/' . $file['csv']  . '">CSV</a> (' . human_filesize($file['csv_size']) . ')</td>
+								<td><a href="data/' . $file['json']  . '">JSON</a> (' . human_filesize($file['json_size']) . ')</td>
 								</tr>';
 			
 							}
