@@ -72,13 +72,13 @@ else
 		<div class="header-container">
 			<header class="wrapper clearfix">
 				<h1 class="title">Virginia Businesses</h1>
-				<!--<nav>
+				<nav>
 					<ul>
-						<li><a href="#">nav ul li a</a></li>
-						<li><a href="#">nav ul li a</a></li>
-						<li><a href="#">nav ul li a</a></li>
+						<li><a href="/">Home</a></li>
+						<li><a href="/data/">Data</a></li>
+						<li><a href="/localities/">Localities</a></li>
 					</ul>
-				</nav>-->
+				</nav>
 			</header>
 		</div>
 		<div class="main-container">
