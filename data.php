@@ -78,6 +78,11 @@ require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 							<td>SCC Master File (Contains All Data)</td>
 							<td colspan="2"><a href="https://s3.amazonaws.com/virginia-business/current.zip">Fixed-Width</a></td>
 						</tr>
+						<tr>
+							<td>All Businesses</td>
+							<td><a href="/data/businesses.csv">CSV</a></td>
+							<td><a href="/data/businesses.sqlite.zip">SQLite</a></td>
+						</tr>
 					</tbody>
 				</table>
 				</article>
