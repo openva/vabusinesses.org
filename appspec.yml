@@ -14,3 +14,5 @@ permissions:
         - "d:o::rwx"
       type:
        - directory
+AfterInstall:
+  - location: /vol/vabusinesses.org/htdocs/deploy/postdeploy.sh
