@@ -11,3 +11,6 @@ rename 'y/A-Z/a-z/' /vol/vabusinesses.org/htdocs/data/*
 
 # Delete temporary artifacts
 rm /tmp/data.zip
+
+cd ../data/
+sqlite3 vabusinesses.sqlite < ../scripts/load-data.sql

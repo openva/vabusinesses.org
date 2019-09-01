@@ -60,8 +60,12 @@
 					<td>0.1 MB</td>
 				</tr>
 				<tr>
-					<td><a href="http://scc.virginia.gov/clk/data/CISbemon.CSV.zip">All Files</a></td>
-					<td>76.9 MB</td>
+					<td><a href="http://scc.virginia.gov/clk/data/CISbemon.CSV.zip">All Data, CSV</a></td>
+					<td>77 MB</td>
+				</tr>
+				<tr>
+					<td><a href="vabusinesses.sqlite">All Data, SQLite</a></td>
+					<td>321 MB</td>
 				</tr>
 			</tbody>
 		</table>
