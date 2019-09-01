@@ -343,13 +343,16 @@ $params['sort'] = '_score:desc';
 if (isset($_GET['download']))
 {
 
-	if ( ($_GET['download'] != 'csv') && ($_GET['download'] != 'json') )
-	{
-		$_GET['download'] = 'json';
-	}
 	ob_end_clean();
 	$businesses = new Businesses;
-	$businesses->format = $_GET['download'];
+	if ($_GET['download'] == 'csv')
+	{
+		$businesses->format = 'csv';
+	}
+	else
+	{
+		$businesses->format = 'json';
+	}
 	$businesses->params = $params;
 	if (isset($_GET['place']))
 	{
