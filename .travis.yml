@@ -1,0 +1,23 @@
+deploy:
+- provider: s3
+  access_key_id: $TRAVIS_AWS_ACCESS_KEY
+  secret_access_key: $TRAVIS_AWS_SECRET_KEY
+  local_dir: upload
+  skip_cleanup: true
+  on:
+    branch: master
+  bucket: deploy.vabusinesses.org
+  region: us-east-1
+- provider: codedeploy
+  access_key_id: $TRAVIS_AWS_ACCESS_KEY
+  secret_access_key: $TRAVIS_AWS_SECRET_KEY
+  bucket: deploy.vabusinesses.org
+  key: latest.zip
+  bundle_type: zip
+  application: VA-Businesses
+  deployment_group: VA-Businesses
+  region: us-east-1
+  on:
+    branch: master
+  wait-until-deployed: true
+  
