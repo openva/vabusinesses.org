@@ -1,0 +1,16 @@
+version: 0.0
+os: linux
+files:
+  - source: ./
+    destination: /vol/vabusinesses.org/htdocs/
+permissions:
+    - object: /vol/vabusinesses.org/htdocs/
+      owner: ubuntu
+      group: ubuntu
+      mode: 775
+      acls:
+        - "d:u::rwx"
+        - "d:g::rwx"
+        - "d:o::rwx"
+      type:
+       - directory
