@@ -24,7 +24,43 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><a href="http://scc.virginia.gov/clk/data/CISbemon.CSV.zip">CISbemon.CSV.zip</a></td>
+					<td><a href="data/amendment.csv">Entity Amendments</a></td>
+					<td>6 MB</td>
+				</tr>
+				<tr>
+					<td><a href="data/corp.csv">Corporate Entities</a></td>
+					<td>87 MB</td>
+				</tr>
+				<tr>
+					<td><a href="data/llc.csv">LLC Entities</a></td>
+					<td>156 MB</td>
+				</tr>
+				<tr>
+					<td><a href="data/lp.csv">LP Entities</a></td>
+					<td>3 MB</td>
+				</tr>
+				<tr>
+					<td><a href="data/merger.csv">Entity Mergers</a></td>
+					<td>3 MB</td>
+				</tr>
+				<tr>
+					<td><a href="data/name.history.csv">Entity Name/Fictitious Name History</a></td>
+					<td>16 MB</td>
+				</tr>
+				<tr>
+					<td><a href="data/officer.csv">Entity Officers/Directors</a></td>
+					<td>29 MB</td>
+				</tr>
+				<tr>
+					<td><a href="data/reserved.name.csv">Entity Reserved Names</a></td>
+					<td>0.1 MB</td>
+				</tr>
+				<tr>
+					<td><a href="data/tables.csv">Descriptive Tables</a></td>
+					<td>0.1 MB</td>
+				</tr>
+				<tr>
+					<td><a href="http://scc.virginia.gov/clk/data/CISbemon.CSV.zip">All Files</a></td>
 					<td>76.9 MB</td>
 				</tr>
 			</tbody>
