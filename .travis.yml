@@ -1,3 +1,15 @@
+dist: xenial
+language: php
+php:
+- '7.0'
+addons:
+  sonarcloud:
+    organization: "openva"
+script:
+- sonar-scanner
+  && zip -qr latest *
+  && mkdir -p upload
+  && mv latest.zip upload/latest.zip
 deploy:
 - provider: s3
   access_key_id: $TRAVIS_AWS_ACCESS_KEY
