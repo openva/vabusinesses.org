@@ -1,2 +1,10 @@
 RewriteEngine On
 RewriteRule ^search/(.*)$ /search.php?$1 [QSA]
+
+# Add a bunch of security headers
+Content-Security-Policy: default-src https:
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+Content-Security-Policy: frame-ancestors 'none'
+X-Frame-Options: DENY
+X-XSS-Protection: 1; mode=block
