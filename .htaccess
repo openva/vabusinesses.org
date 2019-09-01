@@ -2,9 +2,20 @@ RewriteEngine On
 RewriteRule ^search/(.*)$ /search.php?$1 [QSA]
 
 # Add a bunch of security headers
-Content-Security-Policy: default-src https:
-Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-X-Content-Type-Options: nosniff
-Content-Security-Policy: frame-ancestors 'none'
-X-Frame-Options: DENY
-X-XSS-Protection: 1; mode=block
+Header unset Content-Security-Policy
+Header add Content-Security-Policy "default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'"
+
+Header unset Strict-Transport-Security
+Header add Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
+Header unset X-Content-Type-Options
+Header add X-Content-Type-Options "nosniff"
+
+Header unset Content-Security-Policy
+Header add Content-Security-Policy "frame-ancestors 'none'"
+
+Header unset X-Frame-Options
+Header add X-Frame-Options "DENY"
+
+Header unset X-XSS-Protection
+Header add X-XSS-Protection "1; mode=block"
