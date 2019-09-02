@@ -1,0 +1,10 @@
+{
+	"name": "VA-Businesses",
+	"version": "1.0.0",
+	"dependencies": {
+		"mini.css": "3.x"
+	},
+	"scripts": {
+		"build": "npm install; cp -r node_modules/mini.css/dist/mini-default.min.css .; rm -Rf node_modules"
+	}
+}
