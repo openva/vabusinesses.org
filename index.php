@@ -65,7 +65,7 @@
 					<td>77 MB</td>
 				</tr>
 				<tr>
-					<td><a href="vabusinesses.sqlite">All Data, SQLite</a></td>
+					<td><a href="data/vabusinesses.sqlite">All Data, SQLite</a></td>
 					<td>321 MB</td>
 				</tr>
 			</tbody>
