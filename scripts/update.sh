@@ -26,13 +26,12 @@ rm /tmp/data.zip
 
 cd ../data/
 
-# If there's an existing SQLite file, delete it, because otherwise we'd be
-# appending to it
-if [[ -e vabusinesses.sqlite ]]; then
-    rm -f vabusinesses.sqlite
-fi
-
-if ! sqlite3 vabusinesses.sqlite < ../scripts/load-data.sql; then
+# Create a temporary SQLite file, to avoid touching any that might already
+# exist (this prevents downtime)
+if ! sqlite3 temp.sqlite < ../scripts/load-data.sql; then
     echo "Error: CSV files could not be loaded into SQLite"
     exit 1
 fi
+
+# Put the file in its final location
+mv -f temp.sqlite vabusinesses.sql
