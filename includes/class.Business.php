@@ -31,7 +31,7 @@ class Business
         {
             return false;
         }
-        $this->business = $result->fetchArray();
+        $this->business = $result->fetchArray(SQLITE3_ASSOC);
 
         return $this->business;
 
