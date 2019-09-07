@@ -11,6 +11,10 @@ unzip -d ../data/ /tmp/data.zip
 # Rename files to lowercase
 rename 'y/A-Z/a-z/' ../data/*
 
+# Eliminate the periods from a pair of filename
+mv name.history.csv name_history.csv
+mv reserved.name.csv reserved_name.csv
+
 # Delete temporary artifacts
 rm /tmp/data.zip
 
