@@ -12,19 +12,19 @@ class Business
     function fetch()
     {
 
-        if (!isset($db))
+        if (!isset($this->db))
         {
             return FALSE;
         }
 
-        if (!isset($id))
+        if (!isset($this->id))
         {
             return FALSE;
         }
 
         $sql = 'SELECT *
                 FROM corp
-                WHERE EntityID="' . $id . '"';
+                WHERE EntityID="' . $this->id . '"';
         $result = $this->db->query($sql);
 
         if ($result->rowCount() == 0)
