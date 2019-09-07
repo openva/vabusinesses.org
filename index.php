@@ -19,8 +19,8 @@
 			<caption>Download Business Data</caption>
 			<thead>
 				<tr>
-					<th>File</th>
-					<th>Size</th>
+					<th scope="col">File</th>
+					<th scope="col">Size</th>
 				</tr>
 			</thead>
 			<tbody>
