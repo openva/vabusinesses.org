@@ -27,7 +27,7 @@ class Business
                 WHERE EntityID="' . $this->id . '"';
         $result = $this->db->query($sql);
 
-        if ($result->rowCount() == 0)
+        if ($result->numColumns() == 0)
         {
             return false;
         }
