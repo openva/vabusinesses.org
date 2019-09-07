@@ -1,0 +1,2 @@
+Header add Content-type "application/json"
+Header add Access-Control-Allow-Origin "*"
