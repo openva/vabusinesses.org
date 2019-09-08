@@ -14,6 +14,11 @@ if ! unzip -o -d ../data/ /tmp/data.zip; then
     exit 1
 fi
 
+# Delete temporary artifacts
+rm /tmp/data.zip
+
+cd ../data/
+
 # Rename files to be lowercase, some to not have a period
 mv Amendment.csv amendment.csv
 mv Corp.csv corp.csv
@@ -24,11 +29,6 @@ mv Officer.csv officer.csv
 mv Tables.csv tables.csv
 mv Name.History.csv name_history.csv
 mv Reserved.Name.csv reserved_name.csv
-
-# Delete temporary artifacts
-rm /tmp/data.zip
-
-cd ../data/
 
 # Create a temporary SQLite file, to avoid touching any that might already
 # exist (this prevents downtime)
