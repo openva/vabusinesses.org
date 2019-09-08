@@ -14,12 +14,16 @@ if ! unzip -o -d ../data/ /tmp/data.zip; then
     exit 1
 fi
 
-# Rename files to lowercase
-rename 'y/A-Z/a-z/' ../data/*
-
-# Eliminate the periods from a pair of filename
-mv name.history.csv name_history.csv
-mv reserved.name.csv reserved_name.csv
+# Rename files to be lowercase, some to not have a period
+mv Amendment.csv amendment.csv
+mv Corp.csv corp.csv
+mv LLC.csv llc.csv
+mv LP.csv lp.csv
+mv Merger.csv merger.csv
+mv Officer.csv officer.csv
+mv Tables.csv tables.csv
+mv Name.History.csv name_history.csv
+mv Reserved.Name.csv reserved_name.csv
 
 # Delete temporary artifacts
 rm /tmp/data.zip
