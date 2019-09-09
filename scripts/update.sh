@@ -4,12 +4,17 @@ cd $(dirname "$0")
 # Stop running if anything at all fails
 set -e
 
+cd $(dirname "$0") || exit 1
+
+echo "Downloading data from SCC"
 
 # Retrieve bulk data
 if ! curl -s -o /tmp/data.zip http://scc.virginia.gov/clk/data/CISbemon.CSV.zip; then
     echo "Failed: http://scc.virginia.gov/clk/data/CISbemon.CSV.zip could not be downloaded"
     exit 1
 fi
+
+echo "Data downloaded"
 
 # Uncompress the ZIP file
 if ! unzip -o -d ../data/ /tmp/data.zip; then
