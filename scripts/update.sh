@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 cd $(dirname "$0")
+# Stop running if anything at all fails
+set -e
+
 
 # Retrieve bulk data
 if ! curl -s -o /tmp/data.zip http://scc.virginia.gov/clk/data/CISbemon.CSV.zip; then
