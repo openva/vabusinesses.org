@@ -12,12 +12,7 @@ class Business
     function fetch()
     {
 
-        if (!isset($this->db))
-        {
-            return FALSE;
-        }
-
-        if (!isset($this->id))
+        if (!isset($this->db) || !isset($this->id))
         {
             return FALSE;
         }
