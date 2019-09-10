@@ -15,7 +15,7 @@ $db = $database->connect();
 
 $business = new Business;
 $business->db = $db;
-$business->id = $id;;
+$business->id = $id;
 $biz = $business->fetch();
 
 echo json_encode($biz);
