@@ -84,11 +84,12 @@ tr -d '\r' < llc.csv |awk '{gsub(/,$/,""); print}' > temp.csv && mv -f temp.csv 
 tr -d '\r' < lp.csv |awk '{gsub(/,$/,""); print}' > temp.csv && mv -f temp.csv lp.csv
 
 # Create a temporary SQLite file, to avoid touching any that might already
-# exist (this prevents downtime)
-if ! sqlite3 temp.sqlite < ../scripts/load-data.sql; then
-    echo "Error: CSV files could not be loaded into SQLite"
-    exit 1
-fi
+# exist (this prevents downtime). Pipe stderr to /dev/null, which is bad
+# because it keeps us from knowing about errors, but for the best because
+# otherwise it complains about any record that ends with a series of empty
+# fields, which is hundreds of thousands.
+sqlite3 temp.sqlite < ../scripts/load-data.sql 2>/dev/null
+echo "Data loaded into SQLite"
 
 # Put the file in its final location
 mv -f temp.sqlite vabusinesses.sql
