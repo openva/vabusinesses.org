@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # See if the remote ZIP file exists
-if [ $(curl -Is http://scc.virginia.gov/clk/data/CISbemon.CSV.zip |grep -c "200 OK") -lt 1 ]; then
+if [ "$(curl -Is http://scc.virginia.gov/clk/data/CISbemon.CSV.zip |grep -c '200 OK')" -lt 1 ]; then
     echo "ERROR: Basic bill metadata isn't being displayed"
     ERRORED=true
 fi
@@ -31,19 +31,19 @@ if [ "$(sqlite3 ../../data/vabusinesses.sqlite .tables |perl -pne 's/\s+/,/g')" 
 fi
 
 # See if we have a reasonable number of records in SQLite's corp table
-if [ "$(sqlite3 ../../data/vabusinesses.sqlite "SELECT COUNT(*) FROM corp")" -lt 350000 ]; then
+if [ "$(sqlite3 ../../data/vabusinesses.sqlite 'SELECT COUNT(*) FROM corp')" -lt 350000 ]; then
     echo "ERROR: Insufficient SQLite rows found for corporate data"
     ERRORED=true
 fi
 
 # See if we have a reasonable number of records in SQLite's llc table
-if [ "$(sqlite3 ../../data/vabusinesses.sqlite "SELECT COUNT(*) FROM llc")" -lt 730000 ]; then
+if [ "$(sqlite3 ../../data/vabusinesses.sqlite 'SELECT COUNT(*) FROM llc')" -lt 730000 ]; then
     echo "ERROR: Insufficient SQLite rows found for llc data"
     ERRORED=true
 fi
 
 # See if we have a reasonable number of records in SQLite's officer table
-if [ "$(sqlite3 ../../data/vabusinesses.sqlite "SELECT COUNT(*) FROM officer")" -lt 650000 ]; then
+if [ "$(sqlite3 ../../data/vabusinesses.sqlite 'SELECT COUNT(*) FROM officer')" -lt 650000 ]; then
     echo "ERROR: Insufficient SQLite rows found for officers data"
     ERRORED=true
 fi
