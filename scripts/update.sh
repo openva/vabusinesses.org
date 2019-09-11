@@ -92,4 +92,4 @@ sqlite3 temp.sqlite < ../scripts/load-data.sql 2>/dev/null
 echo "Data loaded into SQLite"
 
 # Put the file in its final location
-mv -f temp.sqlite vabusinesses.sql
+mv -f temp.sqlite vabusinesses.sqlite
