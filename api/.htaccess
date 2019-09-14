@@ -5,7 +5,7 @@ Header add Content-type "application/json"
 Header add Access-Control-Allow-Origin "*"
 
 RewriteEngine On
-Rewrite ^business/(.+)$ business.php?id=$1 [QSA]
+RewriteRule ^business/(.+)$ business.php?id=$1 [QSA]
 
 # By default, API data expires in a week
 Header set Cache-Control "max-age=604800, public"
