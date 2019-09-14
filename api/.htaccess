@@ -1,5 +1,9 @@
+# Everything is JSON
 Header add Content-type "application/json"
+
+# Allow requests from anywhere
 Header add Access-Control-Allow-Origin "*"
+
 RewriteEngine On
 Rewrite ^business/(.+)$ business.php?id=$1 [QSA]
 
