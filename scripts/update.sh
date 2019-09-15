@@ -5,6 +5,9 @@ set -e
 
 cd $(dirname "$0") || exit 1
 
+# Make variables of secrets available here
+source ./secrets.sh
+
 echo "Downloading data from SCC"
 
 # Retrieve bulk data
