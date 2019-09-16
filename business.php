@@ -22,7 +22,7 @@ if (!isset($_GET['id']))
 /*
  * If the business ID has an invalid format
  */
-elseif (strlen($_GET['id'] != 9))
+elseif ( strlen($_GET['id']) < 7 || strlen($_GET['id']) > 9 )
 {
     header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
     exit();
