@@ -26,6 +26,11 @@ function get_content($url)
 }
 
 /*
+ * Define the PCRE to match all entity IDs
+ */
+$entity_id_pcre = '/(F|S|T|L|M|[0-9])([0-9]{6})/';
+
+/*
  * If no business ID has been passed in the URL
  */
 if (!isset($_GET['id']))
@@ -37,7 +42,7 @@ if (!isset($_GET['id']))
 /*
  * If the business ID has an invalid format
  */
-elseif ( strlen($_GET['id']) < 7 || strlen($_GET['id']) > 9 )
+elseif ( preg_match($entity_id_pcre, $_GET['id'] == 0) )
 {
     header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
     exit();
