@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteRule ^search/(.*)$ /search.php?$1 [QSA]
+RewriteRule ^business/(.+)$ business.php?id=$1 [QSA]
 
 # Add a bunch of security headers
 Header unset Content-Security-Policy
