@@ -30,15 +30,15 @@ rm /tmp/data.zip
 cd ../data/ || exit 1
 
 # Rename files to be lowercase, some to not have a period
-mv Amendment.csv amendment.csv
-mv Corp.csv corp.csv
-mv LLC.csv llc.csv
-mv LP.csv lp.csv
-mv Merger.csv merger.csv
-mv Officer.csv officer.csv
-mv Tables.csv tables.csv
-mv Name.History.csv name_history.csv
-mv Reserved.Name.csv reserved_name.csv
+mv -f Amendment.csv amendment.csv
+mv -f Corp.csv corp.csv
+mv -f LLC.csv llc.csv
+mv -f LP.csv lp.csv
+mv -f Merger.csv merger.csv
+mv -f Officer.csv officer.csv
+mv -f Tables.csv tables.csv
+mv -f Name.History.csv name_history.csv
+mv -f Reserved.Name.csv reserved_name.csv
 
 # These files require repair of invalid encodings
 declare -a files_to_fix=("amendment.csv" "corp.csv" "llc.csv" "lp.csv" "officer.csv")
