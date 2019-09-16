@@ -1,5 +1,15 @@
 <?php
 
+function get_content($url)
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $URL);
+    $data = curl_exec($ch);
+    curl_close($ch);
+    return $data;
+}
+
 /*
  * If no business ID has been passed in the URL
  */
@@ -24,7 +34,7 @@ $id = $_GET['id'];
  * Query our own API 
  */
 $api_url = 'https://vabusinesses.org/api/business/' . $id;
-$business_json = get_file_contents($api_url);
+$business_json = get_content($api_url);
 
 $business = json_decode($business_json);
 if ($business === FALSE)
