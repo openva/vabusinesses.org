@@ -98,6 +98,6 @@ echo "Data loaded into SQLite"
 mv -f temp.sqlite vabusinesses.sqlite
 
 # Log the fact that this update was made
-if [ -z ${SLACK_WEBHOOK_URL+x} ]; then
+if [ ! -z ${SLACK_WEBHOOK_URL+x} ]; then
     curl -X POST -H 'Content-type: application/json' --data '{"text":"All records updated."}' "$SLACK_WEBHOOK_URL"
 fi
