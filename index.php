@@ -15,6 +15,16 @@
 
 		<article>
 
+			<form method="get" action="/search.php">
+				<label for="query">Search</label>
+				<input type="text" size="50" name="query" id="query">
+				<input type="submit" value="Go">
+			</form>
+
+		</article>
+
+		<article>
+
 		<table>
 			<caption>Download Business Data</caption>
 			<thead>
