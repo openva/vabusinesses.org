@@ -6,7 +6,8 @@ addons:
   sonarcloud:
     organization: "openva"
 install:
-- npm install; npm run build
+- npm install && npm run build
+- composer install
 script:
 - deploy/tests/run-all.sh
 - deploy/populate-secrets.sh
