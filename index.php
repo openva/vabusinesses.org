@@ -10,6 +10,7 @@
 	</head>
 	
 	<body>
+	<main>
 
 		<h1>Virginia Businesses</h1>
 
@@ -92,5 +93,6 @@
 			code is on GitHub</a>—pull requests welcome.
 		</footer>
 
+	</main>
 	</body>
 </html>
