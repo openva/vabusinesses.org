@@ -1,4 +1,4 @@
-FROM php:5.6.39-apache
+FROM php:7.2-apache
 RUN a2enmod rewrite && a2enmod expires && a2enmod headers
 
 # Install our packages
