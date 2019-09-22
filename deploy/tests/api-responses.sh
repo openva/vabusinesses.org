@@ -23,6 +23,22 @@ if [ "$(echo $BUSINESS_JSON |jq '.Name')" != '"AMERICAN BRANDS, INC."' ]; then
     ERRORED=true
 fi
 
+# Run a search for a test query
+SEARCH_JSON="$(curl -s http://localhost:5000/api/search/test)"
+
+if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '100' ]; then
+    echo "ERROR: API is not returning enough search results"
+    ERRORED=true
+fi
+
+# Run a search for a test query that will fail
+SEARCH_JSON="$(curl -s http://localhost:5000/api/search/asdflasdfqasdl)"
+
+if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '0' ]; then
+    echo "ERROR: API is not returning excessive search results"
+    ERRORED=true
+fi
+
 # If any tests failed, have this script return that failure
 if [ "$ERRORED" == true ]; then
     exit 1
