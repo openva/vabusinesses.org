@@ -6,9 +6,11 @@
 class Business
 {
 
-    /*
+    /**
      * Fetch a single business's record
-     */
+    *
+    * @return void
+    */
     function fetch()
     {
 
@@ -69,9 +71,11 @@ class Business
 
     }
 
-    /*
-     * Search matching business records, return the first 100
-     */
+     /**
+      * Search matching business records, return the first 100
+      *
+      * @return array
+      */
     function search()
     {
 
