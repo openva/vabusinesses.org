@@ -144,4 +144,31 @@ class Business
 
     }
 
+    /**
+     * List businesses created in the past week
+     *
+     * @return array
+     */
+    function recent()
+    {
+        $sql = 'SELECT *
+                FROM corp
+                WHERE IncorpDate BETWEEN datetime("now", "-6 days") AND datetime ("now", "localtime")';
+        
+        $result = $this->db->query($sql);
+
+        if ($result->numColumns() == 0)
+        {
+            return false;
+        }
+
+        $this->results = [];
+        while ($business = $result->fetchArray(SQLITE3_ASSOC))
+        {
+            $this->results[] = $business;
+        }
+
+        return $this->results;
+    }
+
 }
