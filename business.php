@@ -1,5 +1,7 @@
 <?php
 
+include('vendor/autoload.php');
+
 function get_content($url)
 {
 
@@ -62,59 +64,35 @@ if ($business === FALSE)
     header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
     exit();
 }
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>Virginia Businesses</title>
-		<meta name="description" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="/mini-default.min.css" />
-	</head>
-	
-	<body>
+$template = new Smarty;
 
-		<h1>Virginia Businesses</h1>
-
-		<article>
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-<?php
+$page_title = 'Virginia Businesses';
+$browser_title = 'Virginia Businesses';
 
 /*
  * Display a table of all field values
  */
+$page_body = '
+<article>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>';
 foreach ($business as $field_name => $field_value)
 {
-    echo '<tr><td>' . $field_name . '</td><td>' . $field_value . '</td></tr>';
+    $page_body .= '<tr><td>' . $field_name . '</td><td>' . $field_value . '</td></tr>';
 }
+$page_body .= '
+    </table>
+</article>';
 
-?>
+$template->assign('page_body', $page_body);
+$template->assign('page_title', $page_title);
+$template->assign('browser_title', $browser_title);
 
-                </tbody>
-            </table>
-
-        </article>
-		<footer class="wrapper">
-			All business records are created by the Virginia State Corporation Commission, and
-			are thus without copyright protection, so may be reused and reproduced freely,
-			without seeking any form of permission from anybody. All other website content is
-			published under <a href="http://opensource.org/licenses/MIT">the MIT license</a>.
-			This website is an independent, private effort, created and run as a hobby, and is
-			in no way affiliated with the Commonwealth of Virginia or the State Corporation
-			Commission. <a href="https://github.com/openva/vabusinesses.org">All site source
-			code is on GitHub</a>—pull requests welcome.
-		</footer>
-
-	</body>
-</html>
+$template->display('includes/templates/simple.tpl');
