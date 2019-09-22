@@ -31,5 +31,10 @@ if [ "$ERRORED" == true ]; then
     exit 1
 fi
 
+# Terminate the site in Docker
+cd ../..
+./docker-stop.sh
+cd "$DIR" || exit
+
 # Switch back to the directory this was invoked from
 popd || exit
