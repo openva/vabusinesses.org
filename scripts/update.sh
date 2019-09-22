@@ -38,8 +38,12 @@ mv -f /tmp/data/Tables.csv /tmp/data/tables.csv
 mv -f /tmp/data/Name.History.csv /tmp/data/name_history.csv
 mv -f /tmp/data/Reserved.Name.csv /tmp/data/reserved_name.csv
 
-# Remove all of the old CSV files
-rm -f ../data/*.csv
+# Remove any old CSV files
+if [ -d ../data/ ]; then
+    rm -f ../data/*.csv
+else
+    mkdir ../data/
+fi
 
 cd ../data/ || exit 1
 
