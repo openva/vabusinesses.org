@@ -70,7 +70,7 @@ $page_body = '
 
 			foreach ($recent as $business)
 			{
-				$page_body .= '<li><a href="/business/' . $business->EntityID . '/">' . $business->Name . '</a></li>';
+				$page_body .= '<li><a href="/business/' . $business->EntityID . '">' . $business->Name . '</a></li>';
 			}
 
 			$page_body .= '</ul></article>';
