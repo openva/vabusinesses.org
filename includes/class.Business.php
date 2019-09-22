@@ -8,9 +8,9 @@ class Business
 
     /**
      * Fetch a single business's record
-    *
-    * @return void
-    */
+     *
+     * @return array
+     */
     function fetch()
     {
 
