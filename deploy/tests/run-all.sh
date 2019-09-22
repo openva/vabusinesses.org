@@ -20,6 +20,11 @@ if ! ./api-responses.sh; then
     ERRORED=true
 fi
 
+# Run the front-end tests
+if ! ./front-end.sh; then
+    ERRORED=true
+fi
+
 # If any tests failed, have this script return that failure
 if [ "$ERRORED" == true ]; then
     echo "Some tests failed"
