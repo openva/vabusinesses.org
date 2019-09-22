@@ -95,4 +95,43 @@ class Business
 
     }
 
+    /**
+     * Identify type of business based on identifier
+     *
+     * @param [type] $id
+     * @return type as string
+     */
+    function type_from_id($id)
+    {
+        if ( !isset($id) || strlen($id) <> 7 )
+        {
+            return false;
+        }
+
+        $id = strtolower($id);
+
+        /*
+         * Get the first character
+         */
+        $first = substr($id, 0, 1);
+        
+        if ( ($first == 's') || ($first == 't') )
+        {
+            return 'llc';
+        }
+        elseif ( ($first == 'l') || ($first == 'm') )
+        {
+            return 'lp';
+        }
+        elseif ( $first == 'f' || is_numeric($first) )
+        {
+            return 'corp';
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
 }
