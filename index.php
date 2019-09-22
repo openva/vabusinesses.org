@@ -2,6 +2,31 @@
 
 include('vendor/autoload.php');
 
+function get_content($url)
+{
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+    curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+    curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $string = curl_exec($ch);
+    curl_close($ch);
+
+    if (empty($string))
+    {
+        return FALSE;
+    }
+
+    return $string;
+
+}
+
 $template = new Smarty;
 
 $page_title = 'Virginia Businesses';
@@ -15,8 +40,44 @@ $page_body = '
 				<input type="submit" value="Go">
 			</form>
 
-		</article>
+		</article>';
 
+
+
+		/*
+		* Query our API for recent businesses
+		*/
+		if (!empty($SERVER['HTTPS']))
+		{
+			$api_url = 'https';
+		}
+		else {
+			$api_url = 'http';
+		}
+		$api_url .= '://';
+		$api_url .= $_SERVER['SERVER_NAME'];
+		$api_url .= '/api/recent';
+
+		$recent_json = get_content($api_url);
+		$recent = json_decode($recent_json);
+		if ($recent != FALSE)
+		{
+
+			$page_body .= '
+			<article>
+				<h2>Newest Corporations</h2>
+				<ul>';
+
+			foreach ($recent as $business)
+			{
+				$page_body .= '<li><a href="/business/' . $business->EntityID . '/">' . $business->Name . '</a></li>';
+			}
+
+			$page_body .= '</ul></article>';
+		
+		}
+
+$page_body .= '
 		<article>
 
 		<table>
