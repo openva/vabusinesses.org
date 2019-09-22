@@ -46,7 +46,17 @@ $query = filter_var($_GET['query'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HI
 /*
  * Query our own API 
  */
-$api_url = 'https://vabusinesses.org/api/search/' . $query;
+if (!empty($SERVER['HTTPS']))
+{
+    $api_url = 'https';
+}
+else {
+    $api_url = 'http';
+}
+$api_url .= '://';
+$api_url .= $_SERVER['SERVER_NAME'];
+
+$api_url .= '/api/search/' . $query;
 $results_json = get_content($api_url);
 
 $results = json_decode($results_json);

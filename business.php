@@ -55,9 +55,18 @@ $id = $_GET['id'];
 /*
  * Query our own API 
  */
-$api_url = 'https://vabusinesses.org/api/business/' . $id;
-$business_json = get_content($api_url);
+if (!empty($SERVER['HTTPS']))
+{
+    $api_url = 'https';
+}
+else {
+    $api_url = 'http';
+}
+$api_url .= '://';
+$api_url .= $_SERVER['SERVER_NAME'];
+$api_url .= '/api/business/' . $id;
 
+$business_json = get_content($api_url);
 $business = json_decode($business_json);
 if ($business === FALSE)
 {
