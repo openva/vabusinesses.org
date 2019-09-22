@@ -26,5 +26,7 @@ if [ "$ERRORED" == true ]; then
     popd || exit 1
 fi
 
+echo "All tests passed"
+
 # Switch back to the directory this was invoked from
 popd || exit
