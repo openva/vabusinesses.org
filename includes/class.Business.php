@@ -17,39 +17,45 @@ class Business
             return FALSE;
         }
 
+        $this->type = $this->type_from_id($this->id);
+        if ($this->type === FALSE)
+        {
+            return FALSE;
+        }
+
         $sql = 'SELECT *,
 
-                    (SELECT tables.Description
+                    (SELECT Description
                     FROM tables
                     WHERE tables.TableID="01"
                     AND tables.ColumnID="Status"
-                    AND tables.ColumnValue=corp.Status) StatusText,
+                    AND tables.ColumnValue=' . $this->type . '.Status) StatusText,
 
                     (SELECT tables.Description
                     FROM tables
                     WHERE tables.TableID="03"
                     AND tables.ColumnID="IndustryCo"
-                    AND tables.ColumnValue=corp.IndustryCode) Industry,
+                    AND tables.ColumnValue=' . $this->type . '.IndustryCode) Industry,
 
                     (SELECT tables.Description
                     FROM tables
                     WHERE tables.TableID="04"
                     AND tables.ColumnID="RA-Status"
-                    AND tables.ColumnValue="corp.RA-Status") "RA-StatusText",
+                    AND tables.ColumnValue="' . $this->type . '.RA-Status") "RA-StatusText",
 
                     (SELECT tables.Description
                     FROM tables
                     WHERE tables.TableID="05"
                     AND tables.ColumnID="RA-Localit"
-                    AND tables.ColumnValue="corp.RA-Loc") "RA-LocText",
+                    AND tables.ColumnValue="' . $this->type . '.RA-Loc") "RA-LocText",
 
                     (SELECT tables.Description
                     FROM tables
                     WHERE tables.TableID="07"
                     AND tables.ColumnID="AssessInd"
-                    AND tables.ColumnValue="corp.AssessInd") "AssessIndText"
+                    AND tables.ColumnValue=' . $this->type . '.AssessInd) "AssessIndText"
 
-                FROM corp
+                FROM ' . $this->type . '
                 WHERE EntityID="' . $this->id . '"';
         $result = $this->db->query($sql);
 
