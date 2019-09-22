@@ -39,9 +39,9 @@ mv -f /tmp/data/Name.History.csv /tmp/data/name_history.csv
 mv -f /tmp/data/Reserved.Name.csv /tmp/data/reserved_name.csv
 
 # Remove all of the old CSV files
-rm -f ../data/*.csv
+rm -f ../../data/*.csv
 
-cd ../data/ || exit 1
+cd ../../data/ || exit 1
 
 # Move over our new CSV files
 mv -f /tmp/data/*.csv .
