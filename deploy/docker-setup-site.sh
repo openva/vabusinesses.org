@@ -12,6 +12,10 @@ if [ $(grep 2039 .htaccess |grep -v "#" |wc -l |xargs) -eq 0 ]; then
 	echo 'php_value error_reporting 2039' >> .htaccess
 fi
 
+# Install NPM packages
 npm install && npm run build
+
+# Install Composer packages
+composer install
 
 cd ..
