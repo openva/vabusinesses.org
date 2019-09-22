@@ -30,7 +30,7 @@ function get_content($url)
 /*
  * Define the PCRE to match all entity IDs
  */
-$entity_id_pcre = '/(F|S|T|L|M|[0-9])([0-9]{6})/';
+$entity_id_pcre = '/(F|S|T|L|M|[0-9]{1})([0-9]{6})/';
 
 /*
  * If no business ID has been passed in the URL
