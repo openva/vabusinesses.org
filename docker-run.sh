@@ -15,3 +15,5 @@ docker exec "$WEB_ID" /var/www/deploy/docker-setup-site.sh
 
 # Return to the original directory
 cd "$CWD" || exit
+
+echo "Site running at http://localhost:5000"
