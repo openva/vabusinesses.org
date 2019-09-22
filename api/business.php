@@ -9,6 +9,12 @@ if ( isset($_GET['id']) && strlen($_GET['id']) == 7)
 {
     $id = $_GET['id'];
 }
+else
+{
+    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
+    echo json_encode('Error');
+    exit;
+}
 
 $database = new Database;
 $db = $database->connect();
