@@ -28,7 +28,7 @@ function get_content($url)
 /*
  * If no search query has been passed in the URL
  */
-if (!isset($_GET['query']))
+if (!isset($_GET['query']) || empty($_GET['query']))
 {
     header($_SERVER["SERVER_PROTOCOL"]." 400 Bad Request", true, 400);
     exit();
