@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Fetch a single business's records, compare results
-BUSINESS_JSON="$(curl -s http://localhost:5000/api/business/F000032)"
+BUSINESS_JSON="$(curl -s http://localhost/api/business/F000032)"
 
 if [ "$(echo $BUSINESS_JSON |jq '.EntityID')" != '"F000032"' ]; then
     echo "ERROR: API is not returning entity ID correctly"
@@ -24,7 +24,7 @@ if [ "$(echo $BUSINESS_JSON |jq '.Name')" != '"AMERICAN BRANDS, INC."' ]; then
 fi
 
 # Run a search for a test query
-SEARCH_JSON="$(curl -s http://localhost:5000/api/search/test)"
+SEARCH_JSON="$(curl -s http://localhost/api/search/test)"
 
 if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '100' ]; then
     echo "ERROR: API is not returning enough search results"
@@ -32,7 +32,7 @@ if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '100' ]; then
 fi
 
 # Run a search for a test query that will fail
-SEARCH_JSON="$(curl -s http://localhost:5000/api/search/asdflasdfqasdl)"
+SEARCH_JSON="$(curl -s http://localhost/api/search/asdflasdfqasdl)"
 
 if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '0' ]; then
     echo "ERROR: API is not returning excessive search results"

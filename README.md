@@ -11,4 +11,4 @@ Website for Virginia State Corporation Commission data.
 
 ## Running tests
 
-E2E and functional tests are in `/deploy/tests/`, and can all be run with `/deploy/tests/run-all.sh`.
+E2E and functional tests are in `/deploy/tests/`, and can all be run with `/deploy/tests/run-all.sh`. From outside of the Docker container, they should be invoked with `/run-tests.sh`.

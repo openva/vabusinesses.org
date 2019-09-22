@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # Fetch a single business's records
-BUSINESS_HTML="$(curl -s http://localhost:5000/business/F000032)"
+BUSINESS_HTML="$(curl -s http://localhost/business/F000032)"
 
-if ! echo "$BUSINESS_HTML" | grep -q 'AMERICAN BRANDS'; then
+if ! grep -q 'AMERICAN BRANDS' <<< "$BUSINESS_HTML"; then
     echo "ERROR: Front-end is not returning business records"
     ERRORED=true
 fi

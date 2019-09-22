@@ -19,7 +19,7 @@ fi
 echo "Data downloaded"
 
 # Uncompress the ZIP file
-if ! unzip -q -o -d ../data/ /tmp/data.zip; then
+if ! unzip -q -o -d /tmp/data/ /tmp/data.zip; then
     echo "CISbemon.CSV.zip could not be unzipped"
     exit 1
 fi
@@ -27,18 +27,24 @@ fi
 # Delete temporary artifacts
 rm /tmp/data.zip
 
+# Rename files to be lowercase, some to not have a period
+mv -f /tmp/data/Amendment.csv /tmp/data/amendment.csv
+mv -f /tmp/data/Corp.csv /tmp/data/corp.csv
+mv -f /tmp/data/LLC.csv /tmp/data/llc.csv
+mv -f /tmp/data/LP.csv /tmp/data/lp.csv
+mv -f /tmp/data/Merger.csv /tmp/data/merger.csv
+mv -f /tmp/data/Officer.csv /tmp/data/officer.csv
+mv -f /tmp/data/Tables.csv /tmp/data/tables.csv
+mv -f /tmp/data/Name.History.csv /tmp/data/name_history.csv
+mv -f /tmp/data/Reserved.Name.csv /tmp/data/reserved_name.csv
+
+# Remove all of the old CSV files
+rm -f ../data/*.csv
+
 cd ../data/ || exit 1
 
-# Rename files to be lowercase, some to not have a period
-mv -f Amendment.csv amendment.csv
-mv -f Corp.csv corp.csv
-mv -f LLC.csv llc.csv
-mv -f LP.csv lp.csv
-mv -f Merger.csv merger.csv
-mv -f Officer.csv officer.csv
-mv -f Tables.csv tables.csv
-mv -f Name.History.csv name_history.csv
-mv -f Reserved.Name.csv reserved_name.csv
+# Move over our new CSV files
+mv -f /tmp/data/*.csv .
 
 # These files require repair of invalid encodings
 declare -a files_to_fix=("amendment.csv" "corp.csv" "llc.csv" "lp.csv" "officer.csv")

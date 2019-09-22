@@ -10,11 +10,6 @@ if ! ./source-data.sh; then
     ERRORED=true
 fi
 
-# Stand up the site in Docker for additional tests
-cd ../..
-./docker-run.sh
-cd "$DIR" || exit
-
 # Run the API responses tests
 if ! ./api-responses.sh; then
     ERRORED=true
@@ -30,11 +25,6 @@ if [ "$ERRORED" == true ]; then
     echo "Some tests failed"
     exit 1
 fi
-
-# Terminate the site in Docker
-cd ../..
-./docker-stop.sh
-cd "$DIR" || exit
 
 # Switch back to the directory this was invoked from
 popd || exit
