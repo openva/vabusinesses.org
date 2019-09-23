@@ -11,7 +11,6 @@ install:
 script:
 - ./docker-run.sh
 - ./run-tests.sh
-- deploy/tests/run-all.sh
 - deploy/populate-secrets.sh
 - sonar-scanner && zip -qr latest * && mkdir -p upload && mv latest.zip upload/latest.zip
 deploy:
