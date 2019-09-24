@@ -2,7 +2,7 @@
 
 # See if the remote ZIP file exists
 if [ "$(curl -Is http://scc.virginia.gov/clk/data/CISbemon.CSV.zip |grep -c '200 OK')" -lt 1 ]; then
-    echo "ERROR: Basic bill metadata isn't being displayed"
+    echo "ERROR: The ZIP files does not exist on the SCC website"
     ERRORED=true
 fi
 
