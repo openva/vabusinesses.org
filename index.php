@@ -99,7 +99,7 @@ $page_body = '
 
 			}
 
-			$page_body .= '</ul></article>';
+			$page_body .= '</article>';
 		
 		}
 
@@ -116,48 +116,48 @@ $page_body .= '
 			</thead>
 			<tbody>
 				<tr>
-					<td><a href="data/amendment.csv">Entity Amendments</a></td>
-					<td>6 MB</td>
+					<td data-label="File"><a href="data/amendment.csv">Entity Amendments</a></td>
+					<td data-label="Size">6 MB</td>
 				</tr>
 				<tr>
-					<td><a href="data/corp.csv">Corporate Entities</a></td>
-					<td>87 MB</td>
+					<td data-label="File"><a href="data/corp.csv">Corporate Entities</a></td>
+					<td data-label="Size">87 MB</td>
 				</tr>
 				<tr>
-					<td><a href="data/llc.csv">LLC Entities</a></td>
-					<td>156 MB</td>
+					<td data-label="File"><a href="data/llc.csv">LLC Entities</a></td>
+					<td data-label="Size">156 MB</td>
 				</tr>
 				<tr>
-					<td><a href="data/lp.csv">LP Entities</a></td>
-					<td>3 MB</td>
+					<td data-label="File"><a href="data/lp.csv">LP Entities</a></td>
+					<td data-label="Size">3 MB</td>
 				</tr>
 				<tr>
-					<td><a href="data/merger.csv">Entity Mergers</a></td>
-					<td>3 MB</td>
+					<td data-label="File"><a href="data/merger.csv">Entity Mergers</a></td>
+					<td data-label="Size">3 MB</td>
 				</tr>
 				<tr>
-					<td><a href="data/name.history.csv">Entity Name/Fictitious Name History</a></td>
-					<td>16 MB</td>
+					<td data-label="File"><a href="data/name.history.csv">Entity Name/Fictitious Name History</a></td>
+					<td data-label="Size">16 MB</td>
 				</tr>
 				<tr>
-					<td><a href="data/officer.csv">Entity Officers/Directors</a></td>
-					<td>29 MB</td>
+					<td data-label="File"><a href="data/officer.csv">Entity Officers/Directors</a></td>
+					<td data-label="Size">29 MB</td>
 				</tr>
 				<tr>
-					<td><a href="data/reserved.name.csv">Entity Reserved Names</a></td>
-					<td>0.1 MB</td>
+					<td data-label="File"><a href="data/reserved.name.csv">Entity Reserved Names</a></td>
+					<td data-label="Size">0.1 MB</td>
 				</tr>
 				<tr>
-					<td><a href="data/tables.csv">Descriptive Tables</a></td>
-					<td>0.1 MB</td>
+					<td data-label="File"><a href="data/tables.csv">Descriptive Tables</a></td>
+					<td data-label="Size">0.1 MB</td>
 				</tr>
 				<tr>
-					<td><a href="http://scc.virginia.gov/clk/data/CISbemon.CSV.zip">All Data, CSV</a></td>
-					<td>77 MB</td>
+					<td data-label="File"><a href="http://scc.virginia.gov/clk/data/CISbemon.CSV.zip">All Data, CSV</a></td>
+					<td data-label="Size">77 MB</td>
 				</tr>
 				<tr>
-					<td><a href="data/vabusinesses.sqlite">All Data, SQLite</a></td>
-					<td>321 MB</td>
+					<td data-label="File"><a href="data/vabusinesses.sqlite">All Data, SQLite</a></td>
+					<td data-label="Size">321 MB</td>
 				</tr>
 			</tbody>
 		</table>
