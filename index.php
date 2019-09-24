@@ -62,15 +62,41 @@ $page_body = '
 		$recent = json_decode($recent_json);
 		if ($recent != FALSE)
 		{
-
+			
 			$page_body .= '
-			<article>
-				<h2>Newest Corporations</h2>
-				<ul>';
+				<article class="container">
+				<h2>Newest Businesses</h2>';
 
+			$i=3;
+			if (count($recent) > 9)
+			{
+				$recent = array_slice($recent, 0, 9);
+			}
 			foreach ($recent as $business)
 			{
-				$page_body .= '<li><a href="/business/' . $business->EntityID . '">' . $business->Name . '</a></li>';
+
+				if ( ($i % 3) == 0 )
+				{
+					$page_body .= '<div class="row">';
+				}
+				
+				$page_body .= '
+					<div class="card small">
+						<h3><a href="/business/' . $business->EntityID . '">' . $business->Name . '</a></h3>
+						<p>';
+				if (!empty($business->City))
+				{
+					$page_body .= $business->City . ', ' . $business->State . '<br>';
+				} 
+				$page_body .= date('M d, Y', strtotime($business->IncorpDate)) . '</p>
+					</div>';
+
+				if ( ($i % 3) == 2 )
+				{
+					$page_body .= '</div>';
+				}
+				$i++;
+
 			}
 
 			$page_body .= '</ul></article>';
