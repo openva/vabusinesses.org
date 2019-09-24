@@ -1,31 +1,6 @@
 <?php
 
-include('vendor/autoload.php');
-
-function get_content($url)
-{
-
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-    curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-    curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    $string = curl_exec($ch);
-    curl_close($ch);
-
-    if (empty($string))
-    {
-        return FALSE;
-    }
-
-    return $string;
-
-}
+include('includes/header.php');
 
 /*
  * Define the PCRE to match all entity IDs
@@ -55,16 +30,7 @@ $id = $_GET['id'];
 /*
  * Query our own API 
  */
-if (!empty($SERVER['HTTPS']))
-{
-    $api_url = 'https';
-}
-else {
-    $api_url = 'http';
-}
-$api_url .= '://';
-$api_url .= $_SERVER['SERVER_NAME'];
-$api_url .= '/api/business/' . $id;
+$api_url .= API_URL . '/api/business/' . $id;
 
 $business_json = get_content($api_url);
 $business = json_decode($business_json);
