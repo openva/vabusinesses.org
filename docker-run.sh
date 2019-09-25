@@ -11,7 +11,7 @@ docker-compose build && docker-compose up -d
 
 # Run the site setup script
 WEB_ID=$(docker ps |grep vabusinesses |cut -d " " -f 1)
-docker exec "$WEB_ID" /var/www/deploy/docker-setup-site.sh
+docker exec "$WEB_ID" /var/www/htdocs/deploy/docker-setup-site.sh
 
 # Return to the original directory
 cd "$CWD" || exit

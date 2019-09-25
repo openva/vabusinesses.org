@@ -21,7 +21,7 @@ $query = filter_var($_GET['query'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HI
 /*
  * Query our own API 
  */
-$api_url .= API_URL . '/api/search/' . $query;
+$api_url = API_URL . '/api/search/' . $query;
 $results_json = get_content($api_url);
 
 $results = json_decode($results_json);

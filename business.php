@@ -30,7 +30,7 @@ $id = $_GET['id'];
 /*
  * Query our own API 
  */
-$api_url .= API_URL . '/api/business/' . $id;
+$api_url = API_URL . '/api/business/' . $id;
 
 $business_json = get_content($api_url);
 $business = json_decode($business_json);

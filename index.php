@@ -22,7 +22,7 @@ $page_body = '
 		/*
 		* Query our API for recent businesses
 		*/
-		$api_url .= API_URL . '/api/recent';
+		$api_url = API_URL . '/api/recent';
 
 		$recent_json = get_content($api_url);
 		$recent = json_decode($recent_json);
