@@ -31,34 +31,48 @@ if ($results === FALSE)
     exit();
 }
 
-$page_body = '
-		<article>
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Inc. Date</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>';
-
-/*
- * Display a table of all results values
- */
-foreach ($results as $business)
+if (count($results) == 0)
 {
+    $page_body = '
+    <div class="row">
+        <div class="card warning">
+            <h3>No results found</h3>
+            <p>Please try another search</p>
+        </div>
+    </div>';
+}
+else
+{
+
+    $page_body = '
+    <article>
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Inc. Date</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>';
+
+    /*
+    * Display a table of all results values
+    */
+    foreach ($results as $business)
+    {
     $page_body .= '<tr>
         <td><a href="/business/' . $business->EntityID . '">' . $business->Name . '</a></td>
         <td>' . $business->IncorpDate . '</td>
         <td>' . $business->Status . '</td>
         </tr>';
-}
+    }
 
-$page_body .= '
+    $page_body .= '
                 </tbody>
             </table>';
 
+}
 
 $template->assign('page_body', $page_body);
 $template->assign('page_title', $page_title);
