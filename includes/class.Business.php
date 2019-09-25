@@ -153,7 +153,7 @@ class Business
     {
         $sql = 'SELECT *
                 FROM corp
-                WHERE IncorpDate BETWEEN datetime("now", "-8 days") AND datetime ("now", "localtime")
+                WHERE IncorpDate BETWEEN datetime("now", "-9 days") AND datetime ("now", "localtime")
                 ORDER BY IncorpDate DESC';
         
         $result = $this->db->query($sql);
