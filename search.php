@@ -31,7 +31,7 @@ if ($results === FALSE)
     exit();
 }
 
-if (count($results) == 0)
+if ( !is_array($results) || count($results) == 0 )
 {
     $page_body = '
     <div class="row">
