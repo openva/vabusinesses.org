@@ -66,7 +66,12 @@ class Business
             return false;
         }
         $this->business = $result->fetchArray(SQLITE3_ASSOC);
-
+        
+        foreach ($this->business as &$field)
+        {
+            $field = trim($field);
+        }
+        
         return $this->business;
 
     }
