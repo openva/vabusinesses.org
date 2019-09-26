@@ -153,8 +153,8 @@ class Business
     {
         $sql = 'SELECT *
                 FROM corp
-                WHERE IncorpDate BETWEEN datetime("now", "-9 days") AND datetime ("now", "localtime")
-                ORDER BY IncorpDate DESC';
+                ORDER BY IncorpDate DESC
+                LIMIT 100';
         
         $result = $this->db->query($sql);
 

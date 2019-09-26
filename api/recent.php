@@ -13,7 +13,7 @@ if (!$db)
 }
 
 /*
- * Get all businesses created in the past week
+ * Get a list of the last 100 businesses incorporated
  */
 $business = new Business;
 $business->db = $db;
