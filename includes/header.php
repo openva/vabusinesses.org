@@ -27,7 +27,7 @@ function get_content($url)
 
 }
 
-if (!empty($SERVER['HTTPS']))
+if (!empty($_SERVER['HTTPS']))
 {
     $api_url = 'https';
 }
