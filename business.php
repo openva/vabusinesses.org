@@ -60,6 +60,10 @@ $page_body = '
         <tbody>';
 foreach ($business as $field_name => $field_value)
 {
+    if ( stristr($field_name, 'stock') && empty($field_value) )
+    {
+        continue;
+    }
     $page_body .= '<tr><td>' . $field_name . '</td><td>' . $field_value . '</td></tr>';
 }
 $page_body .= '
