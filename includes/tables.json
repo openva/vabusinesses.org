@@ -1,0 +1,2935 @@
+[
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": "00",
+    "Description": "TABLE NAMES"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": "01",
+    "Description": "CORPORATE STATUS TABLE"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": "02",
+    "Description": "STATE TABLE"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": "03",
+    "Description": "INDUSTRY CODE TABLE"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": "04",
+    "Description": "REGISTERED AGENT STATUS"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": "05",
+    "Description": "COURT LOCALITY CODE"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": "06",
+    "Description": "ANNUAL REPORT STATUS"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": "07",
+    "Description": "ASSESSMENT INDICATOR"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": 12,
+    "Description": "STOCK CLASS"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": 19,
+    "Description": "AMENDMENT TYPES"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": 23,
+    "Description": "L/P AMENDMENT & L/P CERT. OF CORRECTION TYPES"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": 28,
+    "Description": "L/P REGISTERED AGENT STATUS"
+  },
+  {
+    "TableID": "00",
+    "TableContents": "TABLE NAMES",
+    "ColumnID": "TableID",
+    "ColumnValue": 40,
+    "Description": "LLC REGISTERED AGENT STATUS"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": "00",
+    "Description": "ACTIVE"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": "01",
+    "Description": "FEE DELINQUENT"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": "08",
+    "Description": "CANC INVOL"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": "09",
+    "Description": "TERM INVOL"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 10,
+    "Description": "TERM(AUTO AR/$) CORP-NO REPORT AND/OR FEES"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 11,
+    "Description": "TERM(AUTO R/A) CORP-FAILURE TO MAINTAIN R/A"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 12,
+    "Description": "TERM(EXPIRED)  CORP-DATE OF DURATION EXPIRED"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 13,
+    "Description": "TERM(VOLUNTARY) (CORP)"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 14,
+    "Description": "DISSOLVING"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 15,
+    "Description": "CANC(VOLUNTARY)  (LLC/LP/BT)"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 16,
+    "Description": "INVDISS/COURT"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 17,
+    "Description": "CANC/DOM         (CORP)"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 18,
+    "Description": "SURRENDERED      (CORP)"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 19,
+    "Description": "CANC (AUTO-FEE) LLC/LP/BT-FEES NOT PAID"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 20,
+    "Description": "MERGED"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 22,
+    "Description": "CONV NA/FED BANK"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 23,
+    "Description": "GP EXPIRED AUTO"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 24,
+    "Description": "CANCBYDIS"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 25,
+    "Description": "CANC/DOM         (LLC)"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 26,
+    "Description": "SURRENDERED      (LLC)"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 30,
+    "Description": "REVKD-AUTO AR/$ CORP-NO REPORT AND/OR FEES"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 31,
+    "Description": "REVOKED-AUTO RA CORP-FAILURE TO MAINTAIN R/A"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 32,
+    "Description": "REVOKED (EXP)  CORP-DATE OF DURATION EXPIRED"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 40,
+    "Description": "WITHDRAWN(VOL)   (CORP)"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 42,
+    "Description": "WTHDRWN-MERGER"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 43,
+    "Description": "WTHDRWN-CNVRSION"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 44,
+    "Description": "CANCELED-CNVRSION"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 45,
+    "Description": "CONVERTED ADM"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 46,
+    "Description": "CONVERTED"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 50,
+    "Description": "LLP STATUS ONLY"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 51,
+    "Description": "LLP STATUS CANCELLED"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 67,
+    "Description": "REPEALED"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 76,
+    "Description": "CANC(AUTO R/A) LLC/LP/BT-FAILED MAINTAIN R/A"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 98,
+    "Description": "CONV FOREIGN/DOMESTIC"
+  },
+  {
+    "TableID": "01",
+    "TableContents": "CORPORATE STATUS TABLE",
+    "ColumnID": "Status",
+    "ColumnValue": 99,
+    "Description": "VOID"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "--",
+    "Description": "TEMPORARY STATE FOR UCC CONVERSION"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "AK",
+    "Description": "ALASKA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "AL",
+    "Description": "ALABAMA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "AR",
+    "Description": "ARKANSAS"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "AS",
+    "Description": "AMERICAN SAMOA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "AZ",
+    "Description": "ARIZONA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "CA",
+    "Description": "CALIFORNIA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "CO",
+    "Description": "COLORADO"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "CT",
+    "Description": "CONNECTICUT"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "CZ",
+    "Description": "CANAL ZONE"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "DC",
+    "Description": "WASHINGTON, D.C."
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "DE",
+    "Description": "DELAWARE"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "FL",
+    "Description": "FLORIDA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "FN",
+    "Description": "FOREIGN"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "GA",
+    "Description": "GEORGIA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "GU",
+    "Description": "GUAM"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "HI",
+    "Description": "HAWAII"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "IA",
+    "Description": "IOWA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "ID",
+    "Description": "IDAHO"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "IL",
+    "Description": "ILLINOIS"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "IN",
+    "Description": "INDIANA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "KS",
+    "Description": "KANSAS"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "KY",
+    "Description": "KENTUCKY"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "LA",
+    "Description": "LOUISIANA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "MA",
+    "Description": "MASSACHUSETTS"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "MD",
+    "Description": "MARYLAND"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "ME",
+    "Description": "MAINE"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "MI",
+    "Description": "MICHIGAN"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "MN",
+    "Description": "MINNESOTA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "MO",
+    "Description": "MISSOURI"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "MS",
+    "Description": "MISSISSIPPI"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "MT",
+    "Description": "MONTANA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "NC",
+    "Description": "NORTH CAROLINA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "ND",
+    "Description": "NORTH DAKOTA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "NE",
+    "Description": "NEBRASKA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "NH",
+    "Description": "NEW HAMPSHIRE"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "NJ",
+    "Description": "NEW JERSEY"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "NM",
+    "Description": "NEW MEXICO"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "NV",
+    "Description": "NEVADA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "NY",
+    "Description": "NEW YORK"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "OH",
+    "Description": "OHIO"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "OK",
+    "Description": "OKLAHOMA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "OR",
+    "Description": "OREGON"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "PA",
+    "Description": "PENNSYLVANIA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "PR",
+    "Description": "PUERTO RICO"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "RI",
+    "Description": "RHODE ISLAND"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "SC",
+    "Description": "SOUTH CAROLINA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "SD",
+    "Description": "SOUTH DAKOTA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "TN",
+    "Description": "TENNESSEE"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "TT",
+    "Description": "TRUST TERRITORIES"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "TX",
+    "Description": "TEXAS"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "US",
+    "Description": "UNITED STATES"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "UT",
+    "Description": "UTAH"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "VA",
+    "Description": "VIRGINIA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "VI",
+    "Description": "VIRGIN ISLANDS"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "VT",
+    "Description": "VERMONT"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "WA",
+    "Description": "WASHINGTON"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "WI",
+    "Description": "WISCONSIN"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "WV",
+    "Description": "WEST VIRGINIA"
+  },
+  {
+    "TableID": "02",
+    "TableContents": "STATE TABLE",
+    "ColumnID": "State",
+    "ColumnValue": "WY",
+    "Description": "WYOMING"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": "00",
+    "Description": "GENERAL"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 11,
+    "Description": "ELECTRIC"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 12,
+    "Description": "TELEPHONE"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 13,
+    "Description": "GAS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 14,
+    "Description": "WATER"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 15,
+    "Description": "WATER-SEWER"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 16,
+    "Description": "SEWER"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 18,
+    "Description": "RADIO COMMON CARRIER"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 20,
+    "Description": "BANKS AND CREDIT UNIONS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 22,
+    "Description": "FEDERAL BANKS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 23,
+    "Description": "BANK W/LIMITED CERTIFICATE"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 25,
+    "Description": "BANK & INSURANCE AGENT"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 26,
+    "Description": "MRTG/INSURANCE"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 30,
+    "Description": "INSURANCE COMPANIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 31,
+    "Description": "INSURANCE CONSULTANT"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 35,
+    "Description": "INSURANCE AGENCIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 36,
+    "Description": "MORTGAGE CO"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 40,
+    "Description": "OTHER FINANCIAL INSTITUTIONS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 41,
+    "Description": "INSURANCE REGULATED ENTITIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 42,
+    "Description": "INS COMPANY & INS AGENCY"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 43,
+    "Description": "INS COMPANY & INS REG ENTITY"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 50,
+    "Description": "OTHER PUBLIC SERVICE"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 51,
+    "Description": "RAILWAYS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 60,
+    "Description": "OTHER CHARITABLE INSTITUTIONS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 61,
+    "Description": "FOUNDATIONS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 62,
+    "Description": "VOLUNTEER RESCUE SQUADS/FIRE DEPTS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 63,
+    "Description": "RELIGIOUS CEMETERIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 64,
+    "Description": "ORPHANAGES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 65,
+    "Description": "CHURCHES AND RELIGIOUS DENOMINATIONS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 66,
+    "Description": "ANIMAL AND CHILDREN'S WELFARE"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 67,
+    "Description": "SPECIAL HOSPITALS AND COLLEGES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 68,
+    "Description": "HISTORICAL/LITERARY SOCIETIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 69,
+    "Description": "ARTS AND SCIENCES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 70,
+    "Description": "OTHER PROFESSIONAL COMPANIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 71,
+    "Description": "DOCTORS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 72,
+    "Description": "LAWYERS/ATTORNEYS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 73,
+    "Description": "ARCHITECTS"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 74,
+    "Description": "AUDIOLOGIST"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 75,
+    "Description": "SPEECH PATHOLOGIST"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 76,
+    "Description": "CLINICAL NURSE SPECIALIST"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 77,
+    "Description": "HOUSING COOPERATIVES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 80,
+    "Description": "AGRICULTURAL COOPERATIVES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 81,
+    "Description": "OTHER COOPERATIVES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 84,
+    "Description": "WATER & SEWER AUTHORITIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 85,
+    "Description": "COMMUNITY DEVELOPMENT AUTHORITIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 86,
+    "Description": "WIRELESS SERVICE (BROADBAND) AUTHORITIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 87,
+    "Description": "ELECTRIC AUTHORITIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 89,
+    "Description": "OTHER AUTHORITIES"
+  },
+  {
+    "TableID": "03",
+    "TableContents": "INDUSTRY CODE TABLE",
+    "ColumnID": "IndustryCode",
+    "ColumnValue": 95,
+    "Description": "BENEFIT CORPORATIONS"
+  },
+  {
+    "TableID": "04",
+    "TableContents": "REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status",
+    "ColumnValue": 0,
+    "Description": "UNKNOWN"
+  },
+  {
+    "TableID": "04",
+    "TableContents": "REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status",
+    "ColumnValue": 1,
+    "Description": "DIRECTOR"
+  },
+  {
+    "TableID": "04",
+    "TableContents": "REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status",
+    "ColumnValue": 2,
+    "Description": "OFFICER"
+  },
+  {
+    "TableID": "04",
+    "TableContents": "REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status",
+    "ColumnValue": 4,
+    "Description": "ATTORNEY"
+  },
+  {
+    "TableID": "04",
+    "TableContents": "REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status",
+    "ColumnValue": 5,
+    "Description": "B.E. AUTH IN VIRGINIA"
+  },
+  {
+    "TableID": "04",
+    "TableContents": "REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status",
+    "ColumnValue": 6,
+    "Description": "RESIGNED"
+  },
+  {
+    "TableID": "04",
+    "TableContents": "REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status",
+    "ColumnValue": 9,
+    "Description": "EXEMPT"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": "001",
+    "Description": "FOREIGN"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 100,
+    "Description": "ACCOMACK COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 101,
+    "Description": "ALBEMARLE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 102,
+    "Description": "ALLEGHANY COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 103,
+    "Description": "AMELIA COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 104,
+    "Description": "AMHERST COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 105,
+    "Description": "APPOMATTOX COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 106,
+    "Description": "ARLINGTON COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 107,
+    "Description": "AUGUSTA COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 108,
+    "Description": "BATH COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 109,
+    "Description": "BEDFORD COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 110,
+    "Description": "BLAND COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 111,
+    "Description": "BOTETOURT COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 112,
+    "Description": "BRUNSWICK COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 113,
+    "Description": "BUCHANAN COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 114,
+    "Description": "BUCKINGHAM COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 115,
+    "Description": "CAMPBELL COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 116,
+    "Description": "CAROLINE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 117,
+    "Description": "CARROLL COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 118,
+    "Description": "CHARLES CITY COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 119,
+    "Description": "CHARLOTTE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 120,
+    "Description": "CHESTERFIELD COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 121,
+    "Description": "CLARKE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 122,
+    "Description": "CRAIG COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 123,
+    "Description": "CULPEPER COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 124,
+    "Description": "CUMBERLAND COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 125,
+    "Description": "DICKENSON COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 126,
+    "Description": "DINWIDDIE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 128,
+    "Description": "ESSEX COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 129,
+    "Description": "FAIRFAX COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 130,
+    "Description": "FAUQUIER COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 131,
+    "Description": "FLOYD COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 132,
+    "Description": "FLUVANNA COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 133,
+    "Description": "FRANKLIN COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 134,
+    "Description": "FREDERICK COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 135,
+    "Description": "GILES COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 136,
+    "Description": "GLOUCESTER COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 137,
+    "Description": "GOOCHLAND COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 138,
+    "Description": "GRAYSON COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 139,
+    "Description": "GREENE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 140,
+    "Description": "GREENSVILLE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 141,
+    "Description": "HALIFAX COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 142,
+    "Description": "HANOVER COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 143,
+    "Description": "HENRICO COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 144,
+    "Description": "HENRY COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 145,
+    "Description": "HIGHLAND COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 146,
+    "Description": "ISLE OF WIGHT COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 147,
+    "Description": "JAMES CITY COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 148,
+    "Description": "KING GEORGE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 149,
+    "Description": "KING & QUEEN COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 150,
+    "Description": "KING WILLIAM COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 151,
+    "Description": "LANCASTER COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 152,
+    "Description": "LEE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 153,
+    "Description": "LOUDOUN COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 154,
+    "Description": "LOUISA COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 155,
+    "Description": "LUNENBURG COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 156,
+    "Description": "MADISON COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 157,
+    "Description": "MATHEWS COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 158,
+    "Description": "MECKLENBURG COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 159,
+    "Description": "MIDDLESEX COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 160,
+    "Description": "MONTGOMERY COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 162,
+    "Description": "NELSON COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 163,
+    "Description": "NEW KENT COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 165,
+    "Description": "NORTHAMPTON COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 166,
+    "Description": "NORTHUMBERLAND COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 167,
+    "Description": "NOTTOWAY COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 168,
+    "Description": "ORANGE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 169,
+    "Description": "PAGE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 170,
+    "Description": "PATRICK COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 171,
+    "Description": "PITTSYLVANIA COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 172,
+    "Description": "POWHATAN COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 173,
+    "Description": "PRINCE EDWARD COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 174,
+    "Description": "PRINCE GEORGE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 176,
+    "Description": "PRINCE WILLIAM COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 177,
+    "Description": "PULASKI COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 178,
+    "Description": "RAPPAHANNOCK COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 179,
+    "Description": "RICHMOND COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 180,
+    "Description": "ROANOKE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 181,
+    "Description": "ROCKBRIDGE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 182,
+    "Description": "ROCKINGHAM COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 183,
+    "Description": "RUSSELL COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 184,
+    "Description": "SCOTT COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 185,
+    "Description": "SHENANDOAH COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 186,
+    "Description": "SMYTH COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 187,
+    "Description": "SOUTHAMPTON COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 188,
+    "Description": "SPOTSYLVANIA COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 189,
+    "Description": "STAFFORD COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 190,
+    "Description": "SURRY COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 191,
+    "Description": "SUSSEX COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 192,
+    "Description": "TAZEWELL COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 193,
+    "Description": "WARREN COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 195,
+    "Description": "WASHINGTON COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 196,
+    "Description": "WESTMORELAND COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 197,
+    "Description": "WISE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 198,
+    "Description": "WYTHE COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 199,
+    "Description": "YORK COUNTY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 200,
+    "Description": "ALEXANDRIA CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 201,
+    "Description": "BRISTOL CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 202,
+    "Description": "BUENA VISTA CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 203,
+    "Description": "CHARLOTTESVILLE CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 205,
+    "Description": "DANVILLE CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 206,
+    "Description": "FREDERICKSBURG CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 207,
+    "Description": "HAMPTON CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 209,
+    "Description": "HOPEWELL CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 210,
+    "Description": "LYNCHBURG CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 211,
+    "Description": "NEWPORT NEWS CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 212,
+    "Description": "NORFOLK CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 213,
+    "Description": "PETERSBURG CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 214,
+    "Description": "PORTSMOUTH CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 215,
+    "Description": "RADFORD CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 216,
+    "Description": "RICHMOND CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 217,
+    "Description": "ROANOKE CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 219,
+    "Description": "STAUNTON CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 220,
+    "Description": "SUFFOLK CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 222,
+    "Description": "WINCHESTER CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 223,
+    "Description": "MARTINSVILLE CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 225,
+    "Description": "WAYNESBORO CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 227,
+    "Description": "COLONIAL HEIGHTS CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 228,
+    "Description": "VIRGINIA BEACH CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 236,
+    "Description": "CHESAPEAKE CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 239,
+    "Description": "SALEM CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 301,
+    "Description": "COVINGTON CITY (FILED IN ALLEGHANY COUNTY)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 302,
+    "Description": "EMPORIA CITY (FILED IN GREENSVILLE COUNTY)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 303,
+    "Description": "FAIRFAX CITY (FILED IN FAIRFAX COUNTY)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 304,
+    "Description": "FALLS CHURCH CITY (FILED IN ARLINGTON CO)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 305,
+    "Description": "FRANKLIN CITY (FILED IN SOUTHAMPTON COUNTY)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 306,
+    "Description": "GALAX CITY"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 308,
+    "Description": "MANASSAS CITY (FILED-PRINCE WILLIAM COUNTY)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 309,
+    "Description": "HARRISONBURG CITY (FILED-ROCKINGHAM COUNTY)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 310,
+    "Description": "LEXINGTON CITY (FILED IN ROCKBRIDGE COUNTY)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 311,
+    "Description": "POQUOSON CITY (FILED IN YORK COUNTY)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 312,
+    "Description": "NORTON CITY (FILED IN WISE COUNTY)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 315,
+    "Description": "MANASSAS PARK  (FILED PRINCE WILLIAM CO)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 316,
+    "Description": "WILLIAMSBURG CITY (FILED IN JAMES CITY COUNTY)"
+  },
+  {
+    "TableID": "05",
+    "TableContents": "COURT LOCALITY CODE",
+    "ColumnID": "RA-Locality",
+    "ColumnValue": 901,
+    "Description": "EXEMPT"
+  },
+  {
+    "TableID": "07",
+    "TableContents": "ASSESSMENT INDICATOR",
+    "ColumnID": "AssessInd",
+    "ColumnValue": 0,
+    "Description": "NORMAL ASSESSMENT"
+  },
+  {
+    "TableID": "07",
+    "TableContents": "ASSESSMENT INDICATOR",
+    "ColumnID": "AssessInd",
+    "ColumnValue": 1,
+    "Description": "NON-ASSESSED-MUST FILE ANNUAL REPORT AND RA"
+  },
+  {
+    "TableID": "07",
+    "TableContents": "ASSESSMENT INDICATOR",
+    "ColumnID": "AssessInd",
+    "ColumnValue": 2,
+    "Description": "NON-ASSESSED-NOT REQ TO FILE RA OR ANNUAL REPORT"
+  },
+  {
+    "TableID": "07",
+    "TableContents": "ASSESSMENT INDICATOR",
+    "ColumnID": "AssessInd",
+    "ColumnValue": 3,
+    "Description": "NORMAL ASSESSMENT-RA, ANNUAL REPORT NOT REQUIRED"
+  },
+  {
+    "TableID": "07",
+    "TableContents": "ASSESSMENT INDICATOR",
+    "ColumnID": "AssessInd",
+    "ColumnValue": 4,
+    "Description": "COOPERATIVES-(STORING AND MARKETING)"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CAP",
+    "Description": "CAPITAL STOCK"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMA",
+    "Description": "COMMON A"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMANV",
+    "Description": "COMMON A  NON-VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMAV",
+    "Description": "COMMON A - VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMB",
+    "Description": "COMMON B"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMBB",
+    "Description": "COMMON BB"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMBNV",
+    "Description": "COMMON B - NON VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMBR",
+    "Description": "COMMON BR"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMBV",
+    "Description": "COMMON B VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMBX",
+    "Description": "COMMON BX"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMC",
+    "Description": "COMMON C"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMCNV",
+    "Description": "COMMON C NONVOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMCV",
+    "Description": "COMMON C VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMD",
+    "Description": "COMMON D"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMDNV",
+    "Description": "COMMON D NONVOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COME",
+    "Description": "COMMON E"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMF",
+    "Description": "COMMON F"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMH",
+    "Description": "COMMON H"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMM",
+    "Description": "COMMON M"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMMON",
+    "Description": "COMMON"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMNV",
+    "Description": "COMMON NON-VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMPV",
+    "Description": "COMMON P VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMT",
+    "Description": "COMMONT"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "COMV",
+    "Description": "COMMON-VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CONVP",
+    "Description": "CONVERTIBLE_PREFERRED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CONVPA",
+    "Description": "CONVERTIBLE PREFERRED A"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CONVPB",
+    "Description": "CONVERTIBLE PREFERRED B"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CONVPC",
+    "Description": "CONVERTIBLE PREFERRED C"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CONVPD",
+    "Description": "CONVERTIBLE PREFERRED SERIES D"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CUMP",
+    "Description": "CUMLATIVE PREFERRED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CUMPA",
+    "Description": "CUMULATIVE PREFERRED A"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CUMPB",
+    "Description": "CUMULATIVE PREFERRED B"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CUMPNV",
+    "Description": "CUMULATIVE PREFERRED NONVOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "CUMPV",
+    "Description": "CUMULATIVE PREFERRED VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "FCOM",
+    "Description": "FOUNDERS COMMON"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "FNDRS",
+    "Description": "FOUNDERS"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "MGR",
+    "Description": "MANAGERS"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "NCONVP",
+    "Description": "NON-CONVERTIBLE"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "NCPREF",
+    "Description": "NON CUMULATIVE PREFERRED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "NONVOT",
+    "Description": "NON-VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "NRCOM",
+    "Description": "NON-REDEEMABLE COMMON"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "ORD",
+    "Description": "ORDINARY"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "OTH",
+    "Description": "OTHER"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREF",
+    "Description": "PREFERENCE"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFA",
+    "Description": "PREFERRED A"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFANV",
+    "Description": "PREFERRED A NONVOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFB",
+    "Description": "PREFERRED B"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFBNV",
+    "Description": "PREFERRED CLASS B NONVOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFC",
+    "Description": "PREFERRED C"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFCC",
+    "Description": "CUMULATIVE CONVERTIBLE PREFERRED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFCNV",
+    "Description": "PREFERRED CLASS C NONVOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFD",
+    "Description": "PREFERRED D"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFE",
+    "Description": "PREFERRED E"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFER",
+    "Description": "PREFERRED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFERNP",
+    "Description": "PREFERRED_NO_PAR"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFERPV",
+    "Description": "PREFERRED_PAR VALUE"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFJR",
+    "Description": "JR PREFERRED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFNV",
+    "Description": "PREFERRED NON VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREFV",
+    "Description": "PREFERRED VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREF1",
+    "Description": "PREFERRED 1"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREF2",
+    "Description": "PREFERRED 2"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREF3",
+    "Description": "PREFERRED 3"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREF4",
+    "Description": "PREFERRED 4"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PREF5",
+    "Description": "PREFERRED 5"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "PRIPRE",
+    "Description": "PRIOR PREFERRED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "RCOM",
+    "Description": "REDEEMABLE COMMON"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "RJRPRE",
+    "Description": "R JUNIOR_PREFERRED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "SEP",
+    "Description": "SERIAL PREFERRED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "SEPREF",
+    "Description": "SERIAL PREFERRANCE"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "SP",
+    "Description": "SPECIAL"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "SRPREF",
+    "Description": "SENIOR PREFERRED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "UNLTD",
+    "Description": "UNLIMITED"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "VOT",
+    "Description": "VOTING"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": "WDAD",
+    "Description": "WTHDRWL ADD CHG"
+  },
+  {
+    "TableID": 12,
+    "TableContents": "STOCK CLASS",
+    "ColumnID": "Stock1 - Stock8",
+    "ColumnValue": 71,
+    "Description": "PREF4"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "A",
+    "Description": "RESTATEMENT OF ARTICLES"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "C",
+    "Description": "STOCK"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "D",
+    "Description": "CHANGE PRINCIPAL OFFICE"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "E",
+    "Description": "EXCHANGE"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "F",
+    "Description": "DATE OF FORMATION"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "J",
+    "Description": "STATE WHERE FORMED"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "L",
+    "Description": "CHANGE PRINCIPAL OFFICE"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "N",
+    "Description": "NAME CHANGE"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "O",
+    "Description": "OTHER"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "P",
+    "Description": "PURPOSE"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "R",
+    "Description": "RESTATEMENT OF ARTICLES"
+  },
+  {
+    "TableID": 19,
+    "TableContents": "AMENDMENT TYPES",
+    "ColumnID": "AmenType1 - AmenType8",
+    "ColumnValue": "T",
+    "Description": "SERIAL DESIGNATION"
+  },
+  {
+    "TableID": 23,
+    "TableContents": "L/P AMENDMENT & L/P CERT. OF CORRECTION TYPES",
+    "ColumnID": "AmenType1 - AmenType8 (LP.csv)",
+    "ColumnValue": "A",
+    "Description": "ADMISSION OF PARTNER"
+  },
+  {
+    "TableID": 23,
+    "TableContents": "L/P AMENDMENT & L/P CERT. OF CORRECTION TYPES",
+    "ColumnID": "AmenType1 - AmenType8 (LP.csv)",
+    "ColumnValue": "D",
+    "Description": "CHANGE PRINCIPAL OFFICE ADDRESS"
+  },
+  {
+    "TableID": 23,
+    "TableContents": "L/P AMENDMENT & L/P CERT. OF CORRECTION TYPES",
+    "ColumnID": "AmenType1 - AmenType8 (LP.csv)",
+    "ColumnValue": "F",
+    "Description": "DATE OF FORMATION"
+  },
+  {
+    "TableID": 23,
+    "TableContents": "L/P AMENDMENT & L/P CERT. OF CORRECTION TYPES",
+    "ColumnID": "AmenType1 - AmenType8 (LP.csv)",
+    "ColumnValue": "J",
+    "Description": "STATE, JURISDICTION WHERE ACTUALLY FORMED"
+  },
+  {
+    "TableID": 23,
+    "TableContents": "L/P AMENDMENT & L/P CERT. OF CORRECTION TYPES",
+    "ColumnID": "AmenType1 - AmenType8 (LP.csv)",
+    "ColumnValue": "M",
+    "Description": "MODIFY PARTNER ADDRESS"
+  },
+  {
+    "TableID": 23,
+    "TableContents": "L/P AMENDMENT & L/P CERT. OF CORRECTION TYPES",
+    "ColumnID": "AmenType1 - AmenType8 (LP.csv)",
+    "ColumnValue": "N",
+    "Description": "NAME CHANGE"
+  },
+  {
+    "TableID": 23,
+    "TableContents": "L/P AMENDMENT & L/P CERT. OF CORRECTION TYPES",
+    "ColumnID": "AmenType1 - AmenType8 (LP.csv)",
+    "ColumnValue": "O",
+    "Description": "OTHER"
+  },
+  {
+    "TableID": 23,
+    "TableContents": "L/P AMENDMENT & L/P CERT. OF CORRECTION TYPES",
+    "ColumnID": "AmenType1 - AmenType8 (LP.csv)",
+    "ColumnValue": "R",
+    "Description": "RESTATED CERTIFICATE"
+  },
+  {
+    "TableID": 23,
+    "TableContents": "L/P AMENDMENT & L/P CERT. OF CORRECTION TYPES",
+    "ColumnID": "AmenType1 - AmenType8 (LP.csv)",
+    "ColumnValue": "W",
+    "Description": "WITHDRAWAL OF PARTNER"
+  },
+  {
+    "TableID": 28,
+    "TableContents": "L/P REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LP.csv))",
+    "ColumnValue": 0,
+    "Description": "UNKNOWN"
+  },
+  {
+    "TableID": 28,
+    "TableContents": "L/P REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LP.csv))",
+    "ColumnValue": 1,
+    "Description": "GENERAL PARTNER, RESIDENT OF VIRGINIA"
+  },
+  {
+    "TableID": 28,
+    "TableContents": "L/P REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LP.csv))",
+    "ColumnValue": 2,
+    "Description": "OFFICER/DIRECTOR OF A CORPORATE GENERAL PARTNER"
+  },
+  {
+    "TableID": 28,
+    "TableContents": "L/P REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LP.csv))",
+    "ColumnValue": 3,
+    "Description": "GENERAL PARTNER OF A GENERAL PARTNER"
+  },
+  {
+    "TableID": 28,
+    "TableContents": "L/P REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LP.csv))",
+    "ColumnValue": 4,
+    "Description": "MEMBER OF VIRGINIA STATE BAR, RESIDENT OF VIRGINIA"
+  },
+  {
+    "TableID": 28,
+    "TableContents": "L/P REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LP.csv))",
+    "ColumnValue": 5,
+    "Description": "CORP/LLC/RLLP REGISTERED IN VIRGINIA"
+  },
+  {
+    "TableID": 28,
+    "TableContents": "L/P REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LP.csv))",
+    "ColumnValue": 6,
+    "Description": "RESIGNED"
+  },
+  {
+    "TableID": 28,
+    "TableContents": "L/P REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LP.csv))",
+    "ColumnValue": 7,
+    "Description": "MEMBER/MANAGER OF LLC GENERAL PARTNER"
+  },
+  {
+    "TableID": 28,
+    "TableContents": "L/P REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LP.csv))",
+    "ColumnValue": 8,
+    "Description": "TRUSTEE OF A TRUST"
+  },
+  {
+    "TableID": 40,
+    "TableContents": "LLC REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LLC.csv))",
+    "ColumnValue": 0,
+    "Description": "UNKNOWN"
+  },
+  {
+    "TableID": 40,
+    "TableContents": "LLC REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LLC.csv))",
+    "ColumnValue": 1,
+    "Description": "MEMBER/MANAGER"
+  },
+  {
+    "TableID": 40,
+    "TableContents": "LLC REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LLC.csv))",
+    "ColumnValue": 2,
+    "Description": "O/D OF CORP M/M"
+  },
+  {
+    "TableID": 40,
+    "TableContents": "LLC REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LLC.csv))",
+    "ColumnValue": 3,
+    "Description": "GP OF LP/GP M/M"
+  },
+  {
+    "TableID": 40,
+    "TableContents": "LLC REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LLC.csv))",
+    "ColumnValue": 4,
+    "Description": "MEMBER OF VSB"
+  },
+  {
+    "TableID": 40,
+    "TableContents": "LLC REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LLC.csv))",
+    "ColumnValue": 5,
+    "Description": "ENTITY AUTHORIZED IN VIRGINIA"
+  },
+  {
+    "TableID": 40,
+    "TableContents": "LLC REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LLC.csv))",
+    "ColumnValue": 6,
+    "Description": "RESIGNED"
+  },
+  {
+    "TableID": 40,
+    "TableContents": "LLC REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LLC.csv))",
+    "ColumnValue": 7,
+    "Description": "MEMB/MGR OF M/MGR OF THE LLC"
+  },
+  {
+    "TableID": 40,
+    "TableContents": "LLC REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LLC.csv))",
+    "ColumnValue": 8,
+    "Description": "TRUSTEE OF A TRUST"
+  },
+  {
+    "TableID": 40,
+    "TableContents": "LLC REGISTERED AGENT STATUS",
+    "ColumnID": "RA-Status (LLC.csv))",
+    "ColumnValue": 9,
+    "Description": "EMP/OFFICER"
+  }
+]
