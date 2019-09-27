@@ -23,6 +23,7 @@ if ! unzip -q -o -d /tmp/data/ /tmp/data.zip; then
     echo "CISbemon.CSV.zip could not be unzipped"
     exit 1
 fi
+echo "Data files unzipped"
 
 # Delete temporary artifacts
 rm /tmp/data.zip
