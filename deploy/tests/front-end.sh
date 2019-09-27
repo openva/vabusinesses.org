@@ -18,6 +18,12 @@ if [ "$(curl -s http://localhost/search.php?query=peabody |grep -c 'Riggs')" -lt
     ERRORED=true
 fi
 
+# Run a search for a non-existent string to verify that there are no results
+if [ "$(curl -s http://localhost/search.php?query=asdfghjkl |grep -c 'No results found')" -lt 1 ]; then
+    echo "ERROR: Search should be reporting no results found, but is not"
+    ERRORED=true
+fi
+
 # If any tests failed, have this script return that failure
 if [ "$ERRORED" == true ]; then
     exit 1
