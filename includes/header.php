@@ -2,6 +2,9 @@
 
 include('vendor/autoload.php');
 
+/*
+ * Define the function for API queries, etc.
+ */
 function get_content($url)
 {
 
@@ -27,6 +30,9 @@ function get_content($url)
 
 }
 
+/*
+ * Identify the prefix for URL queries
+ */
 if (!empty($_SERVER['HTTPS']))
 {
     $api_url = 'https';
