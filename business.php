@@ -40,6 +40,12 @@ if ($business === FALSE)
     exit();
 }
 
+elseif (empty($business))
+{
+    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
+    exit();   
+}
+
 $template = new Smarty;
 
 $page_title = 'Virginia Businesses';
