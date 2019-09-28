@@ -71,6 +71,13 @@ class Business
         {
             $field = trim($field);
         }
+
+        $lookup_table = Business::lookup_table();
+        $this->business['StatusText'] = $lookup_table['corporate-status-table'][$this->business{'Status'}];
+        $this->business['IndustryText'] = $lookup_table['industry-code-table'][$this->business{'IndustryCode'}];
+        $this->business['RA-StatusText'] = $lookup_table['registered-agent-status'][$this->business{'RA-Status'}];
+        $this->business['RA-LocText'] = $lookup_table['court-locality-code'][$this->business{'RA-Localit'}];
+        $this->business['AssessIndText'] = $lookup_table['assessment-indicator'][$this->business{'AssessInd'}];
         
         return $this->business;
 
