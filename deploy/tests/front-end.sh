@@ -2,25 +2,29 @@
 
 # Fetch a single business's records
 if [ "$(curl -s http://localhost/business/F000032 |grep -c 'AMERICAN BRANDS')" -lt 1 ]; then
-    echo "ERROR: Front-end is not returning business records"
+    echo "ERROR: Front-end is not returning business records:"
+    curl http://localhost/business/F000032
     ERRORED=true
 fi
 
 # Query a business ID that doesn't exist
 if [ "$(curl -Is http://localhost/business/F000001 |grep -c '404 Not Found')" -lt 1 ]; then
-    echo "ERROR: Front-end is not returning a 404 response to request for a non-existent business ID"
+    echo "ERROR: Front-end is not returning a 404 response to request for a non-existent business ID:"
+    curl -Is http://localhost/business/F000001
     ERRORED=true
 fi
 
 # Run a search to verify that there are results
 if [ "$(curl -s http://localhost/search.php?query=peabody |grep -c 'Riggs')" -lt 1 ]; then
-    echo "ERROR: Search is not returning results"
+    echo "ERROR: Search is not returning results:"
+    curl http://localhost/search.php?query=peabody
     ERRORED=true
 fi
 
 # Run a search for a non-existent string to verify that there are no results
 if [ "$(curl -s http://localhost/search.php?query=asdfghjkl |grep -c 'No results found')" -lt 1 ]; then
-    echo "ERROR: Search should be reporting no results found, but is not"
+    echo "ERROR: Search should be reporting no results found, but is not:"
+    curl http://localhost/search.php?query=asdfghjkl
     ERRORED=true
 fi
 
