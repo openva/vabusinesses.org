@@ -3,7 +3,6 @@
 # Fetch a single business's records
 if [ "$(curl -s http://localhost/business/F000032 |grep -c 'AMERICAN BRANDS')" -lt 1 ]; then
     echo "ERROR: Front-end is not returning business records"
-    curl http://localhost/business/F000032
     ERRORED=true
 fi
 

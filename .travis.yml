@@ -10,6 +10,7 @@ install:
 - composer install
 script:
 - ./docker-run.sh
+- mkdir templates_c
 - ./run-tests.sh
 - deploy/populate-secrets.sh
 - sonar-scanner && zip -qr latest * && mkdir -p upload && mv latest.zip upload/latest.zip
