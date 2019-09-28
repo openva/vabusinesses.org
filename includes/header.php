@@ -43,33 +43,3 @@ else {
 $api_url .= '://';
 $api_url .= $_SERVER['SERVER_NAME'];
 define('API_URL', $api_url);
-
-/*
- * Fetch the conversion table
- */
-$tables_json = file_get_contents('includes/tables.json');
-
-/*
- * Convert to an array
- */
-$tables = json_decode($tables_json, TRUE);
-
-$lookup_table = array();
-
-/*
- * Reduce and pivot the table into a nested key/value lookup
- */
-foreach ($tables as $entry)
-{
-    unset($entry['TableID']);
-    $entry['TableContents'] = strtolower($entry['TableContents']);
-    $entry['TableContents'] = preg_replace('/[\&\.\/]/', '', $entry['TableContents']);
-    $entry['TableContents'] = preg_replace('/\W+/', '-', $entry['TableContents']);
-
-    if (!isset($lookup_table[$entry{'TableContents'}]))
-    {
-        $lookup_table[$entry{'TableContents'}] = array();
-    }
-
-    $lookup_table[$entry{'TableContents'}][$entry{'ColumnValue'}] = $entry['Description'];
-}

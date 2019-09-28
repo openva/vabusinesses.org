@@ -177,4 +177,39 @@ class Business
         return $this->results;
     }
 
+    function lookup_table()
+    {
+        /*
+        * Fetch the conversion table
+        */
+        $tables_json = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/includes/tables.json');
+
+        /*
+        * Convert to an array
+        */
+        $tables = json_decode($tables_json, TRUE);
+
+        $this->lookup_table = array();
+
+        /*
+        * Reduce and pivot the table into a nested key/value lookup
+        */
+        foreach ($tables as $entry)
+        {
+            unset($entry['TableID']);
+            $entry['TableContents'] = strtolower($entry['TableContents']);
+            $entry['TableContents'] = preg_replace('/[\&\.\/]/', '', $entry['TableContents']);
+            $entry['TableContents'] = preg_replace('/\W+/', '-', $entry['TableContents']);
+
+            if (!isset($this->lookup_table[$entry{'TableContents'}]))
+            {
+                $this->lookup_table[$entry{'TableContents'}] = array();
+            }
+
+            $this->lookup_table[$entry{'TableContents'}][$entry{'ColumnValue'}] = $entry['Description'];
+        }
+        
+        return $this->lookup_table;
+    }
+
 }
