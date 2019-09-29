@@ -7,11 +7,12 @@ addons:
     organization: "openva"
 install:
 - npm install && npm run build
-- composer install
+- composer install --no-interaction --no-suggest --no-progress
 script:
 - ./docker-run.sh
 - mkdir templates_c && chmod 777 templates_c
 - ./run-tests.sh
+- vendor/bin/phpunit -c phpunit.xml --coverage-clover=coverage-report.clover --log-junit=test-report.xml
 - deploy/populate-secrets.sh
 - sonar-scanner && zip -qr latest * && mkdir -p upload && mv latest.zip upload/latest.zip
 deploy:
