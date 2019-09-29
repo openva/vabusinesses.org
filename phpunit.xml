@@ -5,4 +5,11 @@
             <directory>./deploy/tests/</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">.</directory>
+            <directory suffix=".php">includes/</directory>
+            <directory suffix=".php">api/</directory>
+        </whitelist>
+    </filter>
 </phpunit>
