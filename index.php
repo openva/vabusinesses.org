@@ -26,7 +26,7 @@ $page_body = '
 
 		$recent_json = get_content($api_url);
 		$recent = json_decode($recent_json);
-		if ($recent != FALSE)
+		if (!$recent !== FALSE)
 		{
 			
 			$page_body .= '
