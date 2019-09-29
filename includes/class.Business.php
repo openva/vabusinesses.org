@@ -118,6 +118,23 @@ class Business
     }
 
     /**
+     * Verify that a business identifier is syntatically valid
+     *
+     * @param [type] $id
+     * @return boolean
+     */
+    function id_is_valid($id)
+    {
+        $entity_id_pcre = '/(F|S|T|L|M|[0-9]{1})([0-9]{6})/';
+
+        if ( preg_match($entity_id_pcre, $id) == 0 )
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Identify type of business based on identifier
      *
      * @param [type] $id
