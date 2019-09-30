@@ -1,6 +1,6 @@
 <?php
 
-require('autoloader.php');
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 use PHPUnit\Framework\TestCase;
 
