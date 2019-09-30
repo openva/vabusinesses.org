@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< Updated upstream
 require 'header.php';
 
 $template = new Smarty;
@@ -134,3 +135,57 @@ $template->assign('page_title', $page_title);
 $template->assign('browser_title', $browser_title);
 
 $template->display('includes/templates/simple.tpl');
+=======
+require 'vendor/autoload.php';
+
+$router = new AltoRouter();
+
+/*
+ * Map our routes
+ */
+
+$router->map( 'GET', '/', function()
+{
+    require __DIR__ . '/home.php';
+});
+
+$router->map( 'GET', '/business/[a:id]', function($id)
+{
+    require __DIR__ . '/business.php';
+}, 'business-details' );
+
+$router->map( 'GET', '/search/[a:query]', function($query)
+{
+    require __DIR__ . '/search.php';
+}, 'search' );
+
+$router->map( 'GET', '/api/business/[a:id]', function($id)
+{
+    require __DIR__ . '/api/business.php';
+}, 'api-business-details' );
+
+$router->map( 'GET', '/search/[a:query]', function($query)
+{
+    require __DIR__ . '/api/search.php';
+}, 'api-search' );
+
+$router->map( 'GET', '/recent', function()
+{
+    require __DIR__ . '/api/recent.php';
+});
+
+$match = $router->match();
+
+if ( is_array($match) && is_callable( $match['target'] ) )
+{
+	call_user_func_array( $match['target'], $match['params'] ); 
+}
+
+/*
+ * 404
+ */
+else
+{
+	header($_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
+}
+>>>>>>> Stashed changes

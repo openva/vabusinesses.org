@@ -1,14 +1,6 @@
 <?php
 
-require 'header.php';
-
-/*
- * Use the search string passed in the URL
- */
-if ( isset($_GET['query']) )
-{
-    $query = filter_var($_GET['query'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-}
+$query = filter_var($_GET['query'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
 
 $database = new Database;
 $db = $database->connect();

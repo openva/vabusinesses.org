@@ -1,7 +1,5 @@
 <?php
 
-require 'header.php';
-
 $database = new Database;
 $db = $database->connect();
 

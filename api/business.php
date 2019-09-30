@@ -1,15 +1,9 @@
 <?php
 
-require 'header.php';
-
 /*
  * Use the identifier passed in the URL
  */
-if ( isset($_GET['id']) && strlen($_GET['id']) == 7)
-{
-    $id = $_GET['id'];
-}
-else
+if ( !isset($id) || strlen($id) != 7)
 {
     header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
     echo json_encode('Error');
