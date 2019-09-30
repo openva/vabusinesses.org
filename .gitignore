@@ -3,3 +3,4 @@ mini-default.min.css
 vendor/
 templates_c/
 deploy/tests/phpunit
+test-report.xml
