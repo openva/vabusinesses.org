@@ -1,6 +1,6 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+require 'header.php';
 
 /*
  * Use the search string passed in the URL

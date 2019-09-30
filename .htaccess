@@ -20,5 +20,6 @@ Header add X-Frame-Options "DENY"
 
 Header unset X-XSS-Protection
 Header add X-XSS-Protection "1; mode=block"
-php_value include_path ".:includes/"
+
+php_value include_path ".:includes/:vendor/"
 php_value error_reporting 2039

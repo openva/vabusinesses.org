@@ -13,4 +13,4 @@ RewriteRule ^recent$ recent.php [QSA]
 Header set Cache-Control "max-age=604800, public"
 
 # Specify the include path
-php_value include_path ".:/var/www/htdocs/includes/"
+php_value include_path ".:../includes/"
