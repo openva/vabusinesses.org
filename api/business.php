@@ -1,6 +1,6 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/autoloader.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 /*
  * Use the identifier passed in the URL

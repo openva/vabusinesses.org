@@ -1,6 +1,6 @@
 <?php
 
-include('vendor/autoload.php');
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 /*
  * Define the function for API queries, etc.
