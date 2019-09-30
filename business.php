@@ -10,7 +10,7 @@ $entity_id_pcre = '/(F|S|T|L|M|[0-9]{1})([0-9]{6})/';
 /*
  * If no business ID has been passed in the URL
  */
-if (!isset($_GET['id']))
+if (!isset($id))
 {
     header($_SERVER["SERVER_PROTOCOL"]." 400 Bad Request", true, 400);
     exit();
@@ -19,13 +19,11 @@ if (!isset($_GET['id']))
 /*
  * If the business ID has an invalid format
  */
-elseif ( preg_match($entity_id_pcre, $_GET['id'] == 0) )
+elseif ( preg_match($entity_id_pcre, $id) == 0 )
 {
     header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
     exit();
 }
-
-$id = $_GET['id'];
 
 /*
  * Query our own API 
