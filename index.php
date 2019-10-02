@@ -28,12 +28,12 @@ $router->map( 'GET', '/api/business/[a:id]', function($id)
     require __DIR__ . '/api/business.php';
 }, 'api-business-details' );
 
-$router->map( 'GET', '/search/[a:query]', function($query)
+$router->map( 'GET', '/api/search/[a:query]', function($query)
 {
     require __DIR__ . '/api/search.php';
 }, 'api-search' );
 
-$router->map( 'GET', '/recent', function()
+$router->map( 'GET', '/api/recent', function()
 {
     require __DIR__ . '/api/recent.php';
 });
