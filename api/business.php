@@ -35,4 +35,12 @@ if (!is_array($biz))
     exit;
 }
 
+/*
+ * Get the officer records
+ */
+$officers = new Officers;
+$officers->db = $db;
+$officers->id = $id;
+$biz['Officers'] = $officers->fetch();
+
 echo json_encode($biz);
