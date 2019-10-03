@@ -36,6 +36,20 @@ if (!is_array($biz))
 }
 
 /*
+ * Move RA fields into their own sub-array
+ */
+$biz['RegisteredAgent'] = array();
+foreach ($biz as $key => &$value)
+{
+    if ( stristr($key, 'RA-') )
+    {
+        $new_key = str_replace('RA-', '', $key);
+        $biz['RegisteredAgent'][$new_key] = $value;
+        unset($biz[$key]);
+    }
+}
+
+/*
  * Get the officer records
  */
 $officers = new Officers;

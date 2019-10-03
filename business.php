@@ -31,7 +31,7 @@ elseif ( preg_match($entity_id_pcre, $id) == 0 )
 $api_url = API_URL . '/api/business/' . $id;
 
 $business_json = get_content($api_url);
-$business = json_decode($business_json);
+$business = json_decode($business_json, TRUE);
 if ($business === FALSE)
 {
     header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
@@ -86,6 +86,13 @@ foreach ($business as $field_name => $field_value)
         }
     }
 
+    elseif ($field_name == 'RegisteredAgent')
+    {
+        foreach ($field_value as $key => $value)
+        {
+            $page_body .= '<tr><td>Registered Agent ' . $key . '</td><td>' . $value . '</td></tr>';
+        }
+    }
 }
 $page_body .= '
     </table>
