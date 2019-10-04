@@ -62,35 +62,69 @@ $page_body = '
             </tr>
         </thead>
         <tbody>';
-foreach ($business as $field_name => $field_value)
+
+$field_order = array
+(
+    'Name' => 'Name',
+    'EntityID' => 'Corporate ID',
+    'IncorpDate' => 'Incorporation Date',
+    'IncorpState' => 'State Incorporated',
+    'IndustryText' => 'Industry',
+    'Status' => 'Status',
+    'StatusDate' => 'Date',
+    'Duration' => 'Duration',
+    'Street1' => 'Street Address',
+    'Street2' => 'Street Address 2',
+    'City' => 'City',
+    'State' => 'State',
+    'Zip' => 'ZIP',
+    'PrinOffEffDate' => 'PrinOffEffDate',
+    'AssessIndText' => 'AssessInd',
+    'StockInd' => 'StockInd',
+    'TotalShares' => 'Total Shares',
+    'Stock1' => 'Stock1',
+    'Stock2' => 'Stock2',
+    'Stock3' => 'Stock3',
+    'Stock4' => 'Stock4',
+    'Stock5' => 'Stock5',
+    'Stock6' => 'Stock6',
+    'Stock7' => 'Stock7',
+    'Stock8' => 'Stock8',
+    'Stock9' => 'Stock9',
+);
+
+$business['IncorpDate'] = date('M d, Y', strtotime($business['IncorpDate']));
+
+foreach ($field_order as $key => $label)
 {
-    
-    /*
-     * Ignore blank stock fields
-     */
-    if ( stristr($field_name, 'stock') && empty($field_value) )
+    if (empty($business[$key]))
     {
         continue;
     }
 
-    if ( !is_array($field_value) )
-    {
-        $page_body .= '<tr><td>' . $field_name . '</td><td>' . $field_value . '</td></tr>';
-    }
+    $page_body .= '<tr><td>' . $label . '</td><td>' . $business[$key] . '</td></tr>';
+}
 
-    elseif ($field_name == 'Officers')
+foreach ($business as $field_name => $field_value)
+{
+
+    if ( is_array($field_value) )
     {
-        foreach ($field_value as $officer)
+
+        if ($field_name == 'Officers')
         {
-            $page_body .= '<tr><td>' . $officer['OfficerTitle'] . '</td><td>' . $officer['OfficerFirstName'] . ' ' . $officer['OfficerLastName'] . '</td></tr>';
+            foreach ($field_value as $officer)
+            {
+                $page_body .= '<tr><td>' . $officer['OfficerTitle'] . '</td><td>' . $officer['OfficerFirstName'] . ' ' . $officer['OfficerLastName'] . '</td></tr>';
+            }
         }
-    }
 
-    elseif ($field_name == 'RegisteredAgent')
-    {
-        foreach ($field_value as $key => $value)
+        elseif ($field_name == 'RegisteredAgent')
         {
-            $page_body .= '<tr><td>Registered Agent ' . $key . '</td><td>' . $value . '</td></tr>';
+            foreach ($field_value as $key => $value)
+            {
+                $page_body .= '<tr><td>Registered Agent ' . $key . '</td><td>' . $value . '</td></tr>';
+            }
         }
     }
 }
