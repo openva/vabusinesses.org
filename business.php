@@ -46,7 +46,7 @@ elseif (empty($business))
 
 $template = new Smarty;
 
-$page_title = 'Virginia Businesses';
+$page_title = $business['Name'];
 $browser_title = 'Virginia Businesses';
 
 /*
