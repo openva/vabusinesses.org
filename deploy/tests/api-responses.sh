@@ -4,7 +4,7 @@
 BUSINESS_JSON="$(curl -s http://localhost/api/business/F000032)"
 
 if [ "$(echo $BUSINESS_JSON |jq '.EntityID')" != '"F000032"' ]; then
-    echo "ERROR: API is not returning entity ID correctly"
+    echo "ERROR: API is not returning EntityID correctly"
     ERRORED=true
 fi
 
@@ -14,12 +14,12 @@ if [ "$(echo $BUSINESS_JSON |jq '.Stock1')" != '"COMMON (200000000)"' ]; then
 fi
 
 if [ "$(echo $BUSINESS_JSON |jq '.IncorpDate')" != '"1903-08-18"' ]; then
-    echo "ERROR: API is not returning incorporation date correctly"
+    echo "ERROR: API is not returning IncorpDate correctly"
     ERRORED=true
 fi
 
 if [ "$(echo $BUSINESS_JSON |jq '.Name')" != '"AMERICAN BRANDS, INC."' ]; then
-    echo "ERROR: API is not returning corporation name correctly"
+    echo "ERROR: API is not returning Name correctly"
     ERRORED=true
 fi
 
