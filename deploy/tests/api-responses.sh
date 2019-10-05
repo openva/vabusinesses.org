@@ -30,7 +30,7 @@ fi
 # Run a search for a test query
 SEARCH_JSON="$(curl -s http://localhost/api/search/test)"
 
-if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '100' ]; then
+if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '99' ]; then
     echo "ERROR: API is not returning the correct number of search results"
     echo $SEARCH_JSON
     ERRORED=true
