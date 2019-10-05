@@ -119,11 +119,6 @@ class Business
             }
         }
 
-        if (count($this->results) == 0)
-        {
-            return FALSE;
-        }
-
         return $this->results;
 
     }
