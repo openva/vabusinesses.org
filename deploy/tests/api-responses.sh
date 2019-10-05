@@ -31,8 +31,7 @@ fi
 SEARCH_JSON="$(curl -s http://localhost/api/search/test)"
 
 if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '99' ]; then
-    echo "ERROR: API is not returning the correct number of search results"
-    echo $SEARCH_JSON
+    echo "ERROR: API is returning $(echo $SEARCH_JSON |jq '. | length') search results, not 99"
     ERRORED=true
 fi
 
