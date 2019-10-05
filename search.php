@@ -7,16 +7,16 @@ $template = new Smarty;
 $page_title = 'Virginia Businesses';
 $browser_title = 'Virginia Businesses';
 
+$query = filter_var($query, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+
 /*
  * If no search query has been passed in the URL
  */
-if (!isset($_GET['query']) || empty($_GET['query']))
+if (!isset($query) || empty($query))
 {
     header($_SERVER["SERVER_PROTOCOL"]." 400 Bad Request", true, 400);
     exit();
 }
-
-$query = filter_var($_GET['query'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
 
 /*
  * Query our own API 

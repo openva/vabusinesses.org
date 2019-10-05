@@ -105,6 +105,7 @@ class Business
                     FROM ' . $type . '
                     WHERE Name LIKE "%' . $this->query . '%"
                     LIMIT 33';
+            
             $result = $this->db->query($sql);
 
             if ($result->numColumns() == 0)

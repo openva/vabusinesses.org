@@ -1,6 +1,6 @@
 <?php
 
-$query = filter_var($_GET['query'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+$query = filter_var($query, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
 
 $database = new Database;
 $db = $database->connect();
