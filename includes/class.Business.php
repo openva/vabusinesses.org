@@ -84,7 +84,7 @@ class Business
     }
 
      /**
-      * Search matching business records, return the first 100
+      * Search matching business records, return the first 99
       *
       * @return array
       */
@@ -96,21 +96,31 @@ class Business
             return FALSE;
         }
 
-        $sql = 'SELECT *
-                FROM corp
-                WHERE Name LIKE "%' . $this->query . '%"
-                LIMIT 100';
-        $result = $this->db->query($sql);
+        $this->results = [];
 
-        if ($result->numColumns() == 0)
+        foreach (array('corp', 'llc', 'lp') as $type)
         {
-            return false;
+
+            $sql = 'SELECT *
+                    FROM ' . $type . '
+                    WHERE Name LIKE "%' . $this->query . '%"
+                    LIMIT 33';
+            $result = $this->db->query($sql);
+
+            if ($result->numColumns() == 0)
+            {
+                continue;
+            }
+
+            while ($business = $result->fetchArray(SQLITE3_ASSOC))
+            {
+                $this->results[] = $business;
+            }
         }
 
-        $this->results = [];
-        while ($business = $result->fetchArray(SQLITE3_ASSOC))
+        if (count($this->results) == 0)
         {
-            $this->results[] = $business;
+            return FALSE;
         }
 
         return $this->results;
