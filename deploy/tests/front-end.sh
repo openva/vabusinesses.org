@@ -15,7 +15,7 @@ if [ "$(curl -Is http://localhost/business/F000001 |grep -c '404 Not Found')" -l
 fi
 
 # Run a search to verify that there are results
-if [ "$(curl -s http://localhost/search.php?query=peabody |grep -c 'Riggs')" -lt 1 ]; then
+if [ "$(curl -s http://localhost/search.php?query=peabody |grep -c 'American Brands')" -lt 1 ]; then
     echo "ERROR: Search is not returning results:"
     curl http://localhost/search.php?query=peabody
     ERRORED=true
