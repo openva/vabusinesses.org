@@ -31,7 +31,7 @@ fi
 SEARCH_JSON="$(curl -s http://localhost/api/search/test)"
 
 if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '100' ]; then
-    echo "ERROR: API is not returning enough search results"
+    echo "ERROR: API is not returning the correct number of search results"
     echo $SEARCH_JSON
     ERRORED=true
 fi
@@ -40,7 +40,7 @@ fi
 SEARCH_JSON="$(curl -s http://localhost/api/search/asdflasdfqasdl)"
 
 if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '0' ]; then
-    echo "ERROR: API is not returning excessive search results"
+    echo "ERROR: API is returning excessive search results"
     echo $SEARCH_JSON
     ERRORED=true
 fi
