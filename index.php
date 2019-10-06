@@ -50,6 +50,6 @@ if ( is_array($match) && is_callable( $match['target'] ) )
  */
 else
 {
-	header($_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
+	header(SERVER_PROTOCOL . ' 404 Not Found');
 }
 

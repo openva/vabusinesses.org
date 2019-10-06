@@ -5,7 +5,7 @@
  */
 if ( !isset($id) || strlen($id) != 7)
 {
-    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
+    header(SERVER_PROTOCOL . " 404 Not Found", true, 404);
     echo json_encode('Error');
     exit;
 }
@@ -15,7 +15,7 @@ $db = $database->connect();
 
 if (!$db)
 {
-    header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
+    header(SERVER_PROTOCOL . " 500 Internal Server Error", true, 500);
     echo json_encode('Error');
     exit;
 }
@@ -30,7 +30,7 @@ $biz = $business->fetch();
 
 if (!is_array($biz))
 {
-    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
+    header(SERVER_PROTOCOL . " 404 Not Found", true, 404);
     echo json_encode('Error');
     exit;
 }
