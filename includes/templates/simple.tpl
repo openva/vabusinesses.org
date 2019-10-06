@@ -12,6 +12,11 @@
 	<body>
 	<header>
 		<h1><a href="/" rel="home">Virginia Businesses</a></h1>
+		<nav>
+			<a href="/">Home</a>
+			<a href="/search/">Search</a>
+			<a href="/data/">Data</a>
+		</nav>
 	</header>
 	<main>
 
