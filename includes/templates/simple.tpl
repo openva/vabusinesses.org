@@ -10,6 +10,9 @@
 	</head>
 	
 	<body>
+	<header>
+		<h1><a href="/" rel="home">Virginia Businesses</a></h1>
+	</header>
 	<main>
 
 		<h1>{$page_title}</h1>
