@@ -43,3 +43,9 @@ else {
 $api_url .= '://';
 $api_url .= $_SERVER['SERVER_NAME'];
 define('API_URL', $api_url);
+
+/*
+ * Define a default server protocol, because this isn't defined at the CLI, causing
+ * the build to fail in Travis CI.
+ */
+$_SERVER["SERVER_PROTOCOL"] = array_key_exists( 'SERVER_PROTOCOL',  $_SERVER) ? $_SERVER['SERVER_PROTOCOL'] : "HTTP/1.1";
