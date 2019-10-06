@@ -5,9 +5,11 @@ pushd .
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$DIR" || exit
 
-# Run the source data tests
-if ! ./source-data.sh; then
-    ERRORED=true
+# Run the source data tests, but only if the data isn't already saved
+if [ ! -f ../../data/vabusinesses.sqlite ]; then
+    if ! ./source-data.sh; then
+        ERRORED=true
+    fi
 fi
 
 # Run the API responses tests
