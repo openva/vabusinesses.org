@@ -4,70 +4,57 @@ require 'header.php';
 
 $template = new Smarty;
 
-$page_title = 'Virginia Businesses';
 $browser_title = 'Virginia Businesses';
-$page_body = '
-		<article>
 
-			<form method="get" action="/search.php">
-				<label for="query">Search</label>
-				<input type="text" size="50" name="query" id="query">
-				<input type="submit" value="Go">
-			</form>
+/*
+* Query our API for recent businesses
+*/
+$api_url = API_URL . '/api/recent';
 
-		</article>';
+$recent_json = get_content($api_url);
+$recent = json_decode($recent_json);
+if (!$recent !== FALSE)
+{
+	
+	$page_body .= '
+		<article class="container">
+		<h2>Newest Businesses</h2>';
 
+	$i=3;
+	if (count($recent) > 9)
+	{
+		$recent = array_slice($recent, 0, 9);
+	}
+	foreach ($recent as $business)
+	{
 
-
-		/*
-		* Query our API for recent businesses
-		*/
-		$api_url = API_URL . '/api/recent';
-
-		$recent_json = get_content($api_url);
-		$recent = json_decode($recent_json);
-		if (!$recent !== FALSE)
+		if ( ($i % 3) == 0 )
 		{
-			
-			$page_body .= '
-				<article class="container">
-				<h2>Newest Businesses</h2>';
-
-			$i=3;
-			if (count($recent) > 9)
-			{
-				$recent = array_slice($recent, 0, 9);
-			}
-			foreach ($recent as $business)
-			{
-
-				if ( ($i % 3) == 0 )
-				{
-					$page_body .= '<div class="row">';
-				}
-				
-				$page_body .= '
-					<div class="card small">
-						<h3><a href="/business/' . $business->EntityID . '">' . $business->Name . '</a></h3>
-						<p>';
-				if (!empty($business->City))
-				{
-					$page_body .= $business->City . ', ' . $business->State . '<br>';
-				} 
-				$page_body .= date('M d, Y', strtotime($business->IncorpDate)) . '</p>
-					</div>';
-
-				if ( ($i % 3) == 2 )
-				{
-					$page_body .= '</div>';
-				}
-				$i++;
-
-			}
-
-			$page_body .= '</article>';
-		
+			$page_body .= '<div class="row">';
 		}
+		
+		$page_body .= '
+			<div class="card small">
+				<h3><a href="/business/' . $business->EntityID . '">' . $business->Name . '</a></h3>
+				<p>';
+		if (!empty($business->City))
+		{
+			$page_body .= $business->City . ', ' . $business->State . '<br>';
+		} 
+		$page_body .= date('M d, Y', strtotime($business->IncorpDate)) . '</p>
+			</div>';
+
+		if ( ($i % 3) == 2 )
+		{
+			$page_body .= '</div>';
+		}
+		$i++;
+
+	}
+
+	$page_body .= '</article>';
+
+}
 
 $page_body .= '
 		<article>

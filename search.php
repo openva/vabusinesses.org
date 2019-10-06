@@ -4,7 +4,6 @@ require 'header.php';
 
 $template = new Smarty;
 
-$page_title = 'Virginia Businesses';
 $browser_title = 'Virginia Businesses';
 
 $query = filter_var($query, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
