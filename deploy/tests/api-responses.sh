@@ -30,8 +30,8 @@ fi
 # Run a search for a test query
 SEARCH_JSON="$(curl -s http://localhost/api/search/test)"
 
-if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '99' ]; then
-    echo "ERROR: API is returning $(echo $SEARCH_JSON |jq '. | length') search results, not 99"
+if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '67' ]; then
+    echo "ERROR: API is returning $(echo $SEARCH_JSON |jq '. | length') search results, not 67"
     ERRORED=true
 fi
 
