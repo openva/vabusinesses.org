@@ -13,7 +13,7 @@ $query = filter_var($query, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
  */
 if (!isset($query) || empty($query))
 {
-    header(SERVER_PROTOCOL . " 400 Bad Request", true, 400);
+    header($_SERVER['SERVER_PROTOCOL'] . " 400 Bad Request", true, 400);
     exit();
 }
 
@@ -26,7 +26,7 @@ $results_json = get_content($api_url);
 $results = json_decode($results_json);
 if ($results === FALSE)
 {
-    header(SERVER_PROTOCOL . " 500 Internal Server Error", true, 500);
+    header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error", true, 500);
     exit();
 }
 

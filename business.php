@@ -12,7 +12,7 @@ $entity_id_pcre = '/(F|S|T|L|M|[0-9]{1})([0-9]{6})/';
  */
 if (!isset($id))
 {
-    header(SERVER_PROTOCOL . " 400 Bad Request", true, 400);
+    header($_SERVER['SERVER_PROTOCOL'] . " 400 Bad Request", true, 400);
     exit();
 }
 
@@ -21,7 +21,7 @@ if (!isset($id))
  */
 elseif ( preg_match($entity_id_pcre, $id) == 0 )
 {
-    header(SERVER_PROTOCOL . " 404 Not Found", true, 404);
+    header($_SERVER['SERVER_PROTOCOL'] . " 404 Not Found", true, 404);
     exit();
 }
 
@@ -34,13 +34,13 @@ $business_json = get_content($api_url);
 $business = json_decode($business_json, TRUE);
 if ($business === FALSE)
 {
-    header(SERVER_PROTOCOL . " 500 Internal Server Error", true, 500);
+    header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error", true, 500);
     exit();
 }
 
 elseif (empty($business))
 {
-    header(SERVER_PROTOCOL . " 404 Not Found", true, 404);
+    header($_SERVER['SERVER_PROTOCOL'] . " 404 Not Found", true, 404);
     exit();   
 }
 

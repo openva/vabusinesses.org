@@ -5,7 +5,7 @@ $db = $database->connect();
 
 if (!$db)
 {
-    header(SERVER_PROTOCOL . " 500 Internal Server Error", true, 500);
+    header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error", true, 500);
     echo json_encode('Error');
     exit;
 }
@@ -20,7 +20,7 @@ $results = $business->recent();
 
 if (!is_array($results))
 {
-    header(SERVER_PROTOCOL . " 404 Not Found", true, 404);
+    header($_SERVER['SERVER_PROTOCOL'] . " 404 Not Found", true, 404);
     echo json_encode('Error');
     exit;
 }
