@@ -30,5 +30,8 @@ fi
 
 echo "All Bash tests passed"
 
+cd ../.. || exit
+./vendor/bin/phpunit --bootstrap deploy/tests/bootstrap.php -c deploy/tests/phpunit.xml --coverage-clover=coverage-report.clover --log-junit=test-report.xml
+
 # Switch back to the directory this was invoked from
 popd || exit
