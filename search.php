@@ -1,6 +1,6 @@
 <?php
 
-require 'header.php';
+require 'includes/header.php';
 
 $template = new Smarty;
 
