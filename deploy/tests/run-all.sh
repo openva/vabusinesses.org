@@ -24,13 +24,16 @@ fi
 
 # If any tests failed, have this script return that failure
 if [ "$ERRORED" == true ]; then
-    echo "Some tests failed"
-    popd || exit 1
+    echo "Some Bash tests failed"
+else
+    echo "All Bash tests passed"
 fi
 
-echo "All Bash tests passed"
+cd "$DIR" || exit 1
+cd ../.. || exit 1
 
-cd ../.. || exit
+pwd
+
 ./vendor/bin/phpunit --bootstrap deploy/tests/bootstrap.php -c deploy/tests/phpunit.xml --coverage-clover=coverage-report.clover --log-junit=test-report.xml
 
 # Switch back to the directory this was invoked from
