@@ -11,7 +11,7 @@ $router = new AltoRouter();
 $router->map( 'GET', '/', function()
 {
     require __DIR__ . '/home.php';
-});
+}, 'home');
 
 $router->map( 'GET', '/business/[a:id]', function($id)
 {
@@ -36,7 +36,7 @@ $router->map( 'GET', '/api/search/[a:query]', function($query)
 $router->map( 'GET', '/api/recent', function()
 {
     require __DIR__ . '/api/recent.php';
-});
+}, 'api-recent');
 
 $match = $router->match();
 
@@ -50,6 +50,5 @@ if ( is_array($match) && is_callable( $match['target'] ) )
  */
 else
 {
-	header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+    header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
 }
-
