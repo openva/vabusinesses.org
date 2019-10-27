@@ -15,16 +15,16 @@ if [ "$(curl -Is http://localhost/business/F000001 |grep -c '404 Not Found')" -l
 fi
 
 # Run a search to verify that there are results
-if [ "$(curl -s http://localhost/search/peabody |grep -c 'Riggs')" -lt 1 ]; then
+if [ "$(curl -s http://localhost/search/\?q=peabody |grep -c 'Riggs')" -lt 1 ]; then
     echo "ERROR: Search is not returning results:"
-    curl http://localhost/search/peabody
+    curl http://localhost/search/\?q=peabody
     ERRORED=true
 fi
 
 # Run a search for a non-existent string to verify that there are no results
-if [ "$(curl -s http://localhost/search/asdfghjkl |grep -c 'No results found')" -lt 1 ]; then
+if [ "$(curl -s http://localhost/search/\?q=asdfghjkl |grep -c 'No results found')" -lt 1 ]; then
     echo "ERROR: Search should be reporting no results found, but is not:"
-    curl http://localhost/search/asdfghjkl
+    curl http://localhost/search/\?q=asdfghjkl
     ERRORED=true
 fi
 

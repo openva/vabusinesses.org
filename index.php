@@ -18,7 +18,7 @@ $router->map( 'GET', '/business/[a:id]', function($id)
     require __DIR__ . '/business.php';
 }, 'business-details' );
 
-$router->map( 'GET', '/search/[a:query]', function($query)
+$router->map( 'GET', '/search/', function()
 {
     require __DIR__ . '/search.php';
 }, 'search' );

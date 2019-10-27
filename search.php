@@ -6,7 +6,7 @@ $template = new Smarty;
 
 $browser_title = 'Virginia Businesses';
 
-$query = filter_var($query, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+$query = filter_var($_GET['q'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
 
 /*
  * If no search query has been passed in the URL

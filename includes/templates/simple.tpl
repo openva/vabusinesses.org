@@ -24,8 +24,8 @@
 
 		<article id="search">
 			<form method="get" action="/search/">
-				<label for="query">Search</label>
-				<input type="text" size="50" name="query" id="query">
+				<label for="q">Search</label>
+				<input type="text" size="50" name="q" id="query">
 				<input type="submit" value="Go">
 			</form>
 		</article>
