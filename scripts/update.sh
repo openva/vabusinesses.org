@@ -3,7 +3,14 @@
 # Stop running if anything at all fails
 set -e
 
-cd $(dirname "$0") || exit 1
+function finish {
+    echo "$MESSAGE"
+    curl -s -X POST -H 'Content-type: application/json' --data '{"text":$MESSAGE}' "$SLACK_WEBHOOK_URL"
+}
+trap finish EXIT
+
+
+cd "$(dirname "$0")" || exit 1
 
 # Make variables of secrets available here
 source ./secrets.sh
@@ -12,7 +19,7 @@ echo "Downloading data from SCC"
 
 # Retrieve bulk data
 if ! curl -s -o /tmp/data.zip https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile; then
-    echo "Failed: https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile could not be downloaded"
+    MESSAGE="Failed: https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile could not be downloaded"
     exit 1
 fi
 
@@ -20,7 +27,7 @@ echo "Data downloaded"
 
 # Uncompress the ZIP file
 if ! unzip -q -o -d /tmp/data/ /tmp/data.zip; then
-    echo "CISbemon.CSV.zip could not be unzipped"
+    MESSAGE="CISbemon.CSV.zip could not be unzipped"
     exit 1
 fi
 echo "Data files unzipped"
@@ -109,5 +116,5 @@ mv -f temp.sqlite vabusinesses.sqlite
 
 # Log the fact that this update was made
 if [ ! -z ${SLACK_WEBHOOK_URL+x} ]; then
-    curl -s -X POST -H 'Content-type: application/json' --data '{"text":"All records updated."}' "$SLACK_WEBHOOK_URL"
+    MESSAGE="All records updated."
 fi
