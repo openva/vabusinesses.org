@@ -1,11 +1,15 @@
 {
-	"name": "VA-Businesses",
-	"version": "1.0.0",
-	"dependencies": {
-		"csvtojson": "^2.0.10",
-		"mini.css": "3.x"
-	},
-	"scripts": {
-		"build": "npm install; cp -r node_modules/mini.css/dist/mini-default.min.css .; rm -Rf node_modules"
-	}
+  "name": "VA-Businesses",
+  "version": "1.0.0",
+  "dependencies": {
+    "csvtojson": "^2.0.10",
+    "mini.css": "3.x",
+    "snyk": "^1.316.1"
+  },
+  "scripts": {
+    "build": "npm install; cp -r node_modules/mini.css/dist/mini-default.min.css .; rm -Rf node_modules",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "snyk": true
 }
