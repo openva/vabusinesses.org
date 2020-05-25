@@ -35,9 +35,8 @@ mv -f /tmp/data/LLC.csv /tmp/data/llc.csv
 mv -f /tmp/data/LP.csv /tmp/data/lp.csv
 mv -f /tmp/data/Merger.csv /tmp/data/merger.csv
 mv -f /tmp/data/Officer.csv /tmp/data/officer.csv
-mv -f /tmp/data/Tables.csv /tmp/data/tables.csv
-mv -f /tmp/data/Name.History.csv /tmp/data/name_history.csv
-mv -f /tmp/data/Reserved.Name.csv /tmp/data/reserved_name.csv
+mv -f /tmp/data/NameHistory.csv /tmp/data/name_history.csv
+mv -f /tmp/data/ReservedName.csv /tmp/data/reserved_name.csv
 
 # Remove any old CSV files
 if [ -d ../data/ ]; then
