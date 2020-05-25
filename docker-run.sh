@@ -4,7 +4,15 @@
 CWD=$(pwd)
 
 # Change to the directory that this script is in
-cd $(dirname "$0") || exit
+cd "$(dirname "$0")" || exit
+
+# Install Composer, if it's not installed
+hash php composer.phar 2>/dev/null || {
+    wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet
+}
+
+# Install Composer dependencies
+php composer.phar install
 
 # Stand it up
 docker-compose build && docker-compose up -d

@@ -5,3 +5,5 @@ vendor/
 templates_c/
 deploy/tests/phpunit
 test-report.xml
+composer.phar
+node_modules

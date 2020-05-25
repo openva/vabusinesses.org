@@ -15,7 +15,4 @@ fi
 # Install NPM packages
 npm install && npm run build
 
-# Install Composer packages
-composer install
-
 cd ..
