@@ -11,8 +11,8 @@ source ./secrets.sh
 echo "Downloading data from SCC"
 
 # Retrieve bulk data
-if ! curl -s -o /tmp/data.zip http://scc.virginia.gov/clk/data/CISbemon.CSV.zip; then
-    echo "Failed: http://scc.virginia.gov/clk/data/CISbemon.CSV.zip could not be downloaded"
+if ! curl -s -o /tmp/data.zip https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile; then
+    echo "Failed: https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile could not be downloaded"
     exit 1
 fi
 
