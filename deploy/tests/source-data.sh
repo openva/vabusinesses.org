@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # See if the remote ZIP file exists
-if [ "$(curl -Is http://scc.virginia.gov/clk/data/CISbemon.CSV.zip |grep -c '200 OK')" -lt 1 ]; then
-    echo "ERROR: The ZIP files does not exist on the SCC website"
+if [ "$(curl -Is https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile |grep -c '200 OK')" -lt 1 ]; then
+    echo "ERROR: The ZIP files do not exist on the SCC website"
     ERRORED=true
 fi
 
