@@ -13,7 +13,7 @@ if ! ../../scripts/update.sh; then
 fi
 
 # See if the right number of CSV files exist
-if [ "$(ls ../../data/*.csv |wc -l)" -ne 9 ]; then
+if [ "$(ls ../../data/*.csv |wc -l)" -ne 8 ]; then
     echo "ERROR: Improper number of CSV files were extracted"
     ERRORED=true
 fi
