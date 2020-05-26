@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Switch to the working directory from wherever this is being invoked
-pushd .
+pushd . > /dev/null
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$DIR" || exit
 
@@ -37,4 +37,4 @@ pwd
 ./vendor/bin/phpunit --bootstrap deploy/tests/bootstrap.php -c deploy/tests/phpunit.xml --coverage-clover=coverage-report.clover --log-junit=test-report.xml
 
 # Switch back to the directory this was invoked from
-popd || exit
+popd > /dev/null || exit
