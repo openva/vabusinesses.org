@@ -5,7 +5,9 @@ set -e
 
 function finish {
     echo "$MESSAGE"
-    curl -s -X POST -H 'Content-type: application/json' --data '{"text":$MESSAGE}' "$SLACK_WEBHOOK_URL"
+    if [ ! -z ${SLACK_WEBHOOK_URL+x} ]; then
+        curl -s -X POST -H 'Content-type: application/json' --data '{"text":$MESSAGE}' "$SLACK_WEBHOOK_URL"
+    fi
 }
 trap finish EXIT
 
@@ -115,6 +117,4 @@ echo "Data loaded into SQLite"
 mv -f temp.sqlite vabusinesses.sqlite
 
 # Log the fact that this update was made
-if [ ! -z ${SLACK_WEBHOOK_URL+x} ]; then
-    MESSAGE="All records updated."
-fi
+MESSAGE="All records updated."
