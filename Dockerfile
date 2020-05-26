@@ -5,6 +5,7 @@ RUN a2enmod rewrite && a2enmod expires && a2enmod headers
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get update
 RUN apt-get install -y zip nodejs jq sqlite
+RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 # Copy over the deploy scripts
 WORKDIR /var/www/
