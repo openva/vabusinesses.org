@@ -4,7 +4,7 @@
   "dependencies": {
     "csvtojson": "^2.0.10",
     "mini.css": "3.x",
-    "snyk": "^1.316.1"
+    "snyk": "^1.425.4"
   },
   "scripts": {
     "build": "npm install; cp -r node_modules/mini.css/dist/mini-default.min.css .; rm -Rf node_modules",
