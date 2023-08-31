@@ -7,3 +7,4 @@ deploy/tests/phpunit
 test-report.xml
 composer.phar
 node_modules
+scripts/temp.sqlite
