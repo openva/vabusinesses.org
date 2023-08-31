@@ -125,7 +125,12 @@ echo Fixed newlines
 # otherwise it complains about any record that ends with a series of empty
 # fields, which is hundreds of thousands.
 sqlite3 temp.sqlite < ../scripts/load-data.sql 2>/dev/null
-echo "Data loaded into SQLite"
+
+if [ $? -eq 0 ]; then
+    echo "Data loaded into SQLite"
+else
+    echo "Data could not be loaded into SQLite"
+fi
 
 # Put the file in its final location
 mv -f temp.sqlite vabusinesses.sqlite
