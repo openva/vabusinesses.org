@@ -15,7 +15,7 @@ hash php composer.phar 2>/dev/null || {
 php composer.phar install
 
 # Stand it up
-docker-compose build && docker-compose up -d
+docker compose build && docker compose up -d
 
 # Run the site setup script
 WEB_ID=$(docker ps |grep vabusinesses |cut -d " " -f 1)
