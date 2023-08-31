@@ -37,6 +37,8 @@ echo "Data files unzipped"
 # Delete temporary artifacts
 rm /tmp/data.zip
 
+echo Deleted stuff
+
 # Rename files to be lowercase, some to not have a period
 mv -f /tmp/data/Amendment.csv /tmp/data/amendment.csv
 mv -f /tmp/data/Corp.csv /tmp/data/corp.csv
@@ -47,6 +49,8 @@ mv -f /tmp/data/Officer.csv /tmp/data/officer.csv
 mv -f /tmp/data/NameHistory.csv /tmp/data/name_history.csv
 mv -f /tmp/data/ReservedName.csv /tmp/data/reserved_name.csv
 
+echo Renamed files
+
 # Remove any old CSV files
 if [ -d ../data/ ]; then
     rm -f ../data/*.csv
@@ -54,13 +58,19 @@ else
     mkdir ../data/
 fi
 
+echo removed old CSV files maybe
+
 cd ../data/ || exit 1
 
 # Move over our new CSV files
 mv -f /tmp/data/*.csv .
 
+echo Moved files
+
 # These files require repair of invalid encodings
 declare -a files_to_fix=("amendment.csv" "corp.csv" "llc.csv" "lp.csv" "officer.csv")
+
+echo Listed files
 
 # Iterate through files with encoding problems and replace SCC-originated bad
 # encodings with the proper characters
@@ -98,12 +108,16 @@ do
     rm temp.csv
 done
 
+echo Replaced a bunch of stuff
+
 # These files all have DOS carriage returns and an extra trailing comma in the
 # contents, so fix both of those things
 tr -d '\r' < amendment.csv |awk '{gsub(/,$/,""); print}' > temp.csv && mv -f temp.csv amendment.csv
 tr -d '\r' < corp.csv |awk '{gsub(/,$/,""); print}' > temp.csv && mv -f temp.csv corp.csv
 tr -d '\r' < llc.csv |awk '{gsub(/,$/,""); print}' > temp.csv && mv -f temp.csv llc.csv
 tr -d '\r' < lp.csv |awk '{gsub(/,$/,""); print}' > temp.csv && mv -f temp.csv lp.csv
+
+echo Fixed newlines
 
 # Create a temporary SQLite file, to avoid touching any that might already
 # exist (this prevents downtime). Pipe stderr to /dev/null, which is bad
