@@ -8,6 +8,12 @@ use PHPUnit\Framework\TestCase;
 class BusinessTest extends PHPUnit\Framework\TestCase
 {
 
+    public function getConnection()
+    {
+        $database = new Database;
+        return $database->connect();
+    }
+
     public function testValidCorpIdIsValid()
     {
         $corp_id = '0848677';
