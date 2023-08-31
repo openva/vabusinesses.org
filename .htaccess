@@ -1,4 +1,4 @@
-RewriteEngine on
+RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.php [L]
 
@@ -20,6 +20,5 @@ Header add X-Frame-Options "DENY"
 
 Header unset X-XSS-Protection
 Header add X-XSS-Protection "1; mode=block"
-
-php_value error_reporting 2039
 php_value include_path ".:includes/"
+php_value error_reporting 2039
