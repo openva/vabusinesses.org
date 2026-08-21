@@ -41,18 +41,6 @@ class Business
 
                     (SELECT tables.Description
                     FROM tables
-                    WHERE tables.TableID="04"
-                    AND tables.ColumnID="RA-Status"
-                    AND tables.ColumnValue="' . $this->type . '.RA-Status") "RA-StatusText",
-
-                    (SELECT tables.Description
-                    FROM tables
-                    WHERE tables.TableID="05"
-                    AND tables.ColumnID="RA-Localit"
-                    AND tables.ColumnValue="' . $this->type . '.RA-Loc") "RA-LocText",
-
-                    (SELECT tables.Description
-                    FROM tables
                     WHERE tables.TableID="07"
                     AND tables.ColumnID="AssessInd"
                     AND tables.ColumnValue=' . $this->type . '.AssessInd) "AssessIndText"
@@ -73,11 +61,26 @@ class Business
         }
 
         $lookup_table = Business::lookup_table();
-        $this->business['StatusText'] = $lookup_table['corporate-status-table'][$this->business{'Status'}];
-        $this->business['IndustryText'] = $lookup_table['industry-code-table'][$this->business{'IndustryCode'}];
-        $this->business['RA-StatusText'] = $lookup_table['registered-agent-status'][$this->business{'RA-Status'}];
-        $this->business['RA-LocText'] = $lookup_table['court-locality-code'][$this->business{'RA-Localit'}];
-        $this->business['AssessIndText'] = $lookup_table['assessment-indicator'][$this->business{'AssessInd'}];
+
+        /*
+         * Translate coded values into their descriptions. Not every record has
+         * every code, and not every code appears in the lookup table, so absent
+         * values resolve to an empty string rather than a warning.
+         */
+        $lookups = array(
+            'StatusText'    => array('corporate-status-table', 'Status'),
+            'IndustryText'  => array('industry-code-table', 'IndustryCode'),
+            'RA-StatusText' => array('registered-agent-status', 'RA-Status'),
+            'RA-LocText'    => array('court-locality-code', 'RA-Loc'),
+            'AssessIndText' => array('assessment-indicator', 'AssessInd'),
+        );
+
+        foreach ($lookups as $target => $lookup)
+        {
+            list($table, $column) = $lookup;
+            $code = $this->business[$column] ?? '';
+            $this->business[$target] = $lookup_table[$table][$code] ?? '';
+        }
         
         return $this->business;
 
@@ -231,12 +234,12 @@ class Business
             $entry['TableContents'] = preg_replace('/[\&\.\/]/', '', $entry['TableContents']);
             $entry['TableContents'] = preg_replace('/\W+/', '-', $entry['TableContents']);
 
-            if (!isset($this->lookup_table[$entry{'TableContents'}]))
+            if (!isset($this->lookup_table[$entry['TableContents']]))
             {
-                $this->lookup_table[$entry{'TableContents'}] = array();
+                $this->lookup_table[$entry['TableContents']] = array();
             }
 
-            $this->lookup_table[$entry{'TableContents'}][$entry{'ColumnValue'}] = $entry['Description'];
+            $this->lookup_table[$entry['TableContents']][$entry['ColumnValue']] = $entry['Description'];
         }
         
         return $this->lookup_table;

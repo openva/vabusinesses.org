@@ -7,7 +7,19 @@ Website for Virginia State Corporation Commission data.
 
 ## Running locally
 
-`./docker-run.sh` to start, `./docker-stop.sh` to stop.
+`./docker-run.sh` to start, `./docker-stop.sh` to stop. The site is served at
+http://localhost:5001/.
+
+To use a different port, set `WEB_PORT`:
+
+```sh
+WEB_PORT=5002 ./docker-run.sh
+```
+
+Note that port 5000 is deliberately avoided: macOS runs AirPlay Receiver there,
+which intercepts requests and answers `403 Forbidden` before they ever reach
+Apache. (It can also be turned off in System Settings › General › AirDrop &
+Handoff.)
 
 ## Running tests
 

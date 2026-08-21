@@ -1,6 +1,6 @@
 <?php
 
-$query = filter_var($query, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+$query = htmlspecialchars($query ?? '', ENT_QUOTES, 'UTF-8');
 
 $database = new Database;
 $db = $database->connect();

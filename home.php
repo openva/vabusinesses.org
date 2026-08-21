@@ -5,6 +5,8 @@ require 'includes/header.php';
 $template = new Smarty;
 
 $browser_title = 'Virginia Businesses';
+$page_title = '';
+$page_body = '';
 
 /*
 * Query our API for recent businesses
@@ -13,7 +15,7 @@ $api_url = API_URL . '/api/recent';
 
 $recent_json = get_content($api_url);
 $recent = json_decode($recent_json);
-if (!$recent !== FALSE)
+if (!empty($recent))
 {
 	
 	$page_body .= '

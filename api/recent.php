@@ -15,7 +15,6 @@ if (!$db)
  */
 $business = new Business;
 $business->db = $db;
-$business->query = $query;
 $results = $business->recent();
 
 if (!is_array($results))

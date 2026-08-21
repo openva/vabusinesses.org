@@ -5,8 +5,9 @@ require 'includes/header.php';
 $template = new Smarty;
 
 $browser_title = 'Virginia Businesses';
+$page_title = '';
 
-$query = filter_var($_GET['q'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+$query = htmlspecialchars($_GET['q'] ?? '', ENT_QUOTES, 'UTF-8');
 
 /*
  * If no search query has been passed in the URL
