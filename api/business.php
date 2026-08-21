@@ -3,7 +3,7 @@
 /*
  * Use the identifier passed in the URL
  */
-if ( !isset($id) || strlen($id) != 7)
+if ( !isset($id) || strlen($id) < 7 || strlen($id) > 8 )
 {
     header($_SERVER['SERVER_PROTOCOL'] . " 404 Not Found", true, 404);
     echo json_encode('Error');

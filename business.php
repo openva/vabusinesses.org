@@ -5,7 +5,7 @@ include('includes/header.php');
 /*
  * Define the PCRE to match all entity IDs
  */
-$entity_id_pcre = '/(F|S|T|L|M|[0-9]{1})([0-9]{6})/';
+$entity_id_pcre = '/^(F|S|T|L|M|R|[0-9])([0-9]{6,7})$/i';
 
 /*
  * If no business ID has been passed in the URL

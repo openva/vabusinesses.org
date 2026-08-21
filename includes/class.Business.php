@@ -36,7 +36,7 @@ class Business
                     (SELECT tables.Description
                     FROM tables
                     WHERE tables.TableID="03"
-                    AND tables.ColumnID="IndustryCo"
+                    AND tables.ColumnID="IndustryCode"
                     AND tables.ColumnValue=' . $this->type . '.IndustryCode) Industry,
 
                     (SELECT tables.Description
@@ -63,9 +63,11 @@ class Business
         $lookup_table = Business::lookup_table();
 
         /*
-         * Translate coded values into their descriptions. Not every record has
-         * every code, and not every code appears in the lookup table, so absent
-         * values resolve to an empty string rather than a warning.
+         * Translate coded values into their descriptions. Historical data stores
+         * numeric codes ("00"), which these lookups expand; current SCC exports
+         * ship the description in the column itself ("INACTIVE", "0 - General"),
+         * in which case there is nothing to look up and the raw value stands.
+         * Records missing the field entirely resolve to an empty string.
          */
         $lookups = array(
             'StatusText'    => array('corporate-status-table', 'Status'),
@@ -79,7 +81,7 @@ class Business
         {
             list($table, $column) = $lookup;
             $code = $this->business[$column] ?? '';
-            $this->business[$target] = $lookup_table[$table][$code] ?? '';
+            $this->business[$target] = $lookup_table[$table][$code] ?? $code;
         }
         
         return $this->business;
@@ -134,7 +136,11 @@ class Business
      */
     function id_is_valid($id)
     {
-        $entity_id_pcre = '/(F|S|T|L|M|[0-9]{1})([0-9]{6})/';
+        /*
+         * The SCC lengthened entity IDs from 7 to 8 characters (the old
+         * "F000032" is now "F0000325"), so accept either width.
+         */
+        $entity_id_pcre = '/^(F|S|T|L|M|R|[0-9])([0-9]{6,7})$/i';
 
         if ( preg_match($entity_id_pcre, $id) == 0 )
         {
@@ -151,7 +157,17 @@ class Business
      */
     function type_from_id($id)
     {
-        if ( !isset($id) || strlen($id) <> 7 )
+        if ( !isset($id) )
+        {
+            return false;
+        }
+
+        /*
+         * IDs are 7 characters in the historical data and 8 in current SCC
+         * exports; anything else is not an entity ID.
+         */
+        $id = trim($id);
+        if ( strlen($id) < 7 || strlen($id) > 8 )
         {
             return false;
         }

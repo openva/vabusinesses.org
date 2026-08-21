@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
 # Fetch a single business's records
-if [ "$(curl -s http://localhost/business/F000032 |grep -c 'AMERICAN BRANDS')" -lt 1 ]; then
+if [ "$(curl -s http://localhost/business/F0000325 |grep -c 'AMERICAN BRANDS')" -lt 1 ]; then
     echo "ERROR: Front-end is not returning business records:"
-    curl http://localhost/business/F000032
+    curl http://localhost/business/F0000325
     ERRORED=true
 fi
 
 # Query a business ID that doesn't exist
-if [ "$(curl -Is http://localhost/business/F000001 |grep -c '404 Not Found')" -lt 1 ]; then
+if [ "$(curl -Is http://localhost/business/F0000019 |grep -c '404 Not Found')" -lt 1 ]; then
     echo "ERROR: Front-end is not returning a 404 response to request for a non-existent business ID:"
-    curl -Is http://localhost/business/F000001
+    curl -Is http://localhost/business/F0000019
     ERRORED=true
 fi
 

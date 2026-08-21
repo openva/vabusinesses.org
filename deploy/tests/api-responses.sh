@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 # Fetch a single business's records, compare results
-BUSINESS_JSON="$(curl -s http://localhost/api/business/F000032)"
+BUSINESS_JSON="$(curl -s http://localhost/api/business/F0000325)"
 
-if [ "$(echo $BUSINESS_JSON |jq '.EntityID')" != '"F000032"' ]; then
+if [ "$(echo $BUSINESS_JSON |jq '.EntityID')" != '"F0000325"' ]; then
     echo "ERROR: API is not returning EntityID correctly"
     echo $BUSINESS_JSON
     ERRORED=true
 fi
 
-if [ "$(echo $BUSINESS_JSON |jq '.Stock1')" != '"COMMON (200000000)"' ]; then
+if [ "$(echo $BUSINESS_JSON |jq '.Stock1')" != '"Class A"' ]; then
     echo "ERROR: API is not returning Stock1 correctly"
     echo $BUSINESS_JSON
     ERRORED=true
@@ -30,8 +30,8 @@ fi
 # Run a search for a test query
 SEARCH_JSON="$(curl -s http://localhost/api/search/test)"
 
-if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '67' ]; then
-    echo "ERROR: API is returning $(echo $SEARCH_JSON |jq '. | length') search results, not 67"
+if [ "$(echo $SEARCH_JSON |jq '. | length')" -ne '69' ]; then
+    echo "ERROR: API is returning $(echo $SEARCH_JSON |jq '. | length') search results, not 69"
     ERRORED=true
 fi
 

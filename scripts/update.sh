@@ -4,28 +4,87 @@
 set -e
 
 function finish {
-    echo "$MESSAGE"
-    if [ ! -z ${SLACK_WEBHOOK_URL+x} ]; then
-        curl -s -X POST -H 'Content-type: application/json' --data '{"text":$MESSAGE}' "$SLACK_WEBHOOK_URL"
+    STATUS=$?
+
+    # Never leave a session cookie behind on disk.
+    if [ -n "${COOKIE_JAR:-}" ]; then
+        rm -f "$COOKIE_JAR"
     fi
+
+    # Any non-zero exit that didn't set its own message is still a failure, and
+    # must be reported as one rather than silently reporting success.
+    if [ "$STATUS" -ne 0 ] && [ -z "${MESSAGE:-}" ]; then
+        MESSAGE="Failed: update.sh exited with status $STATUS"
+    fi
+
+    echo "$MESSAGE"
+
+    # Use --arg so the message is actually interpolated (and JSON-escaped); the
+    # previous single-quoted --data posted the literal string "$MESSAGE".
+    if [ -n "${SLACK_WEBHOOK_URL:-}" ]; then
+        if command -v jq > /dev/null; then
+            PAYLOAD=$(jq -nc --arg text "$MESSAGE" '{text: $text}')
+        else
+            PAYLOAD="{\"text\":\"${MESSAGE//\"/\\\"}\"}"
+        fi
+        curl -s -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOK_URL" > /dev/null
+    fi
+
+    exit "$STATUS"
 }
 trap finish EXIT
 
 
 cd "$(dirname "$0")" || exit 1
 
+CONSENT_URL="https://cis.scc.virginia.gov/Cookie/StoreCookieConsent"
+DOWNLOAD_URL="https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile"
+
 # Make variables of secrets available here
 source ./secrets.sh
 
 echo "Downloading data from SCC"
 
-# Retrieve bulk data
-if ! curl -s -o /tmp/data.zip https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile; then
-    MESSAGE="Failed: https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile could not be downloaded"
+# The SCC now gates downloads behind a cookie-consent interstitial: requesting
+# the file without consent returns a 302 to /Cookie/CookieConsent instead of the
+# ZIP. On that page, "Accept" POSTs to /Cookie/StoreCookieConsent, which sets a
+# "cookiesAccepted" cookie. So: record consent, keep the cookie, then download.
+COOKIE_JAR=$(mktemp "${TMPDIR:-/tmp}/vabusinesses-cookies.XXXXXX")
+
+# --data '' matters: a POST with no body and no Content-Length is rejected with
+# "411 Length Required", which leaves the cookie unset and the download serving
+# the interstitial instead of the ZIP.
+if ! curl -sS -f -c "$COOKIE_JAR" -b "$COOKIE_JAR" \
+        -X POST -H 'X-Requested-With: XMLHttpRequest' --data '' \
+        --max-time 60 \
+        -o /dev/null \
+        "$CONSENT_URL"; then
+    MESSAGE="Failed: could not record cookie consent at $CONSENT_URL"
     exit 1
 fi
 
-echo "Data downloaded"
+# -f so HTTP errors fail loudly, -L to follow any redirect. Without -f, an error
+# page is happily written to the output file and curl still exits 0 -- which is
+# how this failure went unnoticed: the HTML interstitial was saved as data.zip
+# and the script only fell over later, at unzip.
+if ! curl -sS -f -L -b "$COOKIE_JAR" -c "$COOKIE_JAR" \
+        --max-time 1800 \
+        -o /tmp/data.zip \
+        "$DOWNLOAD_URL"; then
+    MESSAGE="Failed: $DOWNLOAD_URL could not be downloaded"
+    exit 1
+fi
+
+rm -f "$COOKIE_JAR"
+
+# Verify we actually got a ZIP, not an interstitial or error page dressed up as
+# one. This is the check whose absence masked the original breakage.
+if ! unzip -tqq /tmp/data.zip > /dev/null 2>&1; then
+    MESSAGE="Failed: $DOWNLOAD_URL did not return a valid ZIP file (got $(file -b /tmp/data.zip 2>/dev/null || echo 'unknown content'))"
+    exit 1
+fi
+
+echo "Data downloaded ($(du -h /tmp/data.zip | cut -f1))"
 
 # Uncompress the ZIP file
 if ! unzip -q -o -d /tmp/data/ /tmp/data.zip; then
@@ -39,15 +98,29 @@ rm /tmp/data.zip
 
 echo Deleted stuff
 
-# Rename files to be lowercase, some to not have a period
-mv -f /tmp/data/Amendment.csv /tmp/data/amendment.csv
-mv -f /tmp/data/Corp.csv /tmp/data/corp.csv
-mv -f /tmp/data/LLC.csv /tmp/data/llc.csv
-mv -f /tmp/data/LP.csv /tmp/data/lp.csv
-mv -f /tmp/data/Merger.csv /tmp/data/merger.csv
-mv -f /tmp/data/Officer.csv /tmp/data/officer.csv
-mv -f /tmp/data/NameHistory.csv /tmp/data/name_history.csv
-mv -f /tmp/data/ReservedName.csv /tmp/data/reserved_name.csv
+# Rename files to be lowercase, some to not have a period. If the SCC renames or
+# drops a file, say so plainly instead of carrying on with a partial dataset.
+declare -a renames=(
+    "Amendment.csv:amendment.csv"
+    "Corp.csv:corp.csv"
+    "LLC.csv:llc.csv"
+    "LP.csv:lp.csv"
+    "Merger.csv:merger.csv"
+    "Officer.csv:officer.csv"
+    "NameHistory.csv:name_history.csv"
+    "ReservedName.csv:reserved_name.csv"
+)
+
+for rename in "${renames[@]}"
+do
+    source_file="${rename%%:*}"
+    target_file="${rename##*:}"
+    if [ ! -f "/tmp/data/$source_file" ]; then
+        MESSAGE="Failed: expected $source_file in the SCC archive, but it is not there. Contents: $(cd /tmp/data && echo *)"
+        exit 1
+    fi
+    mv -f "/tmp/data/$source_file" "/tmp/data/$target_file"
+done
 
 echo Renamed files
 
@@ -66,6 +139,19 @@ cd ../data/ || exit 1
 mv -f /tmp/data/*.csv .
 
 echo Moved files
+
+# The SCC archive no longer includes Tables.csv, but load-data.sql imports it and
+# the three code-description subqueries in Business::fetch() read from it. The
+# same 419 rows are checked in as includes/tables.json, so regenerate the CSV
+# from there rather than shipping a database with an empty "tables" table.
+if ! jq -r '(["TableID","TableContents","ColumnID","ColumnValue","Description"]),
+            (.[] | [.TableID, .TableContents, .ColumnID, .ColumnValue, .Description])
+            | @csv' ../includes/tables.json > tables.csv; then
+    MESSAGE="Failed: could not build tables.csv from includes/tables.json"
+    exit 1
+fi
+
+echo "Built tables.csv ($(($(wc -l < tables.csv) - 1)) rows)"
 
 # These files require repair of invalid encodings
 declare -a files_to_fix=("amendment.csv" "corp.csv" "llc.csv" "lp.csv" "officer.csv")
@@ -110,6 +196,20 @@ done
 
 echo Replaced a bunch of stuff
 
+# Current SCC exports pad fields with a leading tab and trailing spaces (e.g.
+# "\t11380768  " for an entity ID, "INACTIVE  " for a status), which would
+# otherwise be stored verbatim and break every lookup by ID.
+for filename in *.csv
+do
+    if ! php ../scripts/trim-csv.php < "$filename" > trimmed.tmp; then
+        MESSAGE="Failed: could not trim field padding from $filename"
+        exit 1
+    fi
+    mv -f trimmed.tmp "$filename"
+done
+
+echo Trimmed field padding
+
 # These files all have DOS carriage returns and an extra trailing comma in the
 # contents, so fix both of those things
 tr -d '\r' < amendment.csv |awk '{gsub(/,$/,""); print}' > temp.csv && mv -f temp.csv amendment.csv
@@ -124,13 +224,26 @@ echo Fixed newlines
 # because it keeps us from knowing about errors, but for the best because
 # otherwise it complains about any record that ends with a series of empty
 # fields, which is hundreds of thousands.
-sqlite3 temp.sqlite < ../scripts/load-data.sql 2>/dev/null
-
-if [ $? -eq 0 ]; then
-    echo "Data loaded into SQLite"
-else
-    echo "Data could not be loaded into SQLite"
+rm -f temp.sqlite
+if ! sqlite3 temp.sqlite < ../scripts/load-data.sql 2>/dev/null; then
+    MESSAGE="Failed: data could not be loaded into SQLite"
+    exit 1
 fi
+
+echo "Data loaded into SQLite"
+
+# Confirm the new database actually holds records before it replaces the live
+# one. Without this, a partial or empty build gets promoted to production and
+# the site silently serves nothing.
+for table in corp llc lp tables
+do
+    ROWS=$(sqlite3 temp.sqlite "SELECT count(*) FROM $table;" 2>/dev/null || echo 0)
+    if [ "$ROWS" -lt 1 ]; then
+        MESSAGE="Failed: table '$table' is empty in the newly built database; keeping the existing one"
+        exit 1
+    fi
+    echo "  $table: $ROWS rows"
+done
 
 # Put the file in its final location
 mv -f temp.sqlite vabusinesses.sqlite
