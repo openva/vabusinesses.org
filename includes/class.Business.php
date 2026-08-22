@@ -25,6 +25,11 @@ class Business
      */
     const ENTITY_TABLES = array('corp', 'llc', 'lp', 'gp', 'bt', 'psa');
 
+    /*
+     * How many matches to take from each entity table when searching.
+     */
+    const PER_TABLE_SEARCH_LIMIT = 33;
+
     /**
      * Fetch a single business's record
      *
@@ -210,7 +215,7 @@ class Business
             $sql = 'SELECT *
                     FROM ' . $type . '
                     WHERE Name LIKE :pattern ESCAPE \'\\\'
-                    LIMIT 33';
+                    LIMIT ' . self::PER_TABLE_SEARCH_LIMIT;
 
             $statement = $this->db->prepare($sql);
             if ($statement === FALSE)
