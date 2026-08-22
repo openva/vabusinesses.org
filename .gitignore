@@ -5,6 +5,7 @@ vendor/
 templates_c/
 deploy/tests/phpunit
 test-report.xml
-composer.phar
+.phpunit.result.cache
+coverage-report.clover
 node_modules
 scripts/temp.sqlite
