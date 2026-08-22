@@ -111,6 +111,72 @@ class Business
 
     }
 
+    /**
+     * Fetch a single record from one entity table
+     *
+     * @param string $table one of ENTITY_TABLES
+     * @param string $id the entity identifier
+     * @return array|false the record, or FALSE if this table has no such row
+     */
+    private function fetch_from($table, $id)
+    {
+
+        /*
+         * SQLite cannot bind a table name, so this is interpolated -- which is
+         * safe only because the value is checked against the allowlist first.
+         */
+        if (!in_array($table, self::ENTITY_TABLES, TRUE))
+        {
+            return FALSE;
+        }
+
+        $sql = 'SELECT *,
+
+                    (SELECT Description
+                    FROM tables
+                    WHERE tables.TableID="01"
+                    AND tables.ColumnID="Status"
+                    AND tables.ColumnValue=' . $table . '.Status) StatusText,
+
+                    (SELECT tables.Description
+                    FROM tables
+                    WHERE tables.TableID="03"
+                    AND tables.ColumnID="IndustryCode"
+                    AND tables.ColumnValue=' . $table . '.IndustryCode) Industry,
+
+                    (SELECT tables.Description
+                    FROM tables
+                    WHERE tables.TableID="07"
+                    AND tables.ColumnID="AssessInd"
+                    AND tables.ColumnValue=' . $table . '.AssessInd) "AssessIndText"
+
+                FROM ' . $table . '
+                WHERE EntityID = :id
+                LIMIT 1';
+
+        $statement = $this->db->prepare($sql);
+        if ($statement === FALSE)
+        {
+            return FALSE;
+        }
+        $statement->bindValue(':id', $id, SQLITE3_TEXT);
+
+        $result = $statement->execute();
+        if ($result === FALSE)
+        {
+            return FALSE;
+        }
+
+        $record = $result->fetchArray(SQLITE3_ASSOC);
+
+        /*
+         * A SELECT that matches nothing still reports its column count, so the
+         * fetch result is the only reliable emptiness test.
+         */
+        return is_array($record) ? $record : FALSE;
+
+    }
+
      /**
       * Search matching business records, return the first 99
       *
