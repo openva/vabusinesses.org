@@ -58,6 +58,28 @@ if (!empty($recent))
 
 }
 
+/*
+ * List the bulk data files for download. Sizes are read from disk rather than
+ * hard-coded: the SCC data grows with every weekly update, and the previous
+ * static figures had drifted badly (llc.csv was listed at 156 MB when it had
+ * reached 437 MB). Files absent from a given build are simply not listed.
+ */
+$data_files = array(
+	'corp.csv'          => 'Corporate Entities',
+	'llc.csv'           => 'LLC Entities',
+	'lp.csv'            => 'LP Entities',
+	'gp.csv'            => 'General Partnership Entities',
+	'bt.csv'            => 'Business Trust Entities',
+	'psa.csv'           => 'Public Service Authority Entities',
+	'amendment.csv'     => 'Entity Amendments',
+	'merger.csv'        => 'Entity Mergers',
+	'name_history.csv'  => 'Entity Name/Fictitious Name History',
+	'officer.csv'       => 'Entity Officers/Directors',
+	'reserved_name.csv' => 'Entity Reserved Names',
+	'tables.csv'        => 'Descriptive Tables',
+	'vabusinesses.sqlite' => 'All Data, SQLite',
+);
+
 $page_body .= '
 		<article>
 
@@ -69,47 +91,25 @@ $page_body .= '
 					<th scope="col">Size</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody>';
+
+foreach ($data_files as $filename => $label)
+{
+	$path = __DIR__ . '/data/' . $filename;
+
+	if (!is_readable($path))
+	{
+		continue;
+	}
+
+	$page_body .= '
 				<tr>
-					<td data-label="File"><a href="data/amendment.csv">Entity Amendments</a></td>
-					<td data-label="Size">6 MB</td>
-				</tr>
-				<tr>
-					<td data-label="File"><a href="data/corp.csv">Corporate Entities</a></td>
-					<td data-label="Size">87 MB</td>
-				</tr>
-				<tr>
-					<td data-label="File"><a href="data/llc.csv">LLC Entities</a></td>
-					<td data-label="Size">156 MB</td>
-				</tr>
-				<tr>
-					<td data-label="File"><a href="data/lp.csv">LP Entities</a></td>
-					<td data-label="Size">3 MB</td>
-				</tr>
-				<tr>
-					<td data-label="File"><a href="data/merger.csv">Entity Mergers</a></td>
-					<td data-label="Size">3 MB</td>
-				</tr>
-				<tr>
-					<td data-label="File"><a href="data/name.history.csv">Entity Name/Fictitious Name History</a></td>
-					<td data-label="Size">16 MB</td>
-				</tr>
-				<tr>
-					<td data-label="File"><a href="data/officer.csv">Entity Officers/Directors</a></td>
-					<td data-label="Size">29 MB</td>
-				</tr>
-				<tr>
-					<td data-label="File"><a href="data/reserved.name.csv">Entity Reserved Names</a></td>
-					<td data-label="Size">0.1 MB</td>
-				</tr>
-				<tr>
-					<td data-label="File"><a href="data/tables.csv">Descriptive Tables</a></td>
-					<td data-label="Size">0.1 MB</td>
-				</tr>
-				<tr>
-					<td data-label="File"><a href="http://scc.virginia.gov/clk/data/CISbemon.CSV.zip">All Data, CSV</a></td>
-					<td data-label="Size">77 MB</td>
-				</tr>
+					<td data-label="File"><a href="data/' . $filename . '">' . $label . '</a></td>
+					<td data-label="Size">' . human_filesize($path) . '</td>
+				</tr>';
+}
+
+$page_body .= '
 				<tr>
 					<td data-label="File"><a href="https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile">All Data, CSV (from the SCC)</a></td>
 					<td data-label="Size">&#8212;</td>
