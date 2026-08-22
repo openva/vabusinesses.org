@@ -3,6 +3,8 @@
 Website for Virginia State Corporation Commission data.
 
 [![CI](https://github.com/openva/vabusinesses.org/actions/workflows/ci.yml/badge.svg)](https://github.com/openva/vabusinesses.org/actions/workflows/ci.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=openva_vabusinesses.org&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=openva_vabusinesses.org)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=openva_vabusinesses.org&metric=coverage)](https://sonarcloud.io/summary/new_code?id=openva_vabusinesses.org)
 [![Dependency Vulnerability Analysis](https://app.snyk.io/test/github/openva/vabusinesses.org/badge.svg?targetFile=package.json)](https://app.snyk.io/test/github/openva/vabusinesses.org?targetFile=package.json)
 
 ## Running locally
