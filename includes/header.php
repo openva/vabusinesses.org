@@ -79,13 +79,12 @@ $api_url = getenv('VABUSINESSES_API_URL');
 
 if ($api_url === false || $api_url === '')
 {
-    $api_port = $_SERVER['SERVER_PORT'] ?? '80';
-    $api_url = 'http://127.0.0.1';
-
-    if ($api_port !== '80')
-    {
-        $api_url .= ':' . $api_port;
-    }
+    /*
+     * SERVER_ADDR is the address this server is actually reachable at, unlike
+     * SERVER_PORT, which reports the port the *client* connected to -- behind a
+     * port mapping or a proxy that is not a port this server listens on.
+     */
+    $api_url = 'http://' . ($_SERVER['SERVER_ADDR'] ?? '127.0.0.1');
 }
 
 define('API_URL', rtrim($api_url, '/'));
