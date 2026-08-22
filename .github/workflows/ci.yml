@@ -50,6 +50,24 @@ jobs:
       - name: Create the Smarty compile directory
         run: mkdir -p templates_c && chmod 777 templates_c
 
+      # The API and front-end tests need a populated database. Building one means
+      # downloading 169 MB from the SCC and loading two million rows, so cache it
+      # rather than doing that on every push. The key carries the ISO week, so it
+      # refreshes weekly -- roughly the cadence the SCC republishes on.
+      - name: Work out the current week
+        id: week
+        run: echo "stamp=$(date -u +%G-W%V)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the cached database
+        id: cache-data
+        uses: actions/cache@v6
+        with:
+          path: data
+          key: scc-data-${{ steps.week.outputs.stamp }}
+          # An older week's data is fine for testing; better than a 10-minute
+          # rebuild on every run.
+          restore-keys: scc-data-
+
       # Stands up the container, installs Composer dependencies inside it, and
       # verifies the site answers with a 200.
       - name: Stand up the site
