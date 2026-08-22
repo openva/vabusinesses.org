@@ -9,7 +9,10 @@ if [ -t 0 ] && [ -t 1 ]; then
 fi
 
 # Run Bash tests. TEST_SOURCE_DATA is passed through so the caller can opt in to
-# the slow tests that re-download the SCC dataset.
+# the slow tests that re-download the SCC dataset. XDEBUG_MODE=coverage is
+# required for PHPUnit to write coverage-report.clover, which SonarCloud reads --
+# without it PHPUnit warns and produces no report at all.
 docker exec "${TTY_FLAGS[@]}" \
     -e "TEST_SOURCE_DATA=${TEST_SOURCE_DATA:-0}" \
+    -e "XDEBUG_MODE=coverage" \
     vabusinesses /var/www/htdocs/deploy/tests/run-all.sh
