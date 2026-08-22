@@ -106,6 +106,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      # sonar-project.properties points at coverage-report.clover, which is
+      # produced by the test job. Without this the scan finds no file and
+      # silently reports zero coverage.
+      - name: Fetch the coverage report from the test job
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: test-results
+
       - name: Scan
         uses: SonarSource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f # v8
         env:
