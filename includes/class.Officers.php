@@ -29,15 +29,24 @@ class Officers
         $sql = 'SELECT OfficerTitle, OfficerFirstName, OfficerMiddleName,
                     OfficerLastName
                 FROM officer
-                WHERE EntityID="' . $this->id . '"
+                WHERE EntityID = :id
                 ORDER BY OfficerLastName ASC';
-        $result = $this->db->query($sql);
 
         if ($result->numColumns() == 0)
+        $statement = $this->db->prepare($sql);
+        if ($statement === FALSE)
         {
             return false;
+            return FALSE;
         }
-        
+        $statement->bindValue(':id', $this->id, SQLITE3_TEXT);
+
+        $result = $statement->execute();
+        if ($result === FALSE)
+        {
+            return FALSE;
+        }
+
         $this->officers = array();
         while ($officer = $result->fetchArray(SQLITE3_ASSOC))
         {

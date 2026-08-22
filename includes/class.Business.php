@@ -119,12 +119,18 @@ class Business
 
             $sql = 'SELECT *
                     FROM ' . $type . '
-                    WHERE Name LIKE "%' . $this->query . '%"
+                    WHERE Name LIKE :pattern ESCAPE \'\\\'
                     LIMIT 33';
-            
-            $result = $this->db->query($sql);
 
-            if ($result->numColumns() == 0)
+            $statement = $this->db->prepare($sql);
+            if ($statement === FALSE)
+            {
+                continue;
+            }
+            $statement->bindValue(':pattern', '%' . $pattern . '%', SQLITE3_TEXT);
+
+            $result = $statement->execute();
+            if ($result === FALSE)
             {
                 continue;
             }
