@@ -7,9 +7,6 @@
     "snyk": "^1.1297.3"
   },
   "scripts": {
-    "build": "npm install; cp -r node_modules/mini.css/dist/mini-default.min.css .; rm -Rf node_modules",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
-  },
-  "snyk": true
+    "build": "npm install; cp -r node_modules/mini.css/dist/mini-default.min.css .; rm -Rf node_modules"
+  }
 }
