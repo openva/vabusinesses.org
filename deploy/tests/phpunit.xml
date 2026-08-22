@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage processUncoveredFiles="true">
+  <!--
+    Coverage is limited to includes/, the only code the unit tests exercise.
+  -->
+  <coverage processUncoveredFiles="false">
     <include>
-      <directory suffix=".php">../..</directory>
       <directory suffix=".php">../../includes/</directory>
-      <directory suffix=".php">../../api/</directory>
     </include>
   </coverage>
   <testsuites>
