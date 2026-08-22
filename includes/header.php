@@ -65,15 +65,23 @@ function human_filesize($path)
 /*
  * Identify the prefix for our own API queries.
  *
- * These pages fetch their data from this same site over HTTP, so this has to
+ * Every page here fetches its data from this site's own public API over HTTP,
+ * rather than calling the Business class directly. That round trip is
+ * deliberate, not an oversight: it means the site is a consumer of the same API
+ * third parties use, so any breakage in it shows up on the website immediately
+ * instead of being reported by someone else weeks later. Please do not
+ * "optimise" this into a direct call.
+ *
+ * Because the request is made by the server to itself, the address has to
  * resolve back to this server. It deliberately does not use SERVER_NAME, which
- * reflects the client's Host header: sending "Host: example.com" would otherwise
- * redirect these server-side requests to a host of the client's choosing, which
- * is a server-side request forgery. The loopback address cannot be influenced
- * that way.
+ * reflects the client's Host header: sending "Host: 169.254.169.254" would
+ * otherwise make the server fetch from an address of the client's choosing --
+ * a server-side request forgery, and on EC2 a route to the instance metadata
+ * service. SERVER_ADDR is the server's own address and cannot be set by a
+ * client.
  *
  * Set VABUSINESSES_API_URL to override, for a setup where the site is not
- * reachable at http://127.0.0.1 from the web server itself.
+ * reachable at its own address from the web server itself.
  */
 $api_url = getenv('VABUSINESSES_API_URL');
 
