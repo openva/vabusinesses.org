@@ -111,8 +111,8 @@ $page_body .= '
 					<td data-label="Size">77 MB</td>
 				</tr>
 				<tr>
-					<td data-label="File"><a href="data/vabusinesses.sqlite">All Data, SQLite</a></td>
-					<td data-label="Size">321 MB</td>
+					<td data-label="File"><a href="https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile">All Data, CSV (from the SCC)</a></td>
+					<td data-label="Size">&#8212;</td>
 				</tr>
 			</tbody>
 		</table>
