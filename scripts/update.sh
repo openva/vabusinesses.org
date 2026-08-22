@@ -111,6 +111,15 @@ declare -a renames=(
     "ReservedName.csv:reserved_name.csv"
 )
 
+# Newer entity types: general partnerships, business trusts and public service
+# authorities. They carry the same schema as LP.csv. These are listed separately
+# because they are tolerated if absent, unlike the files above.
+declare -a optional_renames=(
+    "GP.csv:gp.csv"
+    "BT.csv:bt.csv"
+    "PSA.csv:psa.csv"
+)
+
 for rename in "${renames[@]}"
 do
     source_file="${rename%%:*}"
@@ -120,6 +129,17 @@ do
         exit 1
     fi
     mv -f "/tmp/data/$source_file" "/tmp/data/$target_file"
+done
+
+for rename in "${optional_renames[@]}"
+do
+    source_file="${rename%%:*}"
+    target_file="${rename##*:}"
+    if [ -f "/tmp/data/$source_file" ]; then
+        mv -f "/tmp/data/$source_file" "/tmp/data/$target_file"
+    else
+        echo "Note: $source_file is not in this archive, skipping it"
+    fi
 done
 
 echo Renamed files
