@@ -46,8 +46,18 @@ The SCC has also changed the shape of the data since this site was last updated:
 * `Status` and `IndustryCode` now contain descriptions (`INACTIVE`,
   `0 - General`) rather than the numeric codes the lookup tables expand, so a
   value with no lookup match is displayed as-is.
-* There is a new `StatusReason` column, and three new files (`GP.csv`, `BT.csv`,
-  `PSA.csv`) that nothing imports yet.
+* There is a new `StatusReason` column.
+* Three entity types postdate this site: general partnerships (`GP.csv`, ~7,500
+  entities), business trusts (`BT.csv`, ~1,900) and public service authorities
+  (`PSA.csv`, ~130). They share `LP.csv`'s schema and their entity IDs do not
+  collide with the existing tables, so they are loaded into SQLite and listed in
+  `Business::ENTITY_TABLES` alongside the original three. They are treated as
+  optional: if the SCC stops shipping one, the run reports it and carries on
+  rather than failing.
+* Entity IDs are validated structurally (one letter or digit, then six or seven
+  digits) rather than against a list of known prefixes. The SCC has added
+  prefixes over time -- `J` and `K` with general partnerships, `B` and `C` with
+  business trusts -- and an allowlist silently 404s each new type.
 
 ## Running tests
 
