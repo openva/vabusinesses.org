@@ -25,7 +25,7 @@ $api_url = API_URL . '/api/search/' . $query;
 $results_json = get_content($api_url);
 
 $results = json_decode($results_json);
-if ($results === FALSE)
+if ($results === false)
 {
     header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error", true, 500);
     exit();

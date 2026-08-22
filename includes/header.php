@@ -23,7 +23,7 @@ function get_content($url)
 
     if (empty($string))
     {
-        return FALSE;
+        return false;
     }
 
     return $string;
@@ -38,7 +38,7 @@ function human_filesize($path)
 
     $bytes = @filesize($path);
 
-    if ($bytes === FALSE)
+    if ($bytes === false)
     {
         return '';
     }
@@ -63,15 +63,29 @@ function human_filesize($path)
 }
 
 /*
- * Identify the prefix for URL queries
+ * Identify the prefix for our own API queries.
+ *
+ * These pages fetch their data from this same site over HTTP, so this has to
+ * resolve back to this server. It deliberately does not use SERVER_NAME, which
+ * reflects the client's Host header: sending "Host: example.com" would otherwise
+ * redirect these server-side requests to a host of the client's choosing, which
+ * is a server-side request forgery. The loopback address cannot be influenced
+ * that way.
+ *
+ * Set VABUSINESSES_API_URL to override, for a setup where the site is not
+ * reachable at http://127.0.0.1 from the web server itself.
  */
-if (!empty($_SERVER['HTTPS']))
+$api_url = getenv('VABUSINESSES_API_URL');
+
+if ($api_url === false || $api_url === '')
 {
-    $api_url = 'https';
+    $api_port = $_SERVER['SERVER_PORT'] ?? '80';
+    $api_url = 'http://127.0.0.1';
+
+    if ($api_port !== '80')
+    {
+        $api_url .= ':' . $api_port;
+    }
 }
-else {
-    $api_url = 'http';
-}
-$api_url .= '://';
-$api_url .= $_SERVER['SERVER_NAME'];
-define('API_URL', $api_url);
+
+define('API_URL', rtrim($api_url, '/'));

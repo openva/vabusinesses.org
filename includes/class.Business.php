@@ -40,7 +40,7 @@ class Business
 
         if (!isset($this->db) || !isset($this->id))
         {
-            return FALSE;
+            return false;
         }
 
         /*
@@ -54,11 +54,11 @@ class Business
          * turn is unambiguous. type_from_id() still supplies the order, so the
          * likeliest table is tried first and the common case costs one query.
          */
-        $this->business = NULL;
+        $this->business = null;
         $candidates = self::ENTITY_TABLES;
         $likeliest = $this->type_from_id($this->id);
 
-        if ($likeliest !== FALSE)
+        if ($likeliest !== false)
         {
             $candidates = array_merge(
                 array($likeliest),
@@ -79,7 +79,7 @@ class Business
 
         if (!is_array($this->business))
         {
-            return FALSE;
+            return false;
         }
 
         foreach ($this->business as &$field)
@@ -130,9 +130,9 @@ class Business
          * SQLite cannot bind a table name, so this is interpolated -- which is
          * safe only because the value is checked against the allowlist first.
          */
-        if (!in_array($table, self::ENTITY_TABLES, TRUE))
+        if (!in_array($table, self::ENTITY_TABLES, true))
         {
-            return FALSE;
+            return false;
         }
 
         $sql = 'SELECT *,
@@ -160,16 +160,16 @@ class Business
                 LIMIT 1';
 
         $statement = $this->db->prepare($sql);
-        if ($statement === FALSE)
+        if ($statement === false)
         {
-            return FALSE;
+            return false;
         }
         $statement->bindValue(':id', $id, SQLITE3_TEXT);
 
         $result = $statement->execute();
-        if ($result === FALSE)
+        if ($result === false)
         {
-            return FALSE;
+            return false;
         }
 
         $record = $result->fetchArray(SQLITE3_ASSOC);
@@ -178,7 +178,7 @@ class Business
          * A SELECT that matches nothing still reports its column count, so the
          * fetch result is the only reliable emptiness test.
          */
-        return is_array($record) ? $record : FALSE;
+        return is_array($record) ? $record : false;
 
     }
 
@@ -192,7 +192,7 @@ class Business
 
         if (!isset($this->db) || !isset($this->query))
         {
-            return FALSE;
+            return false;
         }
 
         $this->results = [];
@@ -218,14 +218,14 @@ class Business
                     LIMIT ' . self::PER_TABLE_SEARCH_LIMIT;
 
             $statement = $this->db->prepare($sql);
-            if ($statement === FALSE)
+            if ($statement === false)
             {
                 continue;
             }
             $statement->bindValue(':pattern', '%' . $pattern . '%', SQLITE3_TEXT);
 
             $result = $statement->execute();
-            if ($result === FALSE)
+            if ($result === false)
             {
                 continue;
             }
@@ -352,7 +352,7 @@ class Business
         /*
         * Convert to an array
         */
-        $tables = json_decode($tables_json, TRUE);
+        $tables = json_decode($tables_json, true);
 
         $this->lookup_table = array();
 

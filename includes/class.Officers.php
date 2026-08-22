@@ -23,7 +23,7 @@ class Officers
 
         if (!isset($this->db) || !isset($this->id))
         {
-            return FALSE;
+            return false;
         }
 
         $sql = 'SELECT OfficerTitle, OfficerFirstName, OfficerMiddleName,
@@ -33,16 +33,16 @@ class Officers
                 ORDER BY OfficerLastName ASC';
 
         $statement = $this->db->prepare($sql);
-        if ($statement === FALSE)
+        if ($statement === false)
         {
-            return FALSE;
+            return false;
         }
         $statement->bindValue(':id', $this->id, SQLITE3_TEXT);
 
         $result = $statement->execute();
-        if ($result === FALSE)
+        if ($result === false)
         {
-            return FALSE;
+            return false;
         }
 
         $this->officers = array();

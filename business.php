@@ -31,8 +31,8 @@ elseif ( preg_match($entity_id_pcre, $id) == 0 )
 $api_url = API_URL . '/api/business/' . $id;
 
 $business_json = get_content($api_url);
-$business = json_decode($business_json, TRUE);
-if ($business_json === FALSE || $business === NULL)
+$business = json_decode($business_json, true);
+if ($business_json === false || $business === null)
 {
     header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error", true, 500);
     exit();
