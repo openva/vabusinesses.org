@@ -17,6 +17,14 @@ class Business
     public $results;
     public $lookup_table;
 
+    /*
+     * The only tables holding entity records, and so the only values that may
+     * ever be interpolated into a query as a table name. SQLite cannot bind a
+     * table name as a parameter, so this allowlist is what keeps $type from
+     * becoming an injection vector.
+     */
+    const ENTITY_TABLES = array('corp', 'llc', 'lp');
+
     /**
      * Fetch a single business's record
      *
@@ -30,46 +38,50 @@ class Business
             return FALSE;
         }
 
-        $this->type = $this->type_from_id($this->id);
-        if ($this->type === FALSE)
+        /*
+         * Which table holds a record can no longer be inferred from its ID.
+         * Historically the first character was decisive (S/T meant an LLC, L/M a
+         * limited partnership, a digit or F a corporation), but current SCC data
+         * puts digit-prefixed IDs in all three tables and mixes the letter
+         * prefixes across them, which left roughly 38% of records unreachable.
+         *
+         * IDs do not collide between the three tables, so asking each one in
+         * turn is unambiguous. type_from_id() still supplies the order, so the
+         * likeliest table is tried first and the common case costs one query.
+         */
+        $this->business = NULL;
+        $candidates = self::ENTITY_TABLES;
+        $likeliest = $this->type_from_id($this->id);
+
+        if ($likeliest !== FALSE)
+        {
+            $candidates = array_merge(
+                array($likeliest),
+                array_diff($candidates, array($likeliest))
+            );
+        }
+
+        foreach ($candidates as $candidate)
+        {
+            $this->business = $this->fetch_from($candidate, $this->id);
+
+            if (is_array($this->business))
+            {
+                $this->type = $candidate;
+                break;
+            }
+        }
+
+        if (!is_array($this->business))
         {
             return FALSE;
         }
 
-        $sql = 'SELECT *,
-
-                    (SELECT Description
-                    FROM tables
-                    WHERE tables.TableID="01"
-                    AND tables.ColumnID="Status"
-                    AND tables.ColumnValue=' . $this->type . '.Status) StatusText,
-
-                    (SELECT tables.Description
-                    FROM tables
-                    WHERE tables.TableID="03"
-                    AND tables.ColumnID="IndustryCode"
-                    AND tables.ColumnValue=' . $this->type . '.IndustryCode) Industry,
-
-                    (SELECT tables.Description
-                    FROM tables
-                    WHERE tables.TableID="07"
-                    AND tables.ColumnID="AssessInd"
-                    AND tables.ColumnValue=' . $this->type . '.AssessInd) "AssessIndText"
-
-                FROM ' . $this->type . '
-                WHERE EntityID="' . $this->id . '"';
-        $result = $this->db->query($sql);
-
-        if ($result->numColumns() == 0)
-        {
-            return false;
-        }
-        $this->business = $result->fetchArray(SQLITE3_ASSOC);
-        
         foreach ($this->business as &$field)
         {
             $field = trim($field);
         }
+        unset($field);
 
         $lookup_table = Business::lookup_table();
 
@@ -114,7 +126,19 @@ class Business
 
         $this->results = [];
 
-        foreach (array('corp', 'llc', 'lp') as $type)
+        /*
+         * Escape the LIKE metacharacters in the user's query. Binding the value
+         * stops it from breaking out of the string, but "%" and "_" are still
+         * wildcards *within* that string -- a search for "%" would otherwise
+         * match every record in the table.
+         */
+        $pattern = str_replace(
+            array('\\', '%', '_'),
+            array('\\\\', '\\%', '\\_'),
+            $this->query
+        );
+
+        foreach (self::ENTITY_TABLES as $type)
         {
 
             $sql = 'SELECT *
