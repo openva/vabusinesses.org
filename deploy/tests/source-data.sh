@@ -1,10 +1,31 @@
 #!/usr/bin/env bash
 
-# See if the remote ZIP file exists
-if [ "$(curl -Is https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile |grep -c '200 OK')" -lt 1 ]; then
-    echo "ERROR: The ZIP files do not exist on the SCC website"
-    ERRORED=true
-fi
+# See if the remote ZIP file is available. The SCC gates downloads behind a
+# cookie-consent interstitial, so an unauthenticated request is answered with a
+# 302 to /Cookie/CookieConsent rather than the file -- record consent first, the
+# same way scripts/update.sh does, or this always reports the file as missing.
+COOKIE_JAR=$(mktemp "${TMPDIR:-/tmp}/vabusinesses-test-cookies.XXXXXX")
+trap 'rm -f "$COOKIE_JAR"' EXIT
+
+curl -sS -f -c "$COOKIE_JAR" -b "$COOKIE_JAR" \
+    -X POST -H 'X-Requested-With: XMLHttpRequest' --data '' \
+    --max-time 60 -o /dev/null \
+    "https://cis.scc.virginia.gov/Cookie/StoreCookieConsent" || true
+
+# Ask for a single byte: enough to prove the file is served, without pulling
+# down 169 MB just to check.
+ZIP_TYPE=$(curl -sS -f -L -b "$COOKIE_JAR" -c "$COOKIE_JAR" -r 0-0 \
+    --max-time 60 -o /dev/null -w '%{content_type}' \
+    "https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile" || echo "none")
+
+case "$ZIP_TYPE" in
+    *zip*|*octet-stream*)
+        ;;
+    *)
+        echo "ERROR: the SCC did not serve the data file (content type: $ZIP_TYPE)"
+        ERRORED=true
+        ;;
+esac
 
 # See if the update script executes cleanly
 if ! ../../scripts/update.sh; then
