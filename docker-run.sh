@@ -21,7 +21,7 @@ fi
 
 # Run the site setup script
 WEB_ID=$(docker ps -q --filter name=vabusinesses)
-if [ -z "$WEB_ID" ]; then
+if [[ -z "$WEB_ID" ]]; then
     echo "ERROR: the vabusinesses container is not running." >&2
     cd "$CWD" || exit
     exit 1
@@ -48,11 +48,11 @@ STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$URL" || echo "00
 # Return to the original directory
 cd "$CWD" || exit
 
-if [ "$STATUS" = "200" ]; then
+if [[ "$STATUS" = "200" ]]; then
     echo "Site running at $URL"
 else
     echo "ERROR: $URL returned HTTP $STATUS (expected 200)." >&2
-    if [ "$STATUS" = "403" ]; then
+    if [[ "$STATUS" = "403" ]]; then
         echo "       Another service may hold this port. On macOS, disable" >&2
         echo "       AirPlay Receiver or re-run with: WEB_PORT=5002 ./docker-run.sh" >&2
     fi

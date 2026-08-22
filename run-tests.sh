@@ -4,7 +4,7 @@
 # "docker exec -it" fails outright there ("cannot attach stdin to a TTY-enabled
 # container because stdin is not a terminal").
 TTY_FLAGS=()
-if [ -t 0 ] && [ -t 1 ]; then
+if [[ -t 0 ]] && [[ -t 1 ]]; then
     TTY_FLAGS=(-it)
 fi
 

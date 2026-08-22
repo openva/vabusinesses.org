@@ -9,7 +9,7 @@ cd "$DIR" || exit
 # rebuild the database. That takes several minutes and depends on the SCC being
 # reachable, so it is opt-in: set TEST_SOURCE_DATA=1 to include it. It still runs
 # when there is no database at all, since the tests below need one.
-if [ "${TEST_SOURCE_DATA:-0}" = "1" ] || [ ! -f ../../data/vabusinesses.sqlite ]; then
+if [[ "${TEST_SOURCE_DATA:-0}" = "1" ]] || [[ ! -f ../../data/vabusinesses.sqlite ]]; then
     if ! ./source-data.sh; then
         ERRORED=true
     fi
@@ -25,7 +25,7 @@ if ! ./front-end.sh; then
     ERRORED=true
 fi
 
-if [ "$ERRORED" == true ]; then
+if [[ "$ERRORED" == true ]]; then
     echo "Some Bash tests failed"
 else
     echo "All Bash tests passed"
@@ -44,6 +44,6 @@ popd > /dev/null || exit
 # Report failure from either suite. Previously this script exited with whatever
 # PHPUnit returned, so a failing Bash test printed its error and still reported
 # success -- which would leave CI green over a real failure.
-if [ "$ERRORED" == true ]; then
+if [[ "$ERRORED" == true ]]; then
     exit 1
 fi

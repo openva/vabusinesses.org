@@ -7,13 +7,13 @@ function finish {
     STATUS=$?
 
     # Never leave a session cookie behind on disk.
-    if [ -n "${COOKIE_JAR:-}" ]; then
+    if [[ -n "${COOKIE_JAR:-}" ]]; then
         rm -f "$COOKIE_JAR"
     fi
 
     # Any non-zero exit that didn't set its own message is still a failure, and
     # must be reported as one rather than silently reporting success.
-    if [ "$STATUS" -ne 0 ] && [ -z "${MESSAGE:-}" ]; then
+    if [[ "$STATUS" -ne 0 ]] && [[ -z "${MESSAGE:-}" ]]; then
         MESSAGE="Failed: update.sh exited with status $STATUS"
     fi
 
@@ -21,7 +21,7 @@ function finish {
 
     # Use --arg so the message is actually interpolated (and JSON-escaped); the
     # previous single-quoted --data posted the literal string "$MESSAGE".
-    if [ -n "${SLACK_WEBHOOK_URL:-}" ]; then
+    if [[ -n "${SLACK_WEBHOOK_URL:-}" ]]; then
         if command -v jq > /dev/null; then
             PAYLOAD=$(jq -nc --arg text "$MESSAGE" '{text: $text}')
         else
@@ -47,7 +47,7 @@ DOWNLOAD_URL="https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile"
 # failing -- the update itself does not need a webhook.
 SECRETS_FILE="${VABUSINESSES_ENV:-/etc/vabusinesses.env}"
 
-if [ -r "$SECRETS_FILE" ]; then
+if [[ -r "$SECRETS_FILE" ]]; then
     # shellcheck source=/dev/null
     source "$SECRETS_FILE"
 else
@@ -135,7 +135,7 @@ for rename in "${renames[@]}"
 do
     source_file="${rename%%:*}"
     target_file="${rename##*:}"
-    if [ ! -f "/tmp/data/$source_file" ]; then
+    if [[ ! -f "/tmp/data/$source_file" ]]; then
         MESSAGE="Failed: expected $source_file in the SCC archive, but it is not there. Contents: $(cd /tmp/data && echo *)"
         exit 1
     fi
@@ -146,7 +146,7 @@ for rename in "${optional_renames[@]}"
 do
     source_file="${rename%%:*}"
     target_file="${rename##*:}"
-    if [ -f "/tmp/data/$source_file" ]; then
+    if [[ -f "/tmp/data/$source_file" ]]; then
         mv -f "/tmp/data/$source_file" "/tmp/data/$target_file"
     else
         echo "Note: $source_file is not in this archive, skipping it"
@@ -156,7 +156,7 @@ done
 echo Renamed files
 
 # Remove any old CSV files
-if [ -d ../data/ ]; then
+if [[ -d ../data/ ]]; then
     rm -f ../data/*.csv
 else
     mkdir ../data/
@@ -269,7 +269,7 @@ echo "Data loaded into SQLite"
 for table in corp llc lp tables
 do
     ROWS=$(sqlite3 temp.sqlite "SELECT count(*) FROM $table;" 2>/dev/null || echo 0)
-    if [ "$ROWS" -lt 1 ]; then
+    if [[ "$ROWS" -lt 1 ]]; then
         MESSAGE="Failed: table '$table' is empty in the newly built database; keeping the existing one"
         exit 1
     fi
@@ -281,7 +281,7 @@ done
 for table in gp bt psa
 do
     ROWS=$(sqlite3 temp.sqlite "SELECT count(*) FROM $table;" 2>/dev/null || echo 0)
-    if [ "$ROWS" -lt 1 ]; then
+    if [[ "$ROWS" -lt 1 ]]; then
         echo "  $table: absent from this archive"
     else
         echo "  $table: $ROWS rows"

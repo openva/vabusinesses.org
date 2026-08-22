@@ -6,12 +6,12 @@ cd /vol/vabusinesses.org/htdocs/deploy/ || exit
 crontab deploy
 
 # Enable the SQLite extension
-if [ "$(dpkg -l |grep php |grep -c sqlite)" -lt 1 ]; then
+if [[ "$(dpkg -l |grep php |grep -c sqlite)" -lt 1 ]]; then
     apt-get install -y php5-sqlite
 fi
 
 # Enable the SQLite extension
-if [ "$(dpkg -l |grep npm)" -lt 1 ]; then
+if [[ "$(dpkg -l |grep npm)" -lt 1 ]]; then
     apt-get install -y npm
 fi
 
