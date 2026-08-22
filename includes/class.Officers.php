@@ -6,6 +6,13 @@
 class Officers
 {
 
+    /*
+     * Declared explicitly because PHP 8.2 deprecates dynamic properties.
+     */
+    public $db;
+    public $id;
+    public $officers;
+
     /**
      * Fetch a single business's officers records
      *

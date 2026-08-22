@@ -6,6 +6,17 @@
 class Business
 {
 
+    /*
+     * Declared explicitly because PHP 8.2 deprecates dynamic properties.
+     */
+    public $db;
+    public $id;
+    public $query;
+    public $type;
+    public $business;
+    public $results;
+    public $lookup_table;
+
     /**
      * Fetch a single business's record
      *
