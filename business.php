@@ -28,7 +28,7 @@ elseif ( preg_match($entity_id_pcre, $id) == 0 )
 /*
  * Query our own API 
  */
-$api_url = API_URL . '/api/business/' . $id;
+$api_url = API_URL . '/api/business/' . rawurlencode($id);
 
 $business_json = get_content($api_url);
 $business = json_decode($business_json, true);

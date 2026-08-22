@@ -21,7 +21,7 @@ if (!isset($query) || empty($query))
 /*
  * Query our own API 
  */
-$api_url = API_URL . '/api/search/' . $query;
+$api_url = API_URL . '/api/search/' . rawurlencode($query);
 $results_json = get_content($api_url);
 
 $results = json_decode($results_json);
