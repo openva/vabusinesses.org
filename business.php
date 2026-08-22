@@ -32,16 +32,21 @@ $api_url = API_URL . '/api/business/' . $id;
 
 $business_json = get_content($api_url);
 $business = json_decode($business_json, TRUE);
-if ($business === FALSE)
+if ($business_json === FALSE || $business === NULL)
 {
     header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error", true, 500);
     exit();
 }
 
-elseif (empty($business))
+/*
+ * The API reports a missing record as the JSON string "Error", which decodes to
+ * a string rather than to FALSE or to an empty value -- so test for a record
+ * shaped like one, instead of letting a string reach $business['Name'].
+ */
+elseif (!is_array($business) || empty($business['Name']))
 {
     header($_SERVER['SERVER_PROTOCOL'] . " 404 Not Found", true, 404);
-    exit();   
+    exit();
 }
 
 $template = new Smarty;
