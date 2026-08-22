@@ -1,0 +1,10 @@
+version: 2
+
+# Pinning actions to commit SHAs means they no longer pick up upstream fixes on
+# their own, so let Dependabot propose the bumps. It understands the "# v7"
+# comment convention and updates both the SHA and the comment together.
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
