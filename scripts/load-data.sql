@@ -13,3 +13,9 @@ CREATE INDEX corpName ON corp (Name);
 CREATE INDEX llcName ON llc (Name);
 CREATE INDEX lpName ON lp (Name);
 CREATE INDEX officerEntityId ON officer (EntityID);
+
+-- Every business page is a lookup by EntityID. Without these, each one is a full
+-- table scan of up to 1.5 million rows.
+CREATE INDEX corpEntityId ON corp (EntityID);
+CREATE INDEX llcEntityId ON llc (EntityID);
+CREATE INDEX lpEntityId ON lp (EntityID);
