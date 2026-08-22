@@ -59,6 +59,19 @@ The SCC has also changed the shape of the data since this site was last updated:
   prefixes over time -- `J` and `K` with general partnerships, `B` and `C` with
   business trusts -- and an allowlist silently 404s each new type.
 
+## Dependencies
+
+Composer runs inside the container, against the same PHP the site runs on, and
+`./docker-run.sh` fails if it does not succeed. The repository previously carried
+a `composer.phar` (Composer 1.10, 2020) that resolved against the host's PHP;
+once the container moved to PHP 8, every install failed with "your requirements
+could not be resolved" and the site quietly kept running on a `vendor/` directory
+from 2019. Note that `vendor/` is gitignored, so a fresh clone has none at all.
+
+Smarty, AltoRouter and PHPUnit are all held at the oldest releases that support
+PHP 8 (Smarty 4 rather than 5, to avoid its template changes -- the site uses a
+single template and only `assign()` and `display()`).
+
 ## Running tests
 
 E2E and functional tests are in `/deploy/tests/`, and can all be run with `/deploy/tests/run-all.sh`. From outside of the Docker container, they should be invoked with `/run-tests.sh`.

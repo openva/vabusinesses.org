@@ -6,16 +6,18 @@ CWD=$(pwd)
 # Change to the directory that this script is in
 cd "$(dirname "$0")" || exit
 
-# Install Composer, if it's not installed
-hash php composer.phar 2>/dev/null || {
-    wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet
-}
-
-# Install Composer dependencies
-php composer.phar install
-
 # Stand it up
-docker compose build && docker compose up -d
+if ! docker compose build; then
+    echo "ERROR: the Docker image failed to build." >&2
+    cd "$CWD" || exit
+    exit 1
+fi
+
+if ! docker compose up -d; then
+    echo "ERROR: the container failed to start." >&2
+    cd "$CWD" || exit
+    exit 1
+fi
 
 # Run the site setup script
 WEB_ID=$(docker ps -q --filter name=vabusinesses)
@@ -24,6 +26,17 @@ if [ -z "$WEB_ID" ]; then
     cd "$CWD" || exit
     exit 1
 fi
+
+# Install Composer dependencies. This runs in the container so that it resolves
+# against the PHP the site actually runs on, and its exit code is checked: an
+# unnoticed failure here leaves the site running on whatever happens to be in
+# vendor/ already, which is how it came to be six years out of date.
+if ! docker exec -w /var/www/htdocs "$WEB_ID" composer install --no-interaction --no-progress; then
+    echo "ERROR: composer install failed; dependencies are not up to date." >&2
+    cd "$CWD" || exit
+    exit 1
+fi
+
 docker exec "$WEB_ID" /var/www/htdocs/deploy/docker-setup-site.sh
 
 # Confirm the site actually answers, rather than assuming it does. Note that

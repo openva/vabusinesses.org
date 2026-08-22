@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
+# Composer runs inside the container, against the same PHP the site runs on.
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+
 # Copy over the deploy scripts
 WORKDIR /var/www/
 COPY ./deploy ./deploy
