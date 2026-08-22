@@ -265,6 +265,18 @@ do
     echo "  $table: $ROWS rows"
 done
 
+# These entity types postdate the site, so report them but do not fail the run
+# if the SCC stops shipping one.
+for table in gp bt psa
+do
+    ROWS=$(sqlite3 temp.sqlite "SELECT count(*) FROM $table;" 2>/dev/null || echo 0)
+    if [ "$ROWS" -lt 1 ]; then
+        echo "  $table: absent from this archive"
+    else
+        echo "  $table: $ROWS rows"
+    fi
+done
+
 # Put the file in its final location
 mv -f temp.sqlite vabusinesses.sqlite
 
