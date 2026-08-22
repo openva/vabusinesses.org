@@ -2,7 +2,7 @@
 
 Website for Virginia State Corporation Commission data.
 
-[![Build Status](https://travis-ci.org/openva/vabusinesses.org.svg?branch=master)](https://travis-ci.org/openva/vabusinesses.org)
+[![CI](https://github.com/openva/vabusinesses.org/actions/workflows/ci.yml/badge.svg)](https://github.com/openva/vabusinesses.org/actions/workflows/ci.yml)
 [![Dependency Vulnerability Analysis](https://app.snyk.io/test/github/openva/vabusinesses.org/badge.svg?targetFile=package.json)](https://app.snyk.io/test/github/openva/vabusinesses.org?targetFile=package.json)
 
 ## Running locally
@@ -71,6 +71,53 @@ from 2019. Note that `vendor/` is gitignored, so a fresh clone has none at all.
 Smarty, AltoRouter and PHPUnit are all held at the oldest releases that support
 PHP 8 (Smarty 4 rather than 5, to avoid its template changes -- the site uses a
 single template and only `assign()` and `display()`).
+
+## Continuous integration
+
+`.github/workflows/ci.yml` builds the site, runs the tests, scans with
+SonarCloud, and deploys `master` to S3 and CodeDeploy. It replaces a Travis
+configuration that had stopped running.
+
+Three repository secrets are required (Settings > Secrets and variables >
+Actions). The Travis config stored these encrypted with Travis's own key, so the
+values could not be carried over -- they have to be set fresh:
+
+| Secret | Used for |
+| --- | --- |
+| `AWS_ACCESS_KEY_ID` | S3 upload and CodeDeploy |
+| `AWS_SECRET_ACCESS_KEY` | S3 upload and CodeDeploy |
+| `SONAR_TOKEN` | SonarCloud analysis |
+
+No secret is written into the deployment bundle. See "Server configuration"
+below for the Slack webhook, which the server holds itself.
+
+The tests that download the full SCC dataset and rebuild the database take
+several minutes, so they do not run on every push. They run on the weekly
+schedule, whenever there is no database to test against, and on a manual run
+started with the "Also run the slow SCC download/rebuild tests" box checked.
+Locally, `TEST_SOURCE_DATA=1 ./run-tests.sh` does the same.
+
+## Server configuration
+
+`scripts/update.sh` posts to Slack when an update fails. It reads the webhook
+from `/etc/vabusinesses.env`, which lives on the server and is deliberately not
+part of the deployed code:
+
+```sh
+sudo tee /etc/vabusinesses.env > /dev/null <<'ENV'
+SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
+ENV
+sudo chmod 600 /etc/vabusinesses.env
+```
+
+Set `VABUSINESSES_ENV` to read it from somewhere else. If the file is missing the
+update still runs, and simply says so instead of notifying.
+
+This replaces an earlier `deploy/populate-secrets.sh`, which substituted the
+webhook into a git-tracked `scripts/secrets.sh` during the build. That put a live
+secret into the checkout and into the deployment bundle on every release. Keeping
+the secret on the server means it never enters the repository, the build, or S3 --
+and rotating it no longer requires a deploy.
 
 ## Running tests
 

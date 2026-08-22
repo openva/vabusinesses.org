@@ -15,9 +15,6 @@ if [ "$(dpkg -l |grep npm)" -lt 1 ]; then
     apt-get install -y npm
 fi
 
-# Save Travis CI secrets to a file
-./populate-secrets.sh
-
 # Give the web server user ownership over all files
 cd ..
 chown www-data ./*

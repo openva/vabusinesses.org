@@ -1,0 +1,151 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  # Allow a run to be kicked off by hand.
+  workflow_dispatch:
+    inputs:
+      test_source_data:
+        description: 'Also run the slow SCC download/rebuild tests'
+        type: boolean
+        default: false
+  # Exercise the SCC download and database rebuild weekly, so a change on their
+  # end surfaces here rather than in a silently stale database.
+  schedule:
+    - cron: '0 5 * * 1'
+
+# Cancel an in-progress run when the same branch is pushed again.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v7
+        with:
+          # SonarCloud wants full history to attribute issues to commits.
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          cache: npm
+
+      # Produces mini-default.min.css, which the site links to but does not
+      # commit.
+      - name: Build front-end assets
+        run: npm install && npm run build
+
+      # Smarty compiles templates into this directory. It is gitignored, so it
+      # is absent from a fresh checkout and has to be created here.
+      - name: Create the Smarty compile directory
+        run: mkdir -p templates_c && chmod 777 templates_c
+
+      # Stands up the container, installs Composer dependencies inside it, and
+      # verifies the site answers with a 200.
+      - name: Stand up the site
+        run: ./docker-run.sh
+
+      # The source-data tests download the full SCC dataset and rebuild the
+      # database, so they run only on the weekly schedule or when asked for.
+      - name: Run tests
+        env:
+          TEST_SOURCE_DATA: ${{ (github.event_name == 'schedule' || inputs.test_source_data) && '1' || '0' }}
+        run: ./run-tests.sh
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker logs vabusinesses
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results
+          path: |
+            test-report.xml
+            coverage-report.clover
+          if-no-files-found: ignore
+
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    needs: test
+    # A fork's pull request cannot read secrets, so the scan would fail.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Scan
+        uses: SonarSource/sonarqube-scan-action@v8
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: test
+    # Only release from master, never from a pull request.
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Build front-end assets
+        run: npm install && npm run build
+
+      - name: Install PHP dependencies
+        uses: php-actions/composer@v6
+        with:
+          php_version: '8.2'
+          dev: no
+          args: --no-interaction --no-progress
+
+      # This bundle carries no secrets: the Slack webhook lives in
+      # /etc/vabusinesses.env on the server, outside the deployed code. Keep it
+      # that way -- anything written into the checkout here ends up in S3.
+      - name: Build the deployment bundle
+        run: |
+          mkdir -p upload
+          zip -qr upload/latest.zip . \
+            -x '.git/*' '.github/*' 'upload/*' 'data/*' 'node_modules/*' \
+               'templates_c/*' '*.sqlite' '*.csv'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Upload the bundle to S3
+        run: aws s3 cp upload/latest.zip s3://deploy.vabusinesses.org/latest.zip
+
+      - name: Release with CodeDeploy
+        run: |
+          ID=$(aws deploy create-deployment \
+            --application-name VA-Businesses \
+            --deployment-group-name VA-Businesses \
+            --s3-location bucket=deploy.vabusinesses.org,key=latest.zip,bundleType=zip \
+            --query 'deploymentId' --output text)
+          echo "Deployment $ID created; waiting for it to finish."
+          aws deploy wait deployment-successful --deployment-id "$ID"

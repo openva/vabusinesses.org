@@ -40,8 +40,19 @@ cd "$(dirname "$0")" || exit 1
 CONSENT_URL="https://cis.scc.virginia.gov/Cookie/StoreCookieConsent"
 DOWNLOAD_URL="https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile"
 
-# Make variables of secrets available here
-source ./secrets.sh
+# Make secrets available. These live in a file on the server, outside the
+# deployed code, so that no secret is ever written into the repository, the
+# deployment bundle, or the S3 bucket that carries it. See the README for how to
+# create it. Absent the file, the run proceeds without notifications rather than
+# failing -- the update itself does not need a webhook.
+SECRETS_FILE="${VABUSINESSES_ENV:-/etc/vabusinesses.env}"
+
+if [ -r "$SECRETS_FILE" ]; then
+    # shellcheck source=/dev/null
+    source "$SECRETS_FILE"
+else
+    echo "Note: $SECRETS_FILE not found; continuing without Slack notifications"
+fi
 
 echo "Downloading data from SCC"
 
