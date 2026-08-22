@@ -247,7 +247,7 @@ class Business
          * The SCC lengthened entity IDs from 7 to 8 characters (the old
          * "F000032" is now "F0000325"), so accept either width.
          */
-        $entity_id_pcre = '/^(F|S|T|L|M|R|[0-9])([0-9]{6,7})$/i';
+        $entity_id_pcre = '/^[A-Z0-9][0-9]{6,7}$/i';
 
         if ( preg_match($entity_id_pcre, $id) == 0 )
         {
