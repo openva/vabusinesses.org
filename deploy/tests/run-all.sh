@@ -26,7 +26,7 @@ if ! ./front-end.sh; then
 fi
 
 if [[ "$ERRORED" == true ]]; then
-    echo "Some Bash tests failed"
+    echo "Some Bash tests failed" >&2
 else
     echo "All Bash tests passed"
 fi

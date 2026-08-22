@@ -17,7 +17,13 @@ function finish {
         MESSAGE="Failed: update.sh exited with status $STATUS"
     fi
 
-    echo "$MESSAGE"
+    # Send a failure to stderr, so that cron mails it and a CI job can tell it
+    # apart from the progress output; a success stays on stdout.
+    if [[ "$STATUS" -ne 0 ]]; then
+        echo "$MESSAGE" >&2
+    else
+        echo "$MESSAGE"
+    fi
 
     # Use --arg so the message is actually interpolated (and JSON-escaped); the
     # previous single-quoted --data posted the literal string "$MESSAGE".

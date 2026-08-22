@@ -12,13 +12,13 @@ for candidate in F0000325 F000032; do
 done
 
 if [[ -z "$ENTITY_ID" ]]; then
-    echo "ERROR: fixture record (AMERICAN BRANDS, INC.) not found as F0000325 or F000032"
+    echo "ERROR: fixture record (AMERICAN BRANDS, INC.) not found as F0000325 or F000032" >&2
     ERRORED=true
 else
     # Fetch a single business's records
     if [[ "$(curl -s "http://localhost/business/$ENTITY_ID" | grep -c 'AMERICAN BRANDS')" -lt 1 ]]; then
-        echo "ERROR: Front-end is not returning business records:"
-        curl -s "http://localhost/business/$ENTITY_ID"
+        echo "ERROR: Front-end is not returning business records:" >&2
+        curl -s "http://localhost/business/$ENTITY_ID" >&2
         ERRORED=true
     fi
 fi
@@ -26,23 +26,23 @@ fi
 # Query a business ID that is syntactically valid but does not exist
 for missing in F0000019 F000001; do
     if [[ "$(curl -Is "http://localhost/business/$missing" |grep -c '404 Not Found')" -lt 1 ]]; then
-        echo "ERROR: Front-end is not returning a 404 response to request for a non-existent business ID:"
-        curl -Is "http://localhost/business/$missing"
+        echo "ERROR: Front-end is not returning a 404 response to request for a non-existent business ID:" >&2
+        curl -Is "http://localhost/business/$missing" >&2
         ERRORED=true
     fi
 done
 
 # Run a search to verify that there are results
 if [[ "$(curl -s http://localhost/search/\?q=peabody |grep -c 'Riggs')" -lt 1 ]]; then
-    echo "ERROR: Search is not returning results:"
-    curl -s http://localhost/search/\?q=peabody
+    echo "ERROR: Search is not returning results:" >&2
+    curl -s http://localhost/search/\?q=peabody >&2
     ERRORED=true
 fi
 
 # Run a search for a non-existent string to verify that there are no results
 if [[ "$(curl -s http://localhost/search/\?q=asdfghjkl |grep -c 'No results found')" -lt 1 ]]; then
-    echo "ERROR: Search should be reporting no results found, but is not:"
-    curl -s http://localhost/search/\?q=asdfghjkl
+    echo "ERROR: Search should be reporting no results found, but is not:" >&2
+    curl -s http://localhost/search/\?q=asdfghjkl >&2
     ERRORED=true
 fi
 

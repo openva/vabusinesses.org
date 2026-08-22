@@ -22,14 +22,14 @@ case "$ZIP_TYPE" in
     *zip*|*octet-stream*)
         ;;
     *)
-        echo "ERROR: the SCC did not serve the data file (content type: $ZIP_TYPE)"
+        echo "ERROR: the SCC did not serve the data file (content type: $ZIP_TYPE)" >&2
         ERRORED=true
         ;;
 esac
 
 # See if the update script executes cleanly
 if ! ../../scripts/update.sh; then
-    echo "ERROR: Update script failed"
+    echo "ERROR: Update script failed" >&2
     ERRORED=true
 fi
 
@@ -39,14 +39,14 @@ fi
 for expected in amendment corp llc lp merger name_history officer reserved_name tables gp bt psa
 do
     if [[ ! -s "../../data/$expected.csv" ]]; then
-        echo "ERROR: ../../data/$expected.csv is missing or empty"
+        echo "ERROR: ../../data/$expected.csv is missing or empty" >&2
         ERRORED=true
     fi
 done
 
 # See if the SQLite file exists
 if [[ ! -e ../../data/vabusinesses.sqlite ]]; then
-    echo "ERROR: SQLite file not found"
+    echo "ERROR: SQLite file not found" >&2
     ERRORED=true
     
 else
@@ -56,26 +56,26 @@ else
     for table in amendment corp llc lp merger name_history officer reserved_name tables gp bt psa
     do
         if [[ "$(sqlite3 ../../data/vabusinesses.sqlite "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='$table';")" -ne 1 ]]; then
-            echo "ERROR: SQLite table '$table' was not created"
+            echo "ERROR: SQLite table '$table' was not created" >&2
             ERRORED=true
         fi
     done
 
     # See if we have a reasonable number of records in SQLite's corp table
     if [[ "$(sqlite3 ../../data/vabusinesses.sqlite 'SELECT COUNT(*) FROM corp')" -lt 350000 ]]; then
-        echo "ERROR: Insufficient SQLite rows found for corporate data"
+        echo "ERROR: Insufficient SQLite rows found for corporate data" >&2
         ERRORED=true
     fi
 
     # See if we have a reasonable number of records in SQLite's llc table
     if [[ "$(sqlite3 ../../data/vabusinesses.sqlite 'SELECT COUNT(*) FROM llc')" -lt 730000 ]]; then
-        echo "ERROR: Insufficient SQLite rows found for llc data"
+        echo "ERROR: Insufficient SQLite rows found for llc data" >&2
         ERRORED=true
     fi
 
     # See if we have a reasonable number of records in SQLite's officer table
     if [[ "$(sqlite3 ../../data/vabusinesses.sqlite 'SELECT COUNT(*) FROM officer')" -lt 650000 ]]; then
-        echo "ERROR: Insufficient SQLite rows found for officers data"
+        echo "ERROR: Insufficient SQLite rows found for officers data" >&2
         ERRORED=true
     fi
 
