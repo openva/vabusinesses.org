@@ -32,11 +32,9 @@ class Officers
                 WHERE EntityID = :id
                 ORDER BY OfficerLastName ASC';
 
-        if ($result->numColumns() == 0)
         $statement = $this->db->prepare($sql);
         if ($statement === FALSE)
         {
-            return false;
             return FALSE;
         }
         $statement->bindValue(':id', $this->id, SQLITE3_TEXT);
