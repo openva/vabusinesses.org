@@ -31,6 +31,38 @@ function get_content($url)
 }
 
 /*
+ * Render a file's size for display, in the largest sensible unit
+ */
+function human_filesize($path)
+{
+
+    $bytes = @filesize($path);
+
+    if ($bytes === FALSE)
+    {
+        return '';
+    }
+
+    if ($bytes >= 1073741824)
+    {
+        return round($bytes / 1073741824, 1) . ' GB';
+    }
+
+    if ($bytes >= 1048576)
+    {
+        return round($bytes / 1048576) . ' MB';
+    }
+
+    if ($bytes >= 1024)
+    {
+        return round($bytes / 1024) . ' KB';
+    }
+
+    return $bytes . ' bytes';
+
+}
+
+/*
  * Identify the prefix for URL queries
  */
 if (!empty($_SERVER['HTTPS']))
