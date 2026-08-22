@@ -249,8 +249,12 @@ class Business
     function id_is_valid($id)
     {
         /*
-         * The SCC lengthened entity IDs from 7 to 8 characters (the old
-         * "F000032" is now "F0000325"), so accept either width.
+         * An entity ID is a single letter or digit followed by six or seven
+         * digits: "F000032" in the historical data, "F0000325" in current SCC
+         * exports. The leading character is deliberately not restricted to a
+         * known set -- the SCC has added prefixes over time (J and K arrived
+         * with general partnerships, B and C with business trusts), and an
+         * allowlist silently 404s every entity of any type added next.
          */
         $entity_id_pcre = '/^[A-Z0-9][0-9]{6,7}$/i';
 
