@@ -23,7 +23,7 @@ class Business
      * table name as a parameter, so this allowlist is what keeps $type from
      * becoming an injection vector.
      */
-    const ENTITY_TABLES = array('corp', 'llc', 'lp');
+    const ENTITY_TABLES = array('corp', 'llc', 'lp', 'gp', 'bt', 'psa');
 
     /**
      * Fetch a single business's record
