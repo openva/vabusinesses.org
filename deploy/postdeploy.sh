@@ -11,14 +11,39 @@ cd "$WEBROOT/deploy/" || exit 1
 # Set up the crontab
 crontab deploy
 
-# Enable the SQLite extension
-if [[ "$(dpkg -l |grep php |grep -c sqlite)" -lt 1 ]]; then
-    apt-get install -y php5-sqlite
+# Install what the site and the weekly updater need, if it is not already here.
+# These test for the capability rather than parsing "dpkg -l": the previous
+# version compared a package-description string with -lt, which bash rejects as
+# a syntax error, so the check silently did nothing.
+declare -a packages=()
+
+if ! php -m | grep -qx sqlite3; then
+    packages+=("php-sqlite3")
 fi
 
-# Enable the SQLite extension
-if [[ "$(dpkg -l |grep npm)" -lt 1 ]]; then
-    apt-get install -y npm
+if ! command -v sqlite3 > /dev/null; then
+    packages+=("sqlite3")
+fi
+
+if ! command -v jq > /dev/null; then
+    # scripts/update.sh uses jq to build its Slack payload.
+    packages+=("jq")
+fi
+
+if ! command -v unzip > /dev/null; then
+    packages+=("unzip")
+fi
+
+if ! command -v npm > /dev/null; then
+    packages+=("npm")
+fi
+
+if [[ ${#packages[@]} -gt 0 ]]; then
+    echo "Installing: ${packages[*]}"
+    apt-get update -qq
+    apt-get install -y --no-install-recommends "${packages[@]}"
+else
+    echo "All required packages are already installed."
 fi
 
 # Give the web server user ownership over all files. Note the trailing "." and
