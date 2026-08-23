@@ -1,1 +1,10 @@
-0 4 * * 3 /vol/vabusinesses.org/htdocs/scripts/update.sh
+# Weekly refresh of the SCC business data.
+#
+# The webroot below is substituted in by deploy/postdeploy.sh at install time,
+# so that it is defined in one place rather than repeated across this file,
+# appspec.yml and postdeploy.sh.
+#
+# It has to be an absolute path. cron runs jobs from the user's home directory
+# rather than from wherever this file lives, so a relative path would not be
+# found.
+0 4 * * 3 __WEBROOT__/scripts/update.sh

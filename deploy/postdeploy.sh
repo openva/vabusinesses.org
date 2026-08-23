@@ -8,8 +8,23 @@ WEBROOT="/vol/vabusinesses.org/htdocs"
 
 cd "$WEBROOT/deploy/" || exit 1
 
-# Set up the crontab
-crontab deploy
+# Set up the crontab. The file holds __WEBROOT__ as a placeholder rather than a
+# literal path, so that the webroot is defined once, above. cron cannot be given
+# a relative path: it runs jobs from the user's home directory, not from the
+# directory the crontab was installed from.
+CRONTAB=$(mktemp)
+sed "s|__WEBROOT__|$WEBROOT|g" crontab > "$CRONTAB"
+
+if grep -q "__WEBROOT__" "$CRONTAB"; then
+    echo "ERROR: failed to substitute the webroot into the crontab." >&2
+    rm -f "$CRONTAB"
+    exit 1
+fi
+
+crontab "$CRONTAB"
+rm -f "$CRONTAB"
+echo "Installed crontab:"
+crontab -l | grep -v '^#'
 
 # Install what the site and the weekly updater need, if it is not already here.
 # These test for the capability rather than parsing "dpkg -l": the previous
