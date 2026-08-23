@@ -164,14 +164,34 @@ jobs:
           aws-region: us-east-1
 
       - name: Upload the bundle to S3
-        run: aws s3 cp upload/latest.zip s3://deploy.vabusinesses.org/latest.zip
+        id: upload
+        run: |
+          aws s3 cp upload/latest.zip s3://deploy.vabusinesses.org/latest.zip
+
+          # Read back the ETag of the object we just wrote, so the deployment can
+          # be pinned to it. Without this, create-deployment resolves whatever is
+          # at that key when the deployment starts, and the agent re-checks the
+          # ETag on the instance -- if the two disagree the deployment fails with
+          # "Expected deployment artifact bundle etag ... but was actually ...".
+          ETAG=$(aws s3api head-object \
+            --bucket deploy.vabusinesses.org \
+            --key latest.zip \
+            --query 'ETag' --output text | tr -d '"')
+
+          if [ -z "$ETAG" ]; then
+            echo "ERROR: could not read back the uploaded bundle's ETag." >&2
+            exit 1
+          fi
+
+          echo "Uploaded bundle has ETag $ETAG"
+          echo "etag=$ETAG" >> "$GITHUB_OUTPUT"
 
       - name: Release with CodeDeploy
         run: |
           ID=$(aws deploy create-deployment \
             --application-name VA-Businesses \
             --deployment-group-name VA-Businesses \
-            --s3-location bucket=deploy.vabusinesses.org,key=latest.zip,bundleType=zip \
+            --s3-location bucket=deploy.vabusinesses.org,key=latest.zip,bundleType=zip,eTag=${{ steps.upload.outputs.etag }} \
             --query 'deploymentId' --output text)
           echo "Deployment $ID created; waiting for it to finish."
           aws deploy wait deployment-successful --deployment-id "$ID"
