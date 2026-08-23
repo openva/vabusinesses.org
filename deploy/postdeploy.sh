@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 cd /vol/vabusinesses.org/htdocs/deploy/ || exit
+# Run by CodeDeploy at AfterInstall. Anything that fails here should fail the
+# deployment rather than leave the server half-configured.
+set -e
 
 # Set up the crontab
 crontab deploy
