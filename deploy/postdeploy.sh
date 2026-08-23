@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-cd /vol/vabusinesses.org/htdocs/deploy/ || exit
 # Run by CodeDeploy at AfterInstall. Anything that fails here should fail the
 # deployment rather than leave the server half-configured.
 set -e
+
+WEBROOT="/vol/vabusinesses.org/htdocs"
+
+cd "$WEBROOT/deploy/" || exit 1
 
 # Set up the crontab
 crontab deploy
