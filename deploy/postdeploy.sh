@@ -22,6 +22,6 @@ if [[ "$(dpkg -l |grep npm)" -lt 1 ]]; then
 fi
 
 # Give the web server user ownership over all files
-cd ..
 chown www-data ./*
 chgrp ubuntu ./*
+cd "$WEBROOT" || exit 1
