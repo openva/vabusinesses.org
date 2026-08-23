@@ -21,7 +21,9 @@ if [[ "$(dpkg -l |grep npm)" -lt 1 ]]; then
     apt-get install -y npm
 fi
 
-# Give the web server user ownership over all files
-chown www-data ./*
-chgrp ubuntu ./*
+# Give the web server user ownership over all files. Note the trailing "." and
+# not "./*": the glob skips dotfiles, which left .htaccess -- the file that
+# drives all of the site's routing -- owned by whoever CodeDeploy ran as.
 cd "$WEBROOT" || exit 1
+chown -R www-data .
+chgrp -R ubuntu .
