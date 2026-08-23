@@ -147,8 +147,7 @@ jobs:
           args: --no-interaction --no-progress
 
       # This bundle carries no secrets: the Slack webhook lives in
-      # /etc/vabusinesses.env on the server, outside the deployed code. Keep it
-      # that way -- anything written into the checkout here ends up in S3.
+      # /etc/vabusinesses.env on the server, outside the deployed code.
       - name: Build the deployment bundle
         run: |
           mkdir -p upload
@@ -191,6 +190,7 @@ jobs:
           ID=$(aws deploy create-deployment \
             --application-name VA-Businesses \
             --deployment-group-name VA-Businesses \
+            --file-exists-behavior OVERWRITE \
             --s3-location bucket=deploy.vabusinesses.org,key=latest.zip,bundleType=zip,eTag=${{ steps.upload.outputs.etag }} \
             --query 'deploymentId' --output text)
           echo "Deployment $ID created; waiting for it to finish."
