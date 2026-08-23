@@ -3,6 +3,7 @@ os: linux
 files:
   - source: ./
     destination: /vol/vabusinesses.org/htdocs/
+file_exists_behavior: OVERWRITE
 permissions:
     - object: /vol/vabusinesses.org/htdocs/
       owner: ubuntu
