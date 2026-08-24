@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: ./
+  - source: /
     destination: /vol/vabusinesses.org/htdocs/
 file_exists_behavior: OVERWRITE
 permissions:
@@ -11,5 +11,6 @@ permissions:
       mode: 775
       type:
        - directory
+# "location" is resolved relative to the root of the revision
 AfterInstall:
-  - location: /vol/vabusinesses.org/htdocs/deploy/postdeploy.sh
+  - location: deploy/postdeploy.sh
