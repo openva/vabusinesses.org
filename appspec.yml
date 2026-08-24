@@ -11,6 +11,14 @@ permissions:
       mode: 775
       type:
        - directory
-# "location" is resolved relative to the root of the revision
-AfterInstall:
-  - location: deploy/postdeploy.sh
+# Lifecycle hooks must be nested under a top-level "hooks:" key. The agent reads
+# them as yaml_hash['hooks'], so an AfterInstall declared at the top level is
+# never seen: the hooks map comes back empty, every lifecycle event is reported
+# as a noop, and the deployment succeeds having run nothing at all.
+#
+# "location" is relative to the root of the revision -- the unpacked bundle --
+# not a path on the instance.
+hooks:
+  AfterInstall:
+    - location: deploy/postdeploy.sh
+      timeout: 900
