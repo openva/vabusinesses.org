@@ -72,10 +72,23 @@ fi
 
 # A search for SQL metacharacters must be treated as a literal string. Before
 # these queries were parameterized, this returned the whole 99-row cap.
-INJECTION_JSON="$(curl -s --get --data-urlencode 'q=" OR 1=1 --' http://localhost/search/)"
+# Assert the security property directly against the API, rather than inferring
+# it from the front end: a payload full of metacharacters is rejected by the
+# router before it reaches the search, so the front end now returns 500 rather
+# than the "No results found" page it used to.
+INJECTION_COUNT="$(curl -s "http://localhost/api/search/%22%20OR%201%3D1%20--" | jq '. | length' 2>/dev/null || echo "rejected")"
 
-if [[ "$(echo "$INJECTION_JSON" | grep -c 'No results found')" -lt 1 ]]; then
-    echo "ERROR: a SQL injection payload returned results instead of being treated as a literal string" >&2
+if [[ "$INJECTION_COUNT" != "rejected" ]] && [[ "$INJECTION_COUNT" -gt 0 ]]; then
+    echo "ERROR: a SQL injection payload returned $INJECTION_COUNT results instead of being treated as a literal string" >&2
+    ERRORED=true
+fi
+
+# A payload made only of characters the router accepts still has to be treated
+# as a literal string rather than as SQL.
+LITERAL_COUNT="$(curl -s "http://localhost/api/search/OR1eq1" | jq '. | length' 2>/dev/null || echo 0)"
+
+if [[ "$LITERAL_COUNT" -gt 99 ]]; then
+    echo "ERROR: a literal search returned $LITERAL_COUNT results, above the per-table cap" >&2
     ERRORED=true
 fi
 

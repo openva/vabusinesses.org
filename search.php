@@ -24,10 +24,25 @@ if (!isset($query) || empty($query))
 $api_url = API_URL . '/api/search/' . rawurlencode($query);
 $results_json = get_content($api_url);
 
-$results = json_decode($results_json);
-if ($results === false)
+/*
+ * get_content() returns FALSE when the request to our own API failed outright.
+ * That is a server fault, not an empty result set: reporting it as "no results
+ * found" makes a broken API indistinguishable from a search that matched
+ * nothing, which is exactly how a site-wide search outage goes unnoticed.
+ */
+if ($results_json === false)
 {
-    header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error", true, 500);
+    error_log('Search failed: could not reach ' . $api_url);
+    header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+    exit();
+}
+
+$results = json_decode($results_json);
+
+if ($results === null)
+{
+    error_log('Search failed: ' . $api_url . ' did not return valid JSON');
+    header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
     exit();
 }
 

@@ -14,6 +14,17 @@ $page_body = '';
 $api_url = API_URL . '/api/recent';
 
 $recent_json = get_content($api_url);
+
+/*
+ * A failed request to our own API is logged rather than passed over in silence.
+ * The homepage still renders without the listing -- the download table below is
+ * worth serving on its own -- but the failure leaves a trace to find.
+ */
+if ($recent_json === false)
+{
+    error_log('Homepage listing failed: could not reach ' . $api_url);
+}
+
 $recent = json_decode($recent_json);
 if (!empty($recent))
 {
