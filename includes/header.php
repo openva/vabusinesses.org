@@ -12,6 +12,18 @@ function get_content($url)
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HEADER, 0);
+
+    /*
+     * When the request goes to the loopback address, Apache still has to be told
+     * which of the sites it hosts is being asked for, so send this site's own
+     * hostname as the Host header. API_HOST is empty when VABUSINESSES_API_URL
+     * names a host explicitly, in which case curl derives the header itself.
+     */
+    if (defined('API_HOST') && API_HOST !== '')
+    {
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Host: ' . API_HOST));
+    }
+
     curl_setopt($ch, CURLOPT_TIMEOUT, 60);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
     curl_setopt($ch, CURLOPT_AUTOREFERER, true);
@@ -63,6 +75,16 @@ function human_filesize($path)
 }
 
 /*
+ * The hostnames this site answers to. The first is the canonical one, used when
+ * SERVER_NAME cannot be trusted. Add any alias the site is also served under.
+ */
+$known_hosts = array(
+    'vabusinesses.org',
+    'www.vabusinesses.org',
+    'localhost',
+);
+
+/*
  * Identify the prefix for our own API queries.
  *
  * Every page here fetches its data from this site's own public API over HTTP,
@@ -88,11 +110,32 @@ $api_url = getenv('VABUSINESSES_API_URL');
 if ($api_url === false || $api_url === '')
 {
     /*
-     * SERVER_ADDR is the address this server is actually reachable at, unlike
-     * SERVER_PORT, which reports the port the *client* connected to -- behind a
-     * port mapping or a proxy that is not a port this server listens on.
+     * Connect to the loopback address, but send this site's own hostname as the
+     * Host header (see get_content()). The address cannot be influenced by the
+     * client, and the Host header is what lets Apache pick this site out of the
+     * several it serves -- requesting the server's IP directly would land on
+     * whichever virtual host happens to be the default.
+     *
+     * The hostname comes from SERVER_NAME, which reflects the vhost's ServerName
+     * when UseCanonicalName is On. It is deliberately compared against a list of
+     * hostnames this site answers to, because with UseCanonicalName Off (the
+     * Apache default) SERVER_NAME is taken from the client's Host header -- and
+     * an unchecked value there would let a request redirect this server's own
+     * API calls to a host of the client's choosing.
      */
-    $api_url = 'http://' . ($_SERVER['SERVER_ADDR'] ?? '127.0.0.1');
+    $api_host = $_SERVER['SERVER_NAME'] ?? '';
+
+    if (!in_array($api_host, $known_hosts, TRUE))
+    {
+        $api_host = $known_hosts[0];
+    }
+
+    define('API_HOST', $api_host);
+    $api_url = 'http://127.0.0.1';
+}
+else
+{
+    define('API_HOST', '');
 }
 
 define('API_URL', rtrim($api_url, '/'));

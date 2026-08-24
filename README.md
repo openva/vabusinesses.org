@@ -64,13 +64,20 @@ consumer of the same API third parties use, so a regression in the API breaks th
 website too, and gets noticed straight away. It should stay that way.
 
 Because the server makes those requests to itself, it has to be able to reach
-itself. The address comes from `SERVER_ADDR`, falling back to `127.0.0.1`. Set
-`VABUSINESSES_API_URL` (for example `http://127.0.0.1:8080`) if the server cannot
-reach its own API that way — behind a proxy, or on a non-default port.
+itself. It connects to `127.0.0.1` and sends this site's own hostname as the
+`Host` header, so that Apache can pick this site out of the several it may serve
+— requesting the server's IP address directly would land on whichever virtual
+host happens to be the default.
 
-That address deliberately does *not* come from `SERVER_NAME`, which reflects the
-client's `Host` header. A request carrying `Host: 169.254.169.254` would
-otherwise make the server fetch from an address of the client's choosing.
+That hostname is checked against `$known_hosts` in `includes/header.php`. Add any
+alias the site is served under; the first entry is the canonical one. The check
+matters: `SERVER_NAME` reflects the client's `Host` header unless Apache sets
+`UseCanonicalName On`, so an unvalidated value there would let a request carrying
+`Host: 169.254.169.254` redirect the server's own API calls to an address of the
+client's choosing.
+
+Set `VABUSINESSES_API_URL` (for example `http://127.0.0.1:8080`) to bypass all of
+that and name the API's address explicitly.
 
 Business records live in six SQLite tables — `corp`, `llc`, `lp`, `gp`, `bt` and
 `psa` — listed in `Business::ENTITY_TABLES`. Entity IDs do not collide between
