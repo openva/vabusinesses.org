@@ -2,10 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /vol/vabusinesses.org/htdocs/
+    destination: /var/www/vabusinesses.org/
 file_exists_behavior: OVERWRITE
 permissions:
-    - object: /vol/vabusinesses.org/htdocs/
+    - object: /var/www/vabusinesses.org/
       owner: ubuntu
       group: ubuntu
       mode: 775

@@ -4,7 +4,7 @@
 # deployment rather than leave the server half-configured.
 set -e
 
-WEBROOT="/vol/vabusinesses.org/htdocs"
+WEBROOT="/var/www/vabusinesses.org"
 
 cd "$WEBROOT/deploy/" || exit 1
 
