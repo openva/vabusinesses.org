@@ -61,6 +61,8 @@ else
 
     $page_body = '
     <article>
+        <p>' . count($results) . ' result' . (count($results) === 1 ? '' : 's') . ' for &#8220;'
+            . htmlspecialchars($query, ENT_QUOTES, 'UTF-8') . '&#8221;</p>
         <table>
             <thead>
                 <tr>
@@ -76,10 +78,17 @@ else
     */
     foreach ($results as $business)
     {
-    $page_body .= '<tr>
-        <td><a href="/business/' . $business->EntityID . '">' . $business->Name . '</a></td>
-        <td>' . $business->IncorpDate . '</td>
-        <td>' . $business->Status . '</td>
+        $incorporated = trim($business->IncorpDate ?? '');
+        if ($incorporated !== '')
+        {
+            $incorporated = date('M j, Y', strtotime($incorporated));
+        }
+
+        $page_body .= '<tr>
+        <td><a href="/business/' . rawurlencode($business->EntityID) . '">'
+            . htmlspecialchars($business->Name, ENT_QUOTES, 'UTF-8') . '</a></td>
+        <td>' . htmlspecialchars($incorporated, ENT_QUOTES, 'UTF-8') . '</td>
+        <td>' . htmlspecialchars(trim($business->Status ?? ''), ENT_QUOTES, 'UTF-8') . '</td>
         </tr>';
     }
 
