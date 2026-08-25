@@ -30,42 +30,30 @@ if (!empty($recent))
 {
 	
 	$page_body .= '
-		<article class="container">
-		<h2>Newest Businesses</h2>';
+		<article>
+		<h2>Newest Businesses</h2>
+		<ul class="listing">';
 
-	$i=3;
-	if (count($recent) > 9)
+	foreach (array_slice($recent, 0, 9) as $business)
 	{
-		$recent = array_slice($recent, 0, 9);
-	}
-	foreach ($recent as $business)
-	{
-
-		if ( ($i % 3) == 0 )
-		{
-			$page_body .= '<div class="row">';
-		}
-		
 		$page_body .= '
-			<div class="card small">
-				<h3><a href="/business/' . $business->EntityID . '">' . $business->Name . '</a></h3>
-				<p>';
+			<li>
+				<a class="name" href="/business/' . rawurlencode($business->EntityID) . '">'
+					. htmlspecialchars($business->Name, ENT_QUOTES, 'UTF-8') . '</a>
+				<p class="meta">';
+
 		if (!empty($business->City))
 		{
-			$page_body .= $business->City . ', ' . $business->State . '<br>';
-		} 
-		$page_body .= date('M d, Y', strtotime($business->IncorpDate)) . '</p>
-			</div>';
-
-		if ( ($i % 3) == 2 )
-		{
-			$page_body .= '</div>';
+			$page_body .= htmlspecialchars($business->City . ', ' . $business->State, ENT_QUOTES, 'UTF-8') . '<br>';
 		}
-		$i++;
 
+		$page_body .= 'Incorporated ' . date('F j, Y', strtotime($business->IncorpDate)) . '</p>
+			</li>';
 	}
 
-	$page_body .= '</article>';
+	$page_body .= '
+		</ul>
+		</article>';
 
 }
 
@@ -99,7 +87,7 @@ $page_body .= '
 			<thead>
 				<tr>
 					<th scope="col">File</th>
-					<th scope="col">Size</th>
+					<th scope="col" class="numeric">Size</th>
 				</tr>
 			</thead>
 			<tbody>';
@@ -116,7 +104,7 @@ foreach ($data_files as $filename => $label)
 	$page_body .= '
 				<tr>
 					<td data-label="File"><a href="data/' . $filename . '">' . $label . '</a></td>
-					<td data-label="Size">' . human_filesize($path) . '</td>
+					<td data-label="Size" class="numeric">' . human_filesize($path) . '</td>
 				</tr>';
 }
 

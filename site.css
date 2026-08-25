@@ -1,0 +1,228 @@
+/*
+ * Layout adjustments on top of mini.css.
+ *
+ * mini.css caps every table at 400px and makes it scroll
+ * (table:not(.horizontal){overflow:auto;max-height:400px}), which turns both
+ * the download table and the business detail view into small scrolled frames
+ * inside an otherwise empty page. These tables are short and want to be read as
+ * a whole, so that behaviour is undone here rather than by adding mini.css's
+ * "horizontal" class, which restyles them as a card grid instead.
+ */
+
+:root {
+    --measure: 62rem;
+}
+
+/* Give the page a readable column rather than letting it span the viewport. */
+body > header,
+main {
+    max-width: var(--measure);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+main {
+    padding: 0 1rem 3rem;
+}
+
+/* ---- Tables ------------------------------------------------------------ */
+
+table {
+    overflow: visible;
+    max-height: none;
+    width: 100%;
+    display: table;
+    border-collapse: collapse;
+    margin: 0 0 1.5rem;
+}
+
+table thead,
+table tbody,
+table tr {
+    display: table-row-group;
+}
+
+table tr {
+    display: table-row;
+}
+
+table th,
+table td {
+    display: table-cell;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    padding: 0.5rem 0.75rem;
+    border: 0;
+    border-bottom: 1px solid var(--secondary-border-color, #ddd);
+    text-align: left;
+    vertical-align: top;
+}
+
+table th {
+    font-weight: 600;
+    border-bottom-width: 2px;
+}
+
+table tbody tr:hover {
+    background: var(--secondary-back-color, #f0f0f0);
+}
+
+/* Numeric columns read better right-aligned. */
+table td.numeric,
+table th.numeric {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---- Definition-style detail table ------------------------------------- */
+
+/*
+ * The business detail view is a list of labelled values, not a grid, so the
+ * label column is held narrow and the value column takes the rest.
+ */
+.detail th[scope="row"] {
+    width: 14rem;
+    font-weight: 600;
+    color: var(--secondary-fore-color, #444);
+    border-bottom: 1px solid var(--secondary-border-color, #eee);
+}
+
+.detail caption {
+    text-align: left;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 1rem 0 0.5rem;
+}
+
+/* ---- Cards ------------------------------------------------------------- */
+
+/*
+ * The "newest businesses" listing was nine bordered boxes laid out by counting
+ * to three in PHP. A grid handles the wrapping, and without the heavy border
+ * the list reads as a list.
+ */
+.listing {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+    margin: 0 0 2rem;
+    padding: 0;
+    list-style: none;
+}
+
+.listing li {
+    padding: 0.75rem 0 0;
+    border-top: 2px solid var(--secondary-border-color, #ddd);
+}
+
+.listing .name {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.listing .meta {
+    color: var(--secondary-fore-color, #444);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* ---- Header, search, misc ---------------------------------------------- */
+
+/*
+ * mini.css fixes the header at 3.1875rem with overflow-y:hidden, and styles
+ * nav links as display:block. Inside a header the nav therefore stacks below
+ * the title and is clipped away, leaving a bordered strip with nothing in it.
+ * Release the height and lay the header out as a row instead.
+ */
+body > header {
+    height: auto;
+    overflow: visible;
+    white-space: normal;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.5rem;
+    padding: 0.75rem 1rem;
+}
+
+body > header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+body > header nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+}
+
+body > header nav a,
+body > header nav a:visited {
+    display: inline-block;
+    padding: 0.25rem 0;
+    margin: 0;
+    border-radius: 0;
+    background: none;
+}
+
+body > header nav a:hover,
+body > header nav a:focus {
+    background: none;
+    text-decoration: underline;
+}
+
+#search {
+    margin: 0 0 2rem;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: none;
+}
+
+#search form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#search input[type="text"] {
+    flex: 1 1 20rem;
+    max-width: 100%;
+}
+
+#search label {
+    font-weight: 600;
+}
+
+main > h1 {
+    margin: 1rem 0;
+}
+
+/* An empty <h1> should not reserve vertical space. */
+main > h1:empty {
+    display: none;
+    margin: 0;
+}
+
+footer.wrapper {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--secondary-border-color, #ddd);
+    font-size: 0.85rem;
+    color: var(--secondary-fore-color, #444);
+}
+
+@media (max-width: 40rem) {
+    .detail th[scope="row"] {
+        width: auto;
+    }
+}
