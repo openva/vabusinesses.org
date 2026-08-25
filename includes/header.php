@@ -14,14 +14,18 @@ function get_content($url)
     curl_setopt($ch, CURLOPT_HEADER, 0);
 
     /*
-     * When the request goes to the loopback address, Apache still has to be told
-     * which of the sites it hosts is being asked for, so send this site's own
-     * hostname as the Host header. API_HOST is empty when VABUSINESSES_API_URL
-     * names a host explicitly, in which case curl derives the header itself.
+     * The URL names this site's own hostname, so that Apache can pick this site
+     * out of the several it may serve -- but the connection is pinned to the
+     * loopback address rather than going out to DNS and back around through any
+     * proxy or load balancer in front of the site.
+     *
+     * CURLOPT_RESOLVE is used in preference to sending a Host header via
+     * CURLOPT_HTTPHEADER: that option replaces curl's entire default header
+     * list, so it drops any header curl would otherwise generate.
      */
-    if (defined('API_HOST') && API_HOST !== '')
+    if (defined('API_RESOLVE') && API_RESOLVE !== '')
     {
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Host: ' . API_HOST));
+        curl_setopt($ch, CURLOPT_RESOLVE, array(API_RESOLVE));
     }
 
     curl_setopt($ch, CURLOPT_TIMEOUT, 60);
@@ -94,34 +98,24 @@ $known_hosts = array(
  * instead of being reported by someone else weeks later. Please do not
  * "optimise" this into a direct call.
  *
- * Because the request is made by the server to itself, the address has to
- * resolve back to this server. It deliberately does not use SERVER_NAME, which
- * reflects the client's Host header: sending "Host: 169.254.169.254" would
- * otherwise make the server fetch from an address of the client's choosing --
- * a server-side request forgery, and on EC2 a route to the instance metadata
- * service. SERVER_ADDR is the server's own address and cannot be set by a
- * client.
+ * The request is addressed to this site by name -- the server hosts several
+ * sites, so Apache needs the hostname to route it -- but pinned to the loopback
+ * address, so it cannot leave the machine no matter what that name resolves to.
  *
  * Set VABUSINESSES_API_URL to override, for a setup where the site is not
- * reachable at its own address from the web server itself.
+ * reachable that way from the web server itself.
  */
 $api_url = getenv('VABUSINESSES_API_URL');
 
 if ($api_url === false || $api_url === '')
 {
     /*
-     * Connect to the loopback address, but send this site's own hostname as the
-     * Host header (see get_content()). The address cannot be influenced by the
-     * client, and the Host header is what lets Apache pick this site out of the
-     * several it serves -- requesting the server's IP directly would land on
-     * whichever virtual host happens to be the default.
-     *
-     * The hostname comes from SERVER_NAME, which reflects the vhost's ServerName
-     * when UseCanonicalName is On. It is deliberately compared against a list of
-     * hostnames this site answers to, because with UseCanonicalName Off (the
-     * Apache default) SERVER_NAME is taken from the client's Host header -- and
-     * an unchecked value there would let a request redirect this server's own
-     * API calls to a host of the client's choosing.
+     * SERVER_NAME reflects the vhost's ServerName when UseCanonicalName is On,
+     * but is taken from the client's Host header when it is Off (the Apache
+     * default). It is therefore checked against the hostnames this site answers
+     * to: an unvalidated value would let a request carrying, say,
+     * "Host: 169.254.169.254" point this server's own API calls wherever the
+     * client liked.
      */
     $api_host = $_SERVER['SERVER_NAME'] ?? '';
 
@@ -130,12 +124,16 @@ if ($api_url === false || $api_url === '')
         $api_host = $known_hosts[0];
     }
 
-    define('API_HOST', $api_host);
-    $api_url = 'http://127.0.0.1';
+    /*
+     * Ask for this site by name, but resolve that name to the loopback address
+     * so the request cannot leave the machine.
+     */
+    $api_url = 'http://' . $api_host;
+    define('API_RESOLVE', $api_host . ':80:127.0.0.1');
 }
 else
 {
-    define('API_HOST', '');
+    define('API_RESOLVE', '');
 }
 
 define('API_URL', rtrim($api_url, '/'));
