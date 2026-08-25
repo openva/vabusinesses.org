@@ -373,7 +373,35 @@ class Business
 
             $this->lookup_table[$entry['TableContents']][$entry['ColumnValue']] = $entry['Description'];
         }
-        
+
+        /*
+         * The SCC's own locality table stops at code 901 and covers only a
+         * seventh of the codes that actually appear in the data: the values in
+         * RA-Loc are now mostly Virginia FIPS county and city codes. Fold those
+         * in, without letting them displace anything the SCC does define.
+         *
+         * includes/localities.json is generated from municipalities.geojson,
+         * which is a Census TIGER file; it is extracted rather than read
+         * directly because parsing the geometry costs 18ms and 20MB per request
+         * to recover 133 names.
+         */
+        $localities_json = @file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/includes/localities.json');
+
+        if ($localities_json !== false)
+        {
+            $localities = json_decode($localities_json, true);
+
+            if (is_array($localities))
+            {
+                if (!isset($this->lookup_table['court-locality-code']))
+                {
+                    $this->lookup_table['court-locality-code'] = array();
+                }
+
+                $this->lookup_table['court-locality-code'] += $localities;
+            }
+        }
+
         return $this->lookup_table;
     }
 
