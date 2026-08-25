@@ -97,19 +97,26 @@ class Business
          * in which case there is nothing to look up and the raw value stands.
          * Records missing the field entirely resolve to an empty string.
          */
+        /*
+         * The third element says what to do when the code is not in the lookup
+         * table. Most of these columns now hold the description itself
+         * ("INACTIVE", "0 - General"), so the raw value is worth showing. A
+         * locality code is not: "993" means nothing to a reader, so an
+         * unresolved one yields an empty string and the field is omitted.
+         */
         $lookups = array(
-            'StatusText'    => array('corporate-status-table', 'Status'),
-            'IndustryText'  => array('industry-code-table', 'IndustryCode'),
-            'RA-StatusText' => array('registered-agent-status', 'RA-Status'),
-            'RA-LocText'    => array('court-locality-code', 'RA-Loc'),
-            'AssessIndText' => array('assessment-indicator', 'AssessInd'),
+            'StatusText'    => array('corporate-status-table', 'Status', TRUE),
+            'IndustryText'  => array('industry-code-table', 'IndustryCode', TRUE),
+            'RA-StatusText' => array('registered-agent-status', 'RA-Status', TRUE),
+            'RA-LocText'    => array('court-locality-code', 'RA-Loc', FALSE),
+            'AssessIndText' => array('assessment-indicator', 'AssessInd', TRUE),
         );
 
         foreach ($lookups as $target => $lookup)
         {
-            list($table, $column) = $lookup;
+            list($table, $column, $show_raw) = $lookup;
             $code = $this->business[$column] ?? '';
-            $this->business[$target] = $lookup_table[$table][$code] ?? $code;
+            $this->business[$target] = $lookup_table[$table][$code] ?? ($show_raw ? $code : '');
         }
         
         return $this->business;
