@@ -64,10 +64,11 @@ consumer of the same API third parties use, so a regression in the API breaks th
 website too, and gets noticed straight away. It should stay that way.
 
 Because the server makes those requests to itself, it has to be able to reach
-itself. It connects to `127.0.0.1` and sends this site's own hostname as the
-`Host` header, so that Apache can pick this site out of the several it may serve
-— requesting the server's IP address directly would land on whichever virtual
-host happens to be the default.
+itself. The request is addressed to this site *by name* — the server hosts
+several sites, and Apache needs the hostname to route to the right virtual host;
+requesting the server's IP address lands on whichever vhost is the default — but
+the connection is pinned to `127.0.0.1` with `CURLOPT_RESOLVE`, so it never
+leaves the machine.
 
 That hostname is checked against `$known_hosts` in `includes/header.php`. Add any
 alias the site is served under; the first entry is the canonical one. The check
@@ -116,6 +117,14 @@ The shape of the data has changed since this site was first written:
   `0 - General`) rather than the numeric codes the lookup tables expand, so a
   value with no lookup match is shown as-is.
 - **There is a new `StatusReason` column.**
+- **Registered agent localities are FIPS codes.** `RA-Loc` holds Virginia county
+  and city FIPS codes, but the SCC's own lookup table (`TableID` 05) stops at
+  code 901 and covers only a seventh of the codes in the data. The rest are
+  resolved from `includes/localities.json`, generated from the Census TIGER file
+  in `municipalities.geojson` by `scripts/build-localities.php`. Between the two,
+  88% of records resolve to a name; the remainder are an SCC-internal 970-999
+  block for unincorporated communities, and are omitted rather than shown as a
+  bare number.
 - **Three entity types postdate this site**: general partnerships (`GP.csv`,
   ~7,500 entities), business trusts (`BT.csv`, ~1,900) and public service
   authorities (`PSA.csv`, ~130). They share `LP.csv`'s schema and are loaded
