@@ -10,8 +10,9 @@ fi
 
 # Run Bash tests. TEST_SOURCE_DATA is passed through so the caller can opt in to
 # the slow tests that re-download the SCC dataset. XDEBUG_MODE=coverage is
-# required for PHPUnit to write coverage-report.clover, which SonarCloud reads --
-# without it PHPUnit warns and produces no report at all.
+# required for PHPUnit to write coverage-report.clover; without it PHPUnit warns
+# and produces no report at all. The report is kept as a CI artifact, and is what
+# sonar.php.coverage.reportPaths points at should CI-based analysis be restored.
 docker exec "${TTY_FLAGS[@]}" \
     -e "TEST_SOURCE_DATA=${TEST_SOURCE_DATA:-0}" \
     -e "XDEBUG_MODE=coverage" \

@@ -4,7 +4,6 @@ Website for Virginia State Corporation Commission data.
 
 [![CI](https://github.com/openva/vabusinesses.org/actions/workflows/ci.yml/badge.svg)](https://github.com/openva/vabusinesses.org/actions/workflows/ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=openva_vabusinesses.org&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=openva_vabusinesses.org)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=openva_vabusinesses.org&metric=coverage)](https://sonarcloud.io/summary/new_code?id=openva_vabusinesses.org)
 [![Dependency Vulnerability Analysis](https://app.snyk.io/test/github/openva/vabusinesses.org/badge.svg?targetFile=package.json)](https://app.snyk.io/test/github/openva/vabusinesses.org?targetFile=package.json)
 
 ## Contents
@@ -133,8 +132,14 @@ The shape of the data has changed since this site was first written:
 
 ## Deployment
 
-`.github/workflows/ci.yml` builds the site, runs the tests, scans with
-SonarCloud, and deploys `master` to S3 and CodeDeploy.
+`.github/workflows/ci.yml` builds the site, runs the tests, and deploys `master`
+to S3 and CodeDeploy.
+
+Code quality is analysed by SonarCloud's Automatic Analysis, which runs
+server-side against the repository rather than from CI. There is no scan step in
+the workflow: SonarCloud refuses to accept both, failing the CI scan with *"You
+are running CI analysis while Automatic Analysis is enabled."* See the note at
+the top of `sonar-project.properties` for what that costs and how to switch back.
 
 ### Repository secrets
 
@@ -144,7 +149,6 @@ Set these under Settings → Secrets and variables → Actions:
 | --- | --- |
 | `AWS_ACCESS_KEY_ID` | S3 upload and CodeDeploy |
 | `AWS_SECRET_ACCESS_KEY` | S3 upload and CodeDeploy |
-| `SONAR_TOKEN` | SonarCloud analysis |
 
 No secret is written into the deployment bundle.
 
