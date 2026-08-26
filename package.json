@@ -4,9 +4,10 @@
   "dependencies": {
     "csvtojson": "^2.0.13",
     "mini.css": "3.x",
-    "snyk": "^1.1297.3"
+    "snyk": "^1.1297.3",
+    "leaflet": "^1.9.4"
   },
   "scripts": {
-    "build": "npm install; cp -r node_modules/mini.css/dist/mini-default.min.css .; rm -Rf node_modules"
+    "build": "npm install; cp -r node_modules/mini.css/dist/mini-default.min.css .; mkdir -p vendor-assets/leaflet/images; cp node_modules/leaflet/dist/leaflet.css vendor-assets/leaflet/; cp node_modules/leaflet/dist/leaflet.js vendor-assets/leaflet/; cp node_modules/leaflet/dist/images/*.png vendor-assets/leaflet/images/; rm -Rf node_modules"
   }
 }

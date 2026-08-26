@@ -157,6 +157,38 @@ $rows = detail_row('Principal office', implode("\n", $address));
 $page_body .= detail_section('Address', $rows);
 
 /*
+ * A locator map, when this address has been geocoded and a tile provider is
+ * configured. Both are optional: data/addresses.db is populated gradually and is
+ * not part of the deployment, and MAPBOX_TOKEN comes from the server's
+ * environment. Absent either, the page simply has no map.
+ */
+if (MAP_TILES !== '' && !empty($address))
+{
+    $geocode = new Geocode;
+
+    if ($geocode->connect() !== FALSE)
+    {
+        $point = $geocode->coordinates(
+            $business['Street1'] ?? '',
+            $business['Street2'] ?? '',
+            $business['City'] ?? '',
+            $business['State'] ?? '',
+            $business['Zip'] ?? ''
+        );
+
+        if ($point !== FALSE)
+        {
+            $page_body .= "\n\t" . '<div id="map"'
+                . ' data-latitude="' . htmlspecialchars((string) $point['latitude'], ENT_QUOTES, 'UTF-8') . '"'
+                . ' data-longitude="' . htmlspecialchars((string) $point['longitude'], ENT_QUOTES, 'UTF-8') . '"'
+                . ' data-tiles="' . htmlspecialchars(MAP_TILES, ENT_QUOTES, 'UTF-8') . '"'
+                . ' data-attribution="' . htmlspecialchars(MAP_ATTRIBUTION, ENT_QUOTES, 'UTF-8') . '"'
+                . '></div>';
+        }
+    }
+}
+
+/*
  * Stock
  */
 $rows  = detail_row('Total shares', $shares);
@@ -241,6 +273,7 @@ if (!empty($business['Officers']) && is_array($business['Officers']))
 
 $page_body .= "\n</article>";
 
+$template->assign('needs_map', strpos($page_body, 'id="map"') !== FALSE);
 $template->assign('page_body', $page_body);
 $template->assign('page_title', $page_title);
 $template->assign('browser_title', $browser_title);

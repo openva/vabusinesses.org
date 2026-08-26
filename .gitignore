@@ -1,6 +1,7 @@
 .DS_Store
 data/
 mini-default.min.css
+vendor-assets/
 vendor/
 templates_c/
 deploy/tests/phpunit

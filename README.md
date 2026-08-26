@@ -149,8 +149,10 @@ Set these under Settings → Secrets and variables → Actions:
 | --- | --- |
 | `AWS_ACCESS_KEY_ID` | S3 upload and CodeDeploy |
 | `AWS_SECRET_ACCESS_KEY` | S3 upload and CodeDeploy |
+| `MAPBOX_TOKEN` | Map tiles (see [Maps](#maps) -- public by design) |
 
-No secret is written into the deployment bundle.
+The AWS credentials are not written into the deployment bundle. The Mapbox token
+is, because the browser needs it; it is a public token, not a secret.
 
 ### Server configuration
 
@@ -167,6 +169,52 @@ sudo chmod 600 /etc/vabusinesses.env
 
 Set `VABUSINESSES_ENV` to read it from somewhere else. If the file is missing the
 update still runs, and says so instead of notifying.
+
+### Maps
+
+Business pages show a locator map when the address has been geocoded. Tiles come
+from Mapbox.
+
+The access token is injected at build time from the `MAPBOX_TOKEN` repository
+secret: `scripts/build-mapbox-config.php` writes it into `includes/mapbox.php`,
+which is gitignored and travels in the deployment bundle. Set `MAPBOX_STYLE` as a
+repository *variable* to override the default style.
+
+**The token is not, and cannot be, hidden from visitors.** A Mapbox `pk.` token
+is sent by the browser when it fetches tiles, so it appears in the page source
+and in the network tab no matter where it is stored -- Mapbox designs public
+tokens to be exposed this way. Build-time injection keeps it out of git and out
+of server configuration, which is worth doing; it is not a secret in the browser.
+Restrict it by URL in the Mapbox dashboard and scope it to `styles:tiles`. The
+build refuses an `sk.` token outright.
+
+**Maps will not render locally** unless the URL restriction allows it: Mapbox
+rejects tile requests whose `Referer` is not on the allowlist, so a site served
+from `http://localhost:5001/` gets a 403 and a blank map. Either add
+`http://localhost:5001/*` to the token's allowed URLs, or set `MAPBOX_TOKEN` in
+the environment to an unrestricted development token -- the environment takes
+precedence over the committed value:
+
+```sh
+docker exec -e MAPBOX_TOKEN=pk.your_dev_token vabusinesses ...
+```
+
+Leaflet is vendored at build time by `npm run build` into `vendor-assets/`, not
+loaded from a CDN, and is only requested on pages that actually have a map. The
+Content-Security-Policy in `.htaccess` allows `api.mapbox.com` for tiles;
+everything else stays same-origin.
+
+Coordinates come from `data/addresses.db`, a geocode cache built by the
+[crump](https://github.com/openva/crump) project. It is keyed by an MD5 of a
+normalised address, and `Geocode::hash()` reproduces that recipe exactly -- it is
+a compatibility contract, and changing it makes every lookup miss silently.
+
+That file is not in the deployment bundle. `deploy/postdeploy.sh` fetches it from
+`s3://data.vabusinesses.org/addresses.db` with `aws s3 sync`, so the ~100 MB
+transfers only when the object is newer or a different size than the local copy.
+The EC2 instance role therefore needs `s3:GetObject` on that object and
+`s3:ListBucket` on the bucket. A failure is not fatal: an existing copy is kept,
+and without any copy the pages simply render without maps.
 
 ## Dependencies
 

@@ -103,6 +103,7 @@ else
 
 }
 
+$template->assign('needs_map', FALSE);
 $template->assign('page_body', $page_body);
 $template->assign('page_title', $page_title);
 $template->assign('browser_title', $browser_title);

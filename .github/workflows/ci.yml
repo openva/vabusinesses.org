@@ -125,7 +125,9 @@ jobs:
           args: --no-interaction --no-progress
 
       # This bundle carries no secrets: the Slack webhook lives in
-      # /etc/vabusinesses.env on the server, outside the deployed code.
+      # /etc/vabusinesses.env on the server, outside the deployed code. (The
+      # Mapbox token in includes/header.php is public by design -- the browser
+      # sends it to fetch tiles -- and is restricted by URL at Mapbox.)
       - name: Build the deployment bundle
         run: |
           mkdir -p upload

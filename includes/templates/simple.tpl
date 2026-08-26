@@ -8,6 +8,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="/mini-default.min.css" />
 		<link rel="stylesheet" href="/site.css" />
+{if $needs_map}		<link rel="stylesheet" href="/vendor-assets/leaflet/leaflet.css" />
+{/if}
 	</head>
 	
 	<body>
@@ -45,5 +47,7 @@
 		</footer>
 
 	</main>
-	</body>
+{if $needs_map}	<script src="/vendor-assets/leaflet/leaflet.js"></script>
+	<script src="/map.js"></script>
+{/if}	</body>
 </html>

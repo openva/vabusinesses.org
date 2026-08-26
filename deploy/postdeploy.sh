@@ -53,12 +53,49 @@ if ! command -v npm > /dev/null; then
     packages+=("npm")
 fi
 
+if ! command -v aws > /dev/null; then
+    # For fetching the geocode cache from S3, below.
+    packages+=("awscli")
+fi
+
 if [[ ${#packages[@]} -gt 0 ]]; then
     echo "Installing: ${packages[*]}"
     apt-get update -qq
     apt-get install -y --no-install-recommends "${packages[@]}"
 else
     echo "All required packages are already installed."
+fi
+
+# Fetch the geocode cache that the business pages draw their maps from.
+#
+# It is not in the deployment bundle: it is ~100 MB, is regenerated
+# independently of this repository by the geocoder, and is gitignored.
+#
+# "s3 sync" rather than "s3 cp" so that the ~100 MB is only transferred when the
+# object in S3 is newer or a different size than the local copy -- an unchanged
+# cache costs one HEAD request. The --exclude/--include pair is how sync is
+# limited to a single object.
+#
+# A failure here is deliberately not fatal. The cache is optional -- without it
+# the site renders without maps -- and a transient S3 problem should not roll
+# back an otherwise good release.
+GEOCODE_CACHE="$WEBROOT/data/addresses.db"
+
+mkdir -p "$WEBROOT/data"
+
+if aws s3 sync "s3://data.vabusinesses.org/" "$WEBROOT/data/" \
+    --exclude "*" --include "addresses.db" --only-show-errors; then
+    if [[ -f "$GEOCODE_CACHE" ]]; then
+        echo "Geocode cache present ($(du -h "$GEOCODE_CACHE" | cut -f1))"
+    else
+        echo "Note: no addresses.db in the bucket; pages will render without maps" >&2
+    fi
+else
+    if [[ -f "$GEOCODE_CACHE" ]]; then
+        echo "Note: could not refresh the geocode cache; keeping the existing copy" >&2
+    else
+        echo "Note: no geocode cache available; business pages will render without maps" >&2
+    fi
 fi
 
 # Give the web server user ownership over all files. Note the trailing "." and

@@ -226,3 +226,23 @@ footer.wrapper {
         width: auto;
     }
 }
+
+/* ---- Locator map ------------------------------------------------------- */
+
+/*
+ * Shown on business pages that have a geocoded address. Leaflet needs an
+ * explicit height on its container or it renders zero pixels tall.
+ */
+#map {
+    height: 20rem;
+    margin: 0 0 1.5rem;
+    border: 1px solid var(--secondary-border-color, #ddd);
+    border-radius: var(--universal-border-radius, 2px);
+    background: var(--secondary-back-color, #f0f0f0);
+}
+
+@media (max-width: 40rem) {
+    #map {
+        height: 14rem;
+    }
+}

@@ -79,6 +79,39 @@ function human_filesize($path)
 }
 
 /*
+ * Map tiles.
+ *
+ * This token is committed deliberately. A Mapbox "pk." token is sent by the
+ * browser when it fetches tiles, so it is visible in the page source and in the
+ * network tab however it is stored -- Mapbox designs public tokens to be
+ * exposed this way, and hiding it in a secret would not change who can read it.
+ *
+ * What does protect it is configured at Mapbox, not here: a URL restriction, so
+ * the token only works for requests from this site, and the styles:tiles scope.
+ * Both matter, because forks of this repository carry this token and would
+ * otherwise draw against this account's quota.
+ *
+ * The environment takes precedence, for local development against a different
+ * token or style.
+ */
+define('MAPBOX_TOKEN', getenv('MAPBOX_TOKEN') ?: 'pk.eyJ1Ijoid2FsZG9qIiwiYSI6ImNtdDlpMjhsazA4OG0yeXE3aTVmZzczbHMifQ.em5tEyvpuil7IFDumXN6-w');
+define('MAPBOX_STYLE', getenv('MAPBOX_STYLE') ?: 'mapbox/streets-v12');
+
+define(
+    'MAP_TILES',
+    MAPBOX_TOKEN === ''
+        ? ''
+        : 'https://api.mapbox.com/styles/v1/' . MAPBOX_STYLE
+            . '/tiles/512/{z}/{x}/{y}@2x?access_token=' . MAPBOX_TOKEN
+);
+
+define(
+    'MAP_ATTRIBUTION',
+    '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> '
+    . '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+);
+
+/*
  * The hostnames this site answers to. The first is the canonical one, used when
  * SERVER_NAME cannot be trusted. Add any alias the site is also served under.
  */

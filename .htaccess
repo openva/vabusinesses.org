@@ -4,7 +4,10 @@ RewriteRule . index.php [L]
 
 # Add a bunch of security headers
 Header unset Content-Security-Policy
-Header add Content-Security-Policy "default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'"
+# api.mapbox.com is allowed for map tiles on business pages. "data:" is for
+# Leaflet's own marker images, which it inlines. Everything else stays
+# same-origin: Leaflet itself is vendored at build time, not loaded from a CDN.
+Header add Content-Security-Policy "default-src 'none'; img-src 'self' data: https://api.mapbox.com; script-src 'self'; style-src 'self'; connect-src 'self' https://api.mapbox.com"
 
 Header unset Strict-Transport-Security
 Header add Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
