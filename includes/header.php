@@ -29,12 +29,29 @@ function get_content($url)
     }
 
     curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+    /*
+     * MAXREDIRS without FOLLOWLOCATION does nothing. Following redirects means a
+     * scheme or host redirect returns the response rather than an empty 301
+     * body, which previously took down every page that queries the API.
+     */
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
     curl_setopt($ch, CURLOPT_AUTOREFERER, true);
     curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
     $string = curl_exec($ch);
+
+    /*
+     * If the request to ourselves failed outright -- rather than returning a
+     * response we did not like -- log why. Every page on the site depends on
+     * this call, so a silent failure here reads as the whole site being broken.
+     */
+    if ($string === false)
+    {
+        error_log('get_content: ' . curl_error($ch) . ' for ' . $url);
+    }
+
     curl_close($ch);
 
     if (empty($string))
@@ -158,11 +175,33 @@ if ($api_url === false || $api_url === '')
     }
 
     /*
+     * Match the scheme the site is actually served over. Production redirects
+     * http:// to https://, and this request does not follow redirects, so an
+     * http:// self-request there fetches an empty 301 body and every page that
+     * calls the API fails.
+     *
+     * HTTPS is inferred from the request rather than hard-coded, so that the
+     * Docker container (plain http on port 80) keeps working. X-Forwarded-Proto
+     * is honoured because a TLS-terminating proxy leaves $_SERVER['HTTPS']
+     * unset on the request it forwards.
+     */
+    $forwarded = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '');
+    $secure = !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off';
+
+    if ($forwarded === 'https')
+    {
+        $secure = TRUE;
+    }
+
+    $scheme = $secure ? 'https' : 'http';
+    $port = $secure ? '443' : '80';
+
+    /*
      * Ask for this site by name, but resolve that name to the loopback address
      * so the request cannot leave the machine.
      */
-    $api_url = 'http://' . $api_host;
-    define('API_RESOLVE', $api_host . ':80:127.0.0.1');
+    $api_url = $scheme . '://' . $api_host;
+    define('API_RESOLVE', $api_host . ':' . $port . ':127.0.0.1');
 }
 else
 {
