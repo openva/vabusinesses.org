@@ -7,7 +7,12 @@ $template = new Smarty;
 $browser_title = 'Virginia Businesses';
 $page_title = '';
 
-$query = htmlspecialchars($_GET['q'] ?? '', ENT_QUOTES, 'UTF-8');
+/*
+ * Held as the user typed it. Escaping here would corrupt the search itself --
+ * "Book N' Scoop" would be looked up as "Book N&#039; Scoop" -- so the value is
+ * escaped at each point it is rendered instead, below.
+ */
+$query = trim($_GET['q'] ?? '');
 
 /*
  * If no search query has been passed in the URL

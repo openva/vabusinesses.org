@@ -5,6 +5,18 @@ require 'vendor/autoload.php';
 $router = new AltoRouter();
 
 /*
+ * AltoRouter's built-in "a" match type is [0-9A-Za-z]++, which cannot carry a
+ * space -- so a search for "american brands" matched no route at all and 404ed.
+ * Business names also contain commas, periods, ampersands and apostrophes.
+ *
+ * "search" accepts anything except a slash. That is safe because nothing is
+ * interpolated into SQL: Business::search() binds the term to a prepared
+ * statement and escapes the LIKE metacharacters itself. The restrictive match
+ * type was never the injection defence, only an accident of it.
+ */
+$router->addMatchTypes(array('search' => '[^/]++'));
+
+/*
  * Map our routes
  */
 
@@ -28,7 +40,7 @@ $router->map( 'GET', '/api/business/[a:id]', function($id)
     require __DIR__ . '/api/business.php';
 }, 'api-business-details' );
 
-$router->map( 'GET', '/api/search/[a:query]', function($query)
+$router->map( 'GET', '/api/search/[search:query]', function($query)
 {
     require __DIR__ . '/api/search.php';
 }, 'api-search' );

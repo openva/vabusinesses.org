@@ -83,6 +83,25 @@ if [[ "$INJECTION_COUNT" != "rejected" ]] && [[ "$INJECTION_COUNT" -gt 0 ]]; the
     ERRORED=true
 fi
 
+# A search term with a space has to survive the round trip: the router's default
+# "a" match type is alphanumeric-only, so a multi-word search used to 404, and
+# the path segment arrives still URL-encoded and has to be decoded.
+MULTIWORD_COUNT="$(curl -s "http://localhost/api/search/american%20brands" | jq '. | length' 2>/dev/null || echo 0)"
+
+if [[ "$MULTIWORD_COUNT" -lt 1 ]]; then
+    echo "ERROR: a multi-word search returned $MULTIWORD_COUNT results" >&2
+    ERRORED=true
+fi
+
+# The front end must not HTML-escape the term before searching: "Book N' Scoop"
+# would otherwise be looked up as "Book N&#039; Scoop" and match nothing.
+APOSTROPHE_COUNT="$(curl -s --get --data-urlencode "q=N' Scoop" http://localhost/search/ | grep -c 'href="/business/')"
+
+if [[ "$APOSTROPHE_COUNT" -lt 1 ]]; then
+    echo "ERROR: a search containing an apostrophe returned no results" >&2
+    ERRORED=true
+fi
+
 # A payload made only of characters the router accepts still has to be treated
 # as a literal string rather than as SQL.
 LITERAL_COUNT="$(curl -s "http://localhost/api/search/OR1eq1" | jq '. | length' 2>/dev/null || echo 0)"
