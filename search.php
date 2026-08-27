@@ -5,7 +5,7 @@ require 'includes/header.php';
 $template = new Smarty;
 
 $browser_title = 'Virginia Businesses';
-$page_title = '';
+$page_title = 'Search';
 
 /*
  * Held as the user typed it. Escaping here would corrupt the search itself --
@@ -64,10 +64,12 @@ if ( !is_array($results) || count($results) == 0 )
 else
 {
 
+    $page_title = 'Search results';
+    $page_summary = count($results) . ' result' . (count($results) === 1 ? '' : 's')
+        . ' for &#8220;' . htmlspecialchars($query, ENT_QUOTES, 'UTF-8') . '&#8221;';
+
     $page_body = '
     <article>
-        <p>' . count($results) . ' result' . (count($results) === 1 ? '' : 's') . ' for &#8220;'
-            . htmlspecialchars($query, ENT_QUOTES, 'UTF-8') . '&#8221;</p>
         <table>
             <thead>
                 <tr>
@@ -106,6 +108,7 @@ else
 $template->assign('needs_map', FALSE);
 $template->assign('page_body', $page_body);
 $template->assign('page_title', $page_title);
+$template->assign('page_summary', $page_summary ?? '');
 $template->assign('browser_title', $browser_title);
 
 $template->display('includes/templates/simple.tpl');

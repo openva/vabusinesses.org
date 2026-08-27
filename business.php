@@ -77,16 +77,30 @@ function detail_row($label, $value)
         . '</td></tr>';
 }
 
-function detail_section($caption, $rows)
+/**
+ * Wrap a set of rows in a titled section.
+ *
+ * The title is an <h2> inside a <section>, not a <caption>: a caption belongs to
+ * its table and does not appear in the document outline, so a page built from
+ * captions alone offers a screen reader nothing to navigate between. The table
+ * keeps a caption too, hidden visually, so it is still labelled in isolation.
+ */
+function detail_section($title, $rows, $id = '')
 {
     if (trim($rows) === '')
     {
         return '';
     }
 
-    return "\n\t<table class=\"detail\">\n\t\t<caption>"
-        . htmlspecialchars($caption, ENT_QUOTES, 'UTF-8')
-        . "</caption>\n\t\t<tbody>" . $rows . "\n\t\t</tbody>\n\t</table>";
+    $title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+    $attribute = $id === '' ? '' : ' id="' . htmlspecialchars($id, ENT_QUOTES, 'UTF-8') . '"';
+
+    return "\n\t<section" . $attribute . ">"
+        . "\n\t\t<h2>" . $title . "</h2>"
+        . "\n\t\t<table class=\"detail\">"
+        . "\n\t\t\t<caption class=\"visually-hidden\">" . $title . "</caption>"
+        . "\n\t\t\t<tbody>" . $rows . "\n\t\t\t</tbody>"
+        . "\n\t\t</table>\n\t</section>";
 }
 
 /*
@@ -125,43 +139,72 @@ foreach (range(1, 9) as $n)
     }
 }
 
-$page_body = '<article>';
+/*
+ * Entity types, keyed by the table the record came from.
+ */
+$entity_types = array(
+    'corp' => 'Corporation',
+    'llc'  => 'Limited liability company',
+    'lp'   => 'Limited partnership',
+    'gp'   => 'General partnership',
+    'bt'   => 'Business trust',
+    'psa'  => 'Public service authority',
+);
+
+$entity_type = $entity_types[$business['EntityType'] ?? ''] ?? '';
 
 /*
- * Identity
+ * Status and status reason overlap -- "ACTIVE" and "Active and In Good
+ * Standing" -- so the longer of the two carries the meaning, with the date
+ * folded in rather than given a row of its own.
  */
-$rows  = detail_row('Entity ID', $business['EntityID'] ?? '');
-$rows .= detail_row('Status', $business['StatusText'] ?: ($business['Status'] ?? ''));
-$rows .= detail_row('Status reason', $business['StatusReason'] ?? '');
+$status = trim($business['StatusReason'] ?? '') ?: trim($business['StatusText'] ?? '');
+
 $status_date = $business['Status Date'] ?? ($business['StatusDate'] ?? '');
 if ($status_date !== '')
 {
     $status_date = date('F j, Y', strtotime($status_date));
 }
-$rows .= detail_row('Status date', $status_date);
-$rows .= detail_row('Industry', $business['IndustryText'] ?: ($business['IndustryCode'] ?? ''));
+
+$status_line = $status;
+if ($status !== '' && $status_date !== '')
+{
+    $status_line = $status . ' (since ' . $status_date . ')';
+}
+
 $incorporated = $business['IncorpDate'] ?? '';
 if ($incorporated !== '')
 {
     $incorporated = date('F j, Y', strtotime($incorporated));
 }
-$rows .= detail_row('Incorporated', $incorporated);
-$rows .= detail_row('State of incorporation', $business['IncorpState'] ?? '');
-$rows .= detail_row('Duration', $duration);
-$page_body .= detail_section('Registration', $rows);
 
 /*
- * Address
+ * A one-line answer to the questions most people arrive with: is this business
+ * active, what kind of business is it, and where is it.
  */
-$rows = detail_row('Principal office', implode("\n", $address));
-$page_body .= detail_section('Address', $rows);
+$locality = trim(($business['City'] ?? '') . ', ' . ($business['State'] ?? ''), ' ,');
+
+$summary = array_filter(array(
+    trim($business['StatusText'] ?? '') ?: $status,
+    $entity_type,
+    $locality,
+));
+
+$page_summary = implode(' &middot; ', array_map(
+    function ($part) { return htmlspecialchars($part, ENT_QUOTES, 'UTF-8'); },
+    $summary
+));
+
+$page_body = '';
 
 /*
- * A locator map, when this address has been geocoded and a tile provider is
- * configured. Both are optional: data/addresses.db is populated gradually and is
- * not part of the deployment, and MAPBOX_TOKEN comes from the server's
- * environment. Absent either, the page simply has no map.
+ * Location first: the map is the most informative thing on the page, and the
+ * address is what most people are looking for.
  */
+$rows = detail_row('Address', implode("\n", $address));
+
+$map = '';
+
 if (MAP_TILES !== '' && !empty($address))
 {
     $geocode = new Geocode;
@@ -178,7 +221,7 @@ if (MAP_TILES !== '' && !empty($address))
 
         if ($point !== FALSE)
         {
-            $page_body .= "\n\t" . '<div id="map"'
+            $map = "\n\t\t" . '<div id="map"'
                 . ' data-latitude="' . htmlspecialchars((string) $point['latitude'], ENT_QUOTES, 'UTF-8') . '"'
                 . ' data-longitude="' . htmlspecialchars((string) $point['longitude'], ENT_QUOTES, 'UTF-8') . '"'
                 . ' data-tiles="' . htmlspecialchars(MAP_TILES, ENT_QUOTES, 'UTF-8') . '"'
@@ -188,22 +231,53 @@ if (MAP_TILES !== '' && !empty($address))
     }
 }
 
-/*
- * Stock
- */
-$rows  = detail_row('Total shares', $shares);
-$rows .= detail_row('Share classes', implode(', ', $stock));
-$page_body .= detail_section('Stock', $rows);
+if (trim($rows) !== '' || $map !== '')
+{
+    $page_body .= "\n\t<section id=\"location\">\n\t\t<h2>Location</h2>" . $map;
+
+    if (trim($rows) !== '')
+    {
+        $page_body .= "\n\t\t<table class=\"detail\">"
+            . "\n\t\t\t<caption class=\"visually-hidden\">Location</caption>"
+            . "\n\t\t\t<tbody>" . $rows . "\n\t\t\t</tbody>"
+            . "\n\t\t</table>";
+    }
+
+    $page_body .= "\n\t</section>";
+}
 
 /*
- * Assessment applies to every entity type, not just those with stock, so it is
- * not grouped under "Stock" -- partnerships have an assessment and no shares.
+ * Registration. Entity ID comes last: it is a lookup key, not something anyone
+ * reads a page to find out.
  */
-$page_body .= detail_section('Assessment', detail_row('Type', $business['AssessIndText'] ?? ''));
+$rows  = detail_row('Incorporated', $incorporated);
+$rows .= detail_row('Status', $status_line);
+$rows .= detail_row('Type', $entity_type);
+$rows .= detail_row('Industry', $business['IndustryText'] ?: ($business['IndustryCode'] ?? ''));
+$rows .= detail_row('Duration', $duration);
+$rows .= detail_row('Chartered in', $business['IncorpState'] ?? '');
+$rows .= detail_row('Entity ID', $business['EntityID'] ?? '');
 
 /*
- * Registered agent. The API returns both the raw code and its expansion for
- * some fields; only the expansion is worth showing, and only when it differs.
+ * A link back to the SCC's own record, so that anybody can check this page
+ * against the source. The SCC's "businessId" is the same value as EntityID.
+ *
+ * detail_row() escapes its value, so the anchor is assembled here instead.
+ */
+$entity_id = trim($business['EntityID'] ?? '');
+
+if ($entity_id !== '')
+{
+    $rows .= "\n\t\t\t\t<tr><th scope=\"row\">Official record</th><td>"
+        . '<a href="https://cis.scc.virginia.gov/EntitySearch/BusinessInformation?businessId='
+        . rawurlencode($entity_id) . '">View at the Virginia SCC</a>'
+        . '</td></tr>';
+}
+
+$page_body .= detail_section('Registration', $rows, 'registration');
+
+/*
+ * Registered agent
  */
 if (!empty($business['RegisteredAgent']) && is_array($business['RegisteredAgent']))
 {
@@ -225,7 +299,7 @@ if (!empty($business['RegisteredAgent']) && is_array($business['RegisteredAgent'
      */
     $rows .= detail_row('Locality', $agent['LocText'] ?? '');
     $rows .= detail_row('Effective', $agent['EffDate'] ?? '');
-    $page_body .= detail_section('Registered agent', $rows);
+    $page_body .= detail_section('Registered agent', $rows, 'agent');
 }
 
 /*
@@ -255,7 +329,7 @@ if (!empty($business['Officers']) && is_array($business['Officers']))
 
         $title = preg_replace('/\s+/', ' ', trim($officer['OfficerTitle'] ?? ''));
 
-        $rows .= "\n\t\t\t<tr><td>"
+        $rows .= "\n\t\t\t\t<tr><td>"
             . htmlspecialchars($name, ENT_QUOTES, 'UTF-8')
             . '</td><td>'
             . htmlspecialchars($title, ENT_QUOTES, 'UTF-8')
@@ -264,18 +338,37 @@ if (!empty($business['Officers']) && is_array($business['Officers']))
 
     if ($rows !== '')
     {
-        $page_body .= "\n\t<table>\n\t\t<caption>Officers and directors</caption>"
-            . "\n\t\t<thead>\n\t\t\t<tr><th scope=\"col\">Name</th>"
-            . "<th scope=\"col\">Title</th></tr>\n\t\t</thead>"
-            . "\n\t\t<tbody>" . $rows . "\n\t\t</tbody>\n\t</table>";
+        $page_body .= "\n\t<section id=\"officers\">"
+            . "\n\t\t<h2>Officers and directors</h2>"
+            . "\n\t\t<table>"
+            . "\n\t\t\t<caption class=\"visually-hidden\">Officers and directors</caption>"
+            . "\n\t\t\t<thead>\n\t\t\t\t<tr><th scope=\"col\">Name</th>"
+            . "<th scope=\"col\">Title</th></tr>\n\t\t\t</thead>"
+            . "\n\t\t\t<tbody>" . $rows . "\n\t\t\t</tbody>"
+            . "\n\t\t</table>\n\t</section>";
     }
 }
 
-$page_body .= "\n</article>";
+/*
+ * Stock, with assessment folded in: an assessment is a fact about the shares,
+ * and giving it a section of its own meant partnerships got a whole heading to
+ * carry a single value.
+ */
+$rows  = detail_row('Total shares', $shares);
+$rows .= detail_row('Share classes', implode(', ', $stock));
+$rows .= detail_row('Assessment', $business['AssessIndText'] ?? '');
+
+/*
+ * Entities without shares -- partnerships, trusts, authorities -- still carry an
+ * assessment, so heading the section "Stock" would be wrong for them.
+ */
+$has_stock = trim((string) $shares) !== '' || !empty($stock);
+$page_body .= detail_section($has_stock ? 'Stock' : 'Assessment', $rows, 'stock');
 
 $template->assign('needs_map', strpos($page_body, 'id="map"') !== FALSE);
 $template->assign('page_body', $page_body);
 $template->assign('page_title', $page_title);
+$template->assign('page_summary', $page_summary);
 $template->assign('browser_title', $browser_title);
 
 $template->display('includes/templates/simple.tpl');

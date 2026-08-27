@@ -36,6 +36,13 @@ if (!is_array($biz))
 }
 
 /*
+ * The entity type is the table the record was found in, which the client
+ * otherwise has no way to determine -- an ID alone does not reveal whether a
+ * business is a corporation, an LLC or a partnership.
+ */
+$biz['EntityType'] = $business->type;
+
+/*
  * Move RA fields into their own sub-array
  */
 $biz['RegisteredAgent'] = array();

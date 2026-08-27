@@ -246,3 +246,65 @@ footer.wrapper {
         height: 14rem;
     }
 }
+
+/* ---- Document structure ------------------------------------------------ */
+
+/*
+ * The site name is branding, not the heading of the page's content, so it is a
+ * paragraph styled to look like a title rather than a second <h1> competing
+ * with the one that names the business.
+ */
+.sitename {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.sitename a {
+    text-decoration: none;
+}
+
+/*
+ * A one-line answer to "is it active, what is it, where is it", directly under
+ * the business name.
+ */
+.summary {
+    font-size: 1.05rem;
+    color: var(--secondary-fore-color, #444);
+    margin: -0.25rem 0 1.5rem;
+}
+
+main section {
+    margin: 0 0 2rem;
+}
+
+main section h2 {
+    font-size: 1.15rem;
+    margin: 0 0 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid var(--secondary-border-color, #ddd);
+}
+
+/*
+ * Each table keeps a caption so it is labelled when read in isolation, but the
+ * <h2> above it already says the same thing on screen.
+ */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/*
+ * The search form now follows the content rather than leading it.
+ */
+#search h2 {
+    font-size: 1.15rem;
+    margin: 0 0 0.5rem;
+}

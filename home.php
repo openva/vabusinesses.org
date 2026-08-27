@@ -5,7 +5,7 @@ require 'includes/header.php';
 $template = new Smarty;
 
 $browser_title = 'Virginia Businesses';
-$page_title = '';
+$page_title = 'Virginia Businesses';
 $page_body = '';
 
 /*
@@ -120,6 +120,7 @@ $page_body .= '
 $template->assign('needs_map', FALSE);
 $template->assign('page_body', $page_body);
 $template->assign('page_title', $page_title);
+$template->assign('page_summary', '');
 $template->assign('browser_title', $browser_title);
 
 $template->display('includes/templates/simple.tpl');

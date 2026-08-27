@@ -14,7 +14,7 @@
 	
 	<body>
 	<header>
-		<h1><a href="/" rel="home">Virginia Businesses</a></h1>
+		<p class="sitename"><a href="/" rel="home">Virginia Businesses</a></p>
 		<nav>
 			<a href="/">Home</a>
 			<a href="/search/">Search</a>
@@ -24,16 +24,19 @@
 	<main>
 
 		<h1>{$page_title}</h1>
+{if $page_summary}
+		<p class="summary">{$page_summary}</p>
+{/if}
+        {$page_body}
 
 		<article id="search">
+			<h2>Search</h2>
 			<form method="get" action="/search/">
-				<label for="q">Search</label>
+				<label for="q">Search for a business</label>
 				<input type="text" size="50" name="q" id="query">
 				<input type="submit" value="Go">
 			</form>
 		</article>
-        
-        {$page_body}
 
 		<footer class="wrapper">
 			All business records are created by the Virginia State Corporation Commission, and
