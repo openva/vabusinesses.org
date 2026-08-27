@@ -58,63 +58,47 @@ if (!empty($recent))
 }
 
 /*
- * List the bulk data files for download. Sizes are read from disk rather than
- * hard-coded: the SCC data grows with every weekly update, and the previous
- * static figures had drifted badly (llc.csv was listed at 156 MB when it had
- * reached 437 MB). Files absent from a given build are simply not listed.
+ * A pointer to the data, rather than the whole download table: /data/ lists the
+ * files with descriptions, and repeating that here meant maintaining the same
+ * list twice.
  */
-$data_files = array(
-	'corp.csv'          => 'Corporate Entities',
-	'llc.csv'           => 'LLC Entities',
-	'lp.csv'            => 'LP Entities',
-	'gp.csv'            => 'General Partnership Entities',
-	'bt.csv'            => 'Business Trust Entities',
-	'psa.csv'           => 'Public Service Authority Entities',
-	'amendment.csv'     => 'Entity Amendments',
-	'merger.csv'        => 'Entity Mergers',
-	'name_history.csv'  => 'Entity Name/Fictitious Name History',
-	'officer.csv'       => 'Entity Officers/Directors',
-	'reserved_name.csv' => 'Entity Reserved Names',
-	'tables.csv'        => 'Descriptive Tables',
-	'vabusinesses.sqlite' => 'All Data, SQLite',
-);
+require_once __DIR__ . '/includes/data-files.php';
 
-$page_body .= '
-		<article>
+$available = 0;
+$total_bytes = 0;
 
-		<table>
-			<caption>Download Business Data</caption>
-			<thead>
-				<tr>
-					<th scope="col">File</th>
-					<th scope="col" class="numeric">Size</th>
-				</tr>
-			</thead>
-			<tbody>';
-
-foreach ($data_files as $filename => $label)
+foreach (data_files() as $filename => $file)
 {
-	$path = __DIR__ . '/data/' . $filename;
+    $path = __DIR__ . '/data/' . $filename;
 
-	if (!is_readable($path))
-	{
-		continue;
-	}
-
-	$page_body .= '
-				<tr>
-					<td data-label="File"><a href="data/' . $filename . '">' . $label . '</a></td>
-					<td data-label="Size" class="numeric">' . human_filesize($path) . '</td>
-				</tr>';
+    if (is_readable($path))
+    {
+        $available++;
+        $total_bytes += filesize($path);
+    }
 }
 
 $page_body .= '
-				<tr>
-					<td data-label="File"><a href="https://cis.scc.virginia.gov/DataSales/DownloadBEDataSalesFile">All Data, CSV (from the SCC)</a></td>
-					<td data-label="Size">&#8212;</td>
-				</tr>
-			</tbody>
-		</table>
+		<article>
+		<h2>Download the data</h2>
+		<p>Every record behind this site is available in bulk, as the files it was
+		built from: corporations, LLCs, partnerships, business trusts and public
+		service authorities, along with their officers, amendments, mergers and
+		name histories.</p>';
+
+if ($available > 0)
+{
+    $page_body .= '
+		<p><a href="/data/">Browse ' . $available . ' data files</a>'
+        . ' &mdash; ' . human_filesize_bytes($total_bytes) . ' in all.</p>';
+}
+else
+{
+    $page_body .= '
+		<p><a href="/data/">Browse the data files</a>.</p>';
+}
+
+$page_body .= '
 		</article>';
 
 $template->assign('needs_map', FALSE);

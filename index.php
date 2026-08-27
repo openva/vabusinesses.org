@@ -35,6 +35,16 @@ $router->map( 'GET', '/search/', function()
     require __DIR__ . '/search.php';
 }, 'search' );
 
+/*
+ * The bulk data files live in data/, and the rewrite in .htaccess serves any
+ * real file directly -- so /data/corp.csv is the file itself, while /data/ falls
+ * through to here and lists them.
+ */
+$router->map( 'GET', '/data/', function()
+{
+    require __DIR__ . '/data.php';
+}, 'data' );
+
 $router->map( 'GET', '/api/business/[a:id]', function($id)
 {
     require __DIR__ . '/api/business.php';

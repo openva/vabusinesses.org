@@ -15,11 +15,24 @@ $page_title = 'Search';
 $query = trim($_GET['q'] ?? '');
 
 /*
- * If no search query has been passed in the URL
+ * With no query, show the search form rather than an error. This page is linked
+ * from the site navigation, so arriving here without a term is the normal way to
+ * begin a search, not a bad request.
  */
-if (!isset($query) || empty($query))
+if ($query === '')
 {
-    header($_SERVER['SERVER_PROTOCOL'] . " 400 Bad Request", true, 400);
+    $page_body = '
+    <p>Search the records of every business registered with the Virginia State
+    Corporation Commission—corporations, LLCs, partnerships, business
+    trusts and public service authorities.</p>';
+
+    $template->assign('needs_map', FALSE);
+    $template->assign('page_body', $page_body);
+    $template->assign('page_title', $page_title);
+    $template->assign('page_summary', '');
+    $template->assign('browser_title', $browser_title);
+    $template->display('includes/templates/simple.tpl');
+
     exit();
 }
 

@@ -76,6 +76,16 @@ function human_filesize($path)
         return '';
     }
 
+    return human_filesize_bytes($bytes);
+
+}
+
+/*
+ * Render a byte count for display, in the largest sensible unit
+ */
+function human_filesize_bytes($bytes)
+{
+
     if ($bytes >= 1073741824)
     {
         return round($bytes / 1073741824, 1) . ' GB';
