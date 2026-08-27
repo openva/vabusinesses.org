@@ -308,3 +308,42 @@ main section h2 {
     font-size: 1.15rem;
     margin: 0 0 0.5rem;
 }
+
+/* ---- Statewide map ----------------------------------------------------- */
+
+#statewide-map {
+    height: 32rem;
+    margin: 0 0 1rem;
+    border: 1px solid var(--secondary-border-color, #ddd);
+    border-radius: var(--universal-border-radius, 2px);
+    background: var(--secondary-back-color, #f0f0f0);
+}
+
+/*
+ * The home page carries a preview rather than a working map, so it is shorter
+ * and its pointer indicates that the whole thing is a link.
+ */
+.map-preview-link {
+    display: block;
+    text-decoration: none;
+}
+
+.map-preview-link #statewide-map {
+    height: 22rem;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+}
+
+#map-status {
+    margin: 0 0 2rem;
+}
+
+@media (max-width: 40rem) {
+    #statewide-map {
+        height: 20rem;
+    }
+
+    .map-preview-link #statewide-map {
+        height: 15rem;
+    }
+}

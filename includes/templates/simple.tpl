@@ -18,6 +18,7 @@
 		<nav>
 			<a href="/">Home</a>
 			<a href="/search/">Search</a>
+			<a href="/map/">Map</a>
 			<a href="/data/">Data</a>
 		</nav>
 	</header>
@@ -51,6 +52,7 @@
 
 	</main>
 {if $needs_map}	<script src="/vendor-assets/leaflet/leaflet.js"></script>
-	<script src="/map.js"></script>
-{/if}	</body>
+{if $needs_statewide_map}	<script src="/statewide-map.js"></script>
+{else}	<script src="/map.js"></script>
+{/if}{/if}	</body>
 </html>

@@ -297,5 +297,13 @@ done
 # Put the file in its final location
 mv -f temp.sqlite vabusinesses.sqlite
 
+# Rebuild the map data from the new database. This is not fatal: the map is a
+# feature of the site, not of the data, and a failure here should not discard an
+# otherwise good update. It needs data/addresses.db, which is maintained
+# separately and may not be present.
+if ! php ../scripts/build-map-data.php; then
+    echo "Note: could not rebuild the map data; the map will show the previous build" >&2
+fi
+
 # Log the fact that this update was made
 MESSAGE="All records updated."

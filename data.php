@@ -108,6 +108,7 @@ $page_body .= '
     </section>';
 
 $template->assign('needs_map', FALSE);
+$template->assign('needs_statewide_map', FALSE);
 $template->assign('page_body', $page_body);
 $template->assign('page_title', $page_title);
 $template->assign('page_summary', $page_summary);

@@ -58,23 +58,45 @@ if (!empty($recent))
 }
 
 /*
- * A pointer to the data, rather than the whole download table: /data/ lists the
- * files with descriptions, and repeating that here meant maintaining the same
- * list twice.
+ * A preview of the statewide map, linking to the full one. The preview is not
+ * interactive -- panning and zooming are off -- so it reads as a picture of
+ * where Virginia's businesses are rather than as a map to be explored here.
+ */
+$map_summary_file = __DIR__ . '/data/map/summary.json';
+$map_summary = is_readable($map_summary_file)
+    ? json_decode(file_get_contents($map_summary_file), TRUE)
+    : NULL;
+
+$show_map = MAP_TILES !== '' && is_array($map_summary);
+
+if ($show_map)
+{
+    $page_body .= '
+		<article>
+		<h2>Where Virginia does business</h2>
+		<a class="map-preview-link" href="/map/">
+			<div id="statewide-map" data-preview
+				data-tiles="' . htmlspecialchars(MAP_TILES, ENT_QUOTES, 'UTF-8') . '"
+				data-attribution="' . htmlspecialchars(MAP_ATTRIBUTION, ENT_QUOTES, 'UTF-8') . '"></div>
+		</a>
+		<p>' . number_format($map_summary['total']) . ' registered businesses, mapped
+		across Virginia&rsquo;s counties and cities.
+		<a href="/map/">Explore the map</a>.</p>
+		</article>';
+}
+
+/*
+ * A pointer to the bulk data. The full list, with descriptions, is on /data/.
  */
 require_once __DIR__ . '/includes/data-files.php';
 
 $available = 0;
-$total_bytes = 0;
 
 foreach (data_files() as $filename => $file)
 {
-    $path = __DIR__ . '/data/' . $filename;
-
-    if (is_readable($path))
+    if (is_readable(__DIR__ . '/data/' . $filename))
     {
         $available++;
-        $total_bytes += filesize($path);
     }
 }
 
@@ -82,26 +104,11 @@ $page_body .= '
 		<article>
 		<h2>Download the data</h2>
 		<p>Every record behind this site is available in bulk, as the files it was
-		built from: corporations, LLCs, partnerships, business trusts and public
-		service authorities, along with their officers, amendments, mergers and
-		name histories.</p>';
-
-if ($available > 0)
-{
-    $page_body .= '
-		<p><a href="/data/">Browse ' . $available . ' data files</a>'
-        . ' &mdash; ' . human_filesize_bytes($total_bytes) . ' in all.</p>';
-}
-else
-{
-    $page_body .= '
-		<p><a href="/data/">Browse the data files</a>.</p>';
-}
-
-$page_body .= '
+		built from. <a href="/data/">Browse ' . $available . ' data files</a>.</p>
 		</article>';
 
-$template->assign('needs_map', FALSE);
+$template->assign('needs_map', $show_map);
+$template->assign('needs_statewide_map', $show_map);
 $template->assign('page_body', $page_body);
 $template->assign('page_title', $page_title);
 $template->assign('page_summary', '');
