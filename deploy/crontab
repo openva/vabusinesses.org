@@ -1,10 +1,32 @@
-# Weekly refresh of the SCC business data.
+# Scheduled work for vabusinesses.org.
 #
-# The webroot below is substituted in by deploy/postdeploy.sh at install time,
-# so that it is defined in one place rather than repeated across this file,
-# appspec.yml and postdeploy.sh.
+# __WEBROOT__ is substituted by deploy/postdeploy.sh at install time, so the
+# webroot is defined in one place rather than repeated across this file,
+# appspec.yml and postdeploy.sh. It has to be an absolute path: cron runs jobs
+# from the user's home directory, not from wherever this file lives.
 #
-# It has to be an absolute path. cron runs jobs from the user's home directory
-# rather than from wherever this file lives, so a relative path would not be
-# found.
-0 4 * * 3 __WEBROOT__/scripts/update.sh
+# scripts/update.sh writes its failures to stderr, and cron mails anything a job
+# writes there. Set MAILTO to an address to receive those; left unset, mail goes
+# to the crontab's owner, which on most servers means it is written to a local
+# mailbox nobody reads. The updater also posts failures to Slack when
+# /etc/vabusinesses.env supplies a webhook, which is the notification worth
+# relying on.
+
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Refresh everything from the SCC.
+#
+# The Commission publishes weekly on Saturday evening, so this runs on Sunday
+# at 03:00 -- late enough that a publication running behind has still landed,
+# early enough that the rebuild is finished before anyone is looking. The run
+# takes roughly twenty minutes: it downloads 169 MB, rebuilds a 1 GB SQLite
+# database, and regenerates the map data from it.
+#
+# flock keeps a slow or stuck run from being overlapped by the next one.
+0 3 * * 0 flock -n /tmp/vabusinesses-update.lock __WEBROOT__/scripts/update.sh
+
+# Retry once on Monday, but only if the Sunday run did not leave a current
+# database behind. A failed download or an SCC outage otherwise means stale data
+# for a whole week.
+0 3 * * 1 [[ -z "$(find __WEBROOT__/data/vabusinesses.sqlite -mtime -2 2>/dev/null)" ]] && flock -n /tmp/vabusinesses-update.lock __WEBROOT__/scripts/update.sh
