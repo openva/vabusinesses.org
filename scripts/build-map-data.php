@@ -192,12 +192,19 @@ $total = $located = $unlocated = 0;
 
 foreach ($tables as $table)
 {
+    /*
+     * GROUP BY, not DISTINCT: the SCC ships several rows for the same entity --
+     * about 30,000 of them across these tables -- and they are not always
+     * byte-identical, so DISTINCT over the whole row would keep them all. One
+     * row per EntityID is what makes the counts mean "businesses".
+     */
     $result = $db->query(
         'SELECT EntityID, Street1, Street2, City, State, Zip
         FROM ' . $table . '
         WHERE Status IN ' . $statuses . '
         AND Street1 <> ""
-        AND City <> ""'
+        AND City <> ""
+        GROUP BY EntityID'
     );
 
     while ($row = $result->fetchArray(SQLITE3_ASSOC))
@@ -240,7 +247,13 @@ foreach ($tables as $table)
         $key = ((int) round($point['latitude'] * 1000))
             . ',' . ((int) round($point['longitude'] * 1000));
 
-        $locations[$fips][$key][] = trim($row['EntityID']);
+        $identifier = trim($row['EntityID']);
+
+        /*
+         * Keyed by identifier rather than appended, so that an entity listed in
+         * more than one table still appears once at a given location.
+         */
+        $locations[$fips][$key][$identifier] = TRUE;
 
         $located++;
     }
@@ -268,6 +281,7 @@ foreach ($localities as $fips => $locality)
         $count += count($identifiers);
     }
 
+
     $summary[] = array(
         'fips'   => $fips,
         'name'   => $locality['name'],
@@ -293,7 +307,7 @@ foreach ($localities as $fips => $locality)
 
         $coordinates[] = (int) $pair[0];
         $coordinates[] = (int) $pair[1];
-        $identifiers[] = $list;
+        $identifiers[] = array_keys($list);
     }
 
     file_put_contents(
@@ -317,10 +331,24 @@ file_put_contents(
     ))
 );
 
+/*
+ * Counted from the deduplicated structure rather than from the loop, so that an
+ * entity appearing in more than one table is not counted twice.
+ */
+$mapped = 0;
+
+foreach ($locations as $places)
+{
+    foreach ($places as $identifiers)
+    {
+        $mapped += count($identifiers);
+    }
+}
+
 printf(
-    "\n%s businesses considered, %s mapped, %s outside Virginia\n",
+    "\n%s rows considered, %s businesses mapped, %s outside Virginia\n",
     number_format($total),
-    number_format($located),
+    number_format($mapped),
     number_format($unlocated)
 );
 printf("Wrote %s of map data to data/map/\n", human_size(array_sum(array_map(
