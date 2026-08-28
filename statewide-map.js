@@ -67,6 +67,7 @@
     }
 
     var pointLayer = null;
+    var activeFips = null;
 
     /*
      * Load and draw one locality's businesses. Points arrive as a flat array of
@@ -92,13 +93,33 @@
 
                 var markers = [];
 
+                /*
+                 * A drawn marker is 8px across, well under the 24px that WCAG
+                 * asks of a target and a fraction of a fingertip. Each one
+                 * therefore gets an invisible companion beneath it, big enough
+                 * to hit, which forwards its clicks to the visible marker.
+                 */
+                var HIT_RADIUS = 14;
+
                 for (var i = 0; i < data.p.length; i += 2) {
-                    var marker = L.circleMarker([data.p[i] / 1000, data.p[i + 1] / 1000], {
+                    var position = [data.p[i] / 1000, data.p[i + 1] / 1000];
+
+                    var marker = L.circleMarker(position, {
                         radius: 4,
                         weight: 1,
                         color: '#1a4f7a',
                         fillColor: '#2f74ad',
                         fillOpacity: 0.7
+                    });
+
+                    var target = L.circleMarker(position, {
+                        radius: HIT_RADIUS,
+                        stroke: false,
+                        fillOpacity: 0,
+                        /*
+                         * Drawn, so it receives pointer events, but invisible.
+                         */
+                        interactive: true
                     });
 
                     /*
@@ -111,23 +132,36 @@
                         /*
                          * A location with several businesses is drawn larger, so
                          * that a building full of registrations is visibly
-                         * different from a single shopfront.
+                         * different from a single shopfront. The hit area grows
+                         * with it, never shrinking below HIT_RADIUS.
                          */
                         if (here.length > 1) {
-                            marker.setRadius(Math.min(12, 4 + Math.log(here.length) * 2));
+                            var radius = Math.min(12, 4 + Math.log(here.length) * 2);
+
+                            marker.setRadius(radius);
+                            target.setRadius(Math.max(HIT_RADIUS, radius + 6));
                         }
 
-                        marker.on('click', function (identifiers) {
+                        var open = function (identifiers, visible) {
                             return function () {
-                                describe(this, identifiers);
+                                describe(visible, identifiers);
                             };
-                        }(here));
+                        }(here, marker);
+
+                        marker.on('click', open);
+                        target.on('click', open);
                     }
 
+                    /*
+                     * The hit area is added first so that it sits beneath the
+                     * marker it belongs to.
+                     */
+                    markers.push(target);
                     markers.push(marker);
                 }
 
                 pointLayer = L.layerGroup(markers).addTo(map);
+                activeFips = fips;
 
                 var status = document.getElementById('map-status');
 
@@ -237,6 +271,16 @@
 
                 if (!preview) {
                     layer.on('click', function () {
+                        /*
+                         * A click that misses a marker falls through to the
+                         * locality beneath it. Refitting the bounds every time
+                         * would throw away the zoom the reader had reached, so
+                         * a locality that is already showing is left alone.
+                         */
+                        if (activeFips === fips) {
+                            return;
+                        }
+
                         map.fitBounds(layer.getBounds());
                         showLocality(fips, name);
                     });
