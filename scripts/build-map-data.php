@@ -16,6 +16,11 @@
  * this map is read at, the precision is invisible, and the encoding costs about
  * 12 bytes per point instead of 36.
  *
+ * Points are grouped by location rather than by business: three quarters of
+ * businesses share an address with another, so one marker each would stack them
+ * unclickably. "i" holds the identifiers at each location, so i[n] belongs to
+ * the coordinate pair at p[2n] and p[2n+1].
+ *
  * Usage: php scripts/build-map-data.php
  */
 
@@ -182,13 +187,13 @@ if (!is_dir($output))
     mkdir($output, 0755, TRUE);
 }
 
-$points = array();
+$locations = array();
 $total = $located = $unlocated = 0;
 
 foreach ($tables as $table)
 {
     $result = $db->query(
-        'SELECT Street1, Street2, City, State, Zip
+        'SELECT EntityID, Street1, Street2, City, State, Zip
         FROM ' . $table . '
         WHERE Status IN ' . $statuses . '
         AND Street1 <> ""
@@ -225,10 +230,17 @@ foreach ($tables as $table)
         }
 
         /*
-         * Scaled integers, flat. See the note at the top of this file.
+         * Group by rounded coordinate. Three quarters of businesses share an
+         * address with at least one other -- office buildings, registered agent
+         * offices, shopping centres -- and drawing one marker each stacks them
+         * so that only the topmost can be clicked. One marker per location, with
+         * every business at that location behind it, is both usable and smaller:
+         * Fairfax drops from 31,644 markers to 13,007.
          */
-        $points[$fips][] = (int) round($point['latitude'] * 1000);
-        $points[$fips][] = (int) round($point['longitude'] * 1000);
+        $key = ((int) round($point['latitude'] * 1000))
+            . ',' . ((int) round($point['longitude'] * 1000));
+
+        $locations[$fips][$key][] = trim($row['EntityID']);
 
         $located++;
     }
@@ -242,22 +254,56 @@ $summary = array();
 
 foreach ($localities as $fips => $locality)
 {
-    $count = isset($points[$fips]) ? count($points[$fips]) / 2 : 0;
+    $places = $locations[$fips] ?? array();
+
+    /*
+     * The headline number is businesses, not locations: "31,644 businesses in
+     * Fairfax County" is the useful figure, even though they are drawn as 13,007
+     * markers.
+     */
+    $count = 0;
+
+    foreach ($places as $identifiers)
+    {
+        $count += count($identifiers);
+    }
 
     $summary[] = array(
         'fips'   => $fips,
         'name'   => $locality['name'],
-        'count'  => (int) $count,
+        'count'  => $count,
         'centre' => $locality['centre'],
     );
 
-    if ($count > 0)
+    if ($count === 0)
     {
-        file_put_contents(
-            $output . '/' . $fips . '.json',
-            json_encode(array('n' => (int) $count, 'p' => $points[$fips]))
-        );
+        continue;
     }
+
+    /*
+     * "p" holds one coordinate pair per location, flat; "i" holds the
+     * identifiers at each, so i[n] belongs to the location at p[2n], p[2n+1].
+     */
+    $coordinates = array();
+    $identifiers = array();
+
+    foreach ($places as $key => $list)
+    {
+        $pair = explode(',', $key);
+
+        $coordinates[] = (int) $pair[0];
+        $coordinates[] = (int) $pair[1];
+        $identifiers[] = $list;
+    }
+
+    file_put_contents(
+        $output . '/' . $fips . '.json',
+        json_encode(array(
+            'n' => $count,
+            'p' => $coordinates,
+            'i' => $identifiers,
+        ))
+    );
 }
 
 usort($summary, function ($a, $b) { return $b['count'] - $a['count']; });

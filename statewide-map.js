@@ -93,13 +93,38 @@
                 var markers = [];
 
                 for (var i = 0; i < data.p.length; i += 2) {
-                    markers.push(L.circleMarker([data.p[i] / 1000, data.p[i + 1] / 1000], {
+                    var marker = L.circleMarker([data.p[i] / 1000, data.p[i + 1] / 1000], {
                         radius: 4,
                         weight: 1,
                         color: '#1a4f7a',
                         fillColor: '#2f74ad',
                         fillOpacity: 0.7
-                    }));
+                    });
+
+                    /*
+                     * Each marker is a location, and the matching entry in "i"
+                     * lists every business registered there.
+                     */
+                    var here = data.i ? data.i[i / 2] : null;
+
+                    if (here && here.length) {
+                        /*
+                         * A location with several businesses is drawn larger, so
+                         * that a building full of registrations is visibly
+                         * different from a single shopfront.
+                         */
+                        if (here.length > 1) {
+                            marker.setRadius(Math.min(12, 4 + Math.log(here.length) * 2));
+                        }
+
+                        marker.on('click', function (identifiers) {
+                            return function () {
+                                describe(this, identifiers);
+                            };
+                        }(here));
+                    }
+
+                    markers.push(marker);
                 }
 
                 pointLayer = L.layerGroup(markers).addTo(map);
@@ -117,6 +142,72 @@
                     status.textContent = 'Could not load businesses for ' + name + '.';
                 }
             });
+    }
+
+    /*
+     * List the businesses at a location, and link to each. The map data holds
+     * only their identifiers; the names come from the API, one request per
+     * business, which is why the list is capped -- a location with 265
+     * registrations should not fire 265 requests on a single click.
+     */
+    var NAMES_TO_FETCH = 25;
+
+    function describe(marker, identifiers) {
+        var total = identifiers.length;
+
+        marker.bindPopup('<p class="meta">Loading&hellip;</p>').openPopup();
+
+        var wanted = identifiers.slice(0, NAMES_TO_FETCH);
+
+        Promise.all(wanted.map(function (identifier) {
+            return fetch('/api/business/' + encodeURIComponent(identifier))
+                .then(function (response) {
+                    return response.ok ? response.json() : null;
+                })
+                .then(function (business) {
+                    return {
+                        id: identifier,
+                        name: (business && business.Name) ? business.Name : identifier
+                    };
+                })
+                .catch(function () {
+                    return { id: identifier, name: identifier };
+                });
+        })).then(function (businesses) {
+            var wrapper = document.createElement('div');
+            wrapper.className = 'map-popup';
+
+            var heading = document.createElement('p');
+            heading.className = 'map-popup-count';
+            heading.textContent = total === 1
+                ? '1 business here'
+                : total.toLocaleString() + ' businesses here';
+            wrapper.appendChild(heading);
+
+            var list = document.createElement('ul');
+
+            businesses.forEach(function (business) {
+                var item = document.createElement('li');
+                var link = document.createElement('a');
+
+                link.href = '/business/' + encodeURIComponent(business.id);
+                link.textContent = business.name;
+
+                item.appendChild(link);
+                list.appendChild(item);
+            });
+
+            wrapper.appendChild(list);
+
+            if (total > wanted.length) {
+                var more = document.createElement('p');
+                more.className = 'meta';
+                more.textContent = 'and ' + (total - wanted.length).toLocaleString() + ' more';
+                wrapper.appendChild(more);
+            }
+
+            marker.setPopupContent(wrapper);
+        });
     }
 
     Promise.all([
