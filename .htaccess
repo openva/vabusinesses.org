@@ -1,3 +1,14 @@
+# Configuration the site reads at runtime.
+#
+# These live here rather than in the vhost so that they are in the repository,
+# visible alongside the code that reads them. PHP under Apache cannot see shell
+# environment variables, and php.ini cannot set them under mod_php, so SetEnv is
+# the mechanism -- it needs mod_env and AllowOverride All, both of which this
+# site already has.
+#
+# Anything set here is overridden by the same name in the vhost, which is how a
+# server can differ from the checked-in default.
+
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.php [L]
@@ -25,3 +36,18 @@ Header unset X-XSS-Protection
 Header add X-XSS-Protection "1; mode=block"
 php_value include_path ".:includes/"
 php_value error_reporting 2039
+
+# Errors are logged, not shown: a stack trace in a page leaks paths and query
+# structure to whoever provoked it.
+#
+# The Docker image re-enables display_errors in its own Apache conf, which
+# loads after this file and so wins. That override ships only in the image,
+# never in the deploy bundle, so production keeps the safe value here.
+php_flag display_errors off
+php_flag log_errors on
+
+# Session cookies are unreadable to JavaScript and are never sent over plain
+# HTTP. The site sets no cookies today, so these are a guard against a future
+# session_start() inheriting weaker defaults.
+php_flag session.cookie_httponly on
+php_flag session.cookie_secure on
