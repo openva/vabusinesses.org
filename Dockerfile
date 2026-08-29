@@ -21,6 +21,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
+# Show PHP errors in this container.
+#
+# .htaccess turns display_errors off, because it is deployed verbatim and a
+# stack trace in a page leaks paths to whoever provoked it. Here there is no
+# untrusted visitor, and a silent 500 while developing is just wasted time.
+#
+# .htaccess is merged after all server config, so a php_flag in an Apache conf
+# cannot outrank it, and neither can a php.ini setting. ini_set() runs later
+# still, at execution time, so an auto-prepended file is what actually wins.
+# Both pieces are baked into the image and excluded from the deploy bundle,
+# so production keeps the safe value from .htaccess.
+RUN printf '<?php ini_set("display_errors", "1");\n' > /usr/local/etc/php/dev-display-errors.php \
+    && printf 'auto_prepend_file=/usr/local/etc/php/dev-display-errors.php\n' \
+        > /usr/local/etc/php/conf.d/zz-dev-display-errors.ini
+
 # Composer runs inside the container, against the same PHP the site runs on.
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
