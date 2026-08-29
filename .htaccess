@@ -9,6 +9,11 @@
 # Anything set here is overridden by the same name in the vhost, which is how a
 # server can differ from the checked-in default.
 
+# Where the browser fetches business records from: a tree of JSON files, one per
+# entity, built by crump. Comment this out to serve them from this site's own
+# /api/ instead, which is what local development does.
+SetEnv STATIC_API_URL https://data.vabusinesses.org
+
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.php [L]
@@ -18,7 +23,7 @@ Header unset Content-Security-Policy
 # api.mapbox.com is allowed for map tiles on business pages. "data:" is for
 # Leaflet's own marker images, which it inlines. Everything else stays
 # same-origin: Leaflet itself is vendored at build time, not loaded from a CDN.
-Header add Content-Security-Policy "default-src 'none'; img-src 'self' data: https://api.mapbox.com; script-src 'self'; style-src 'self'; connect-src 'self' https://api.mapbox.com"
+Header add Content-Security-Policy "default-src 'none'; img-src 'self' data: https://api.mapbox.com; script-src 'self'; style-src 'self'; connect-src 'self' https://api.mapbox.com https://data.vabusinesses.org"
 
 Header unset Strict-Transport-Security
 Header add Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"

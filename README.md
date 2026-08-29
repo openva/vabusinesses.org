@@ -14,9 +14,9 @@ Website for Virginia State Corporation Commission data.
 - [Updating the data](#updating-the-data)
 - [Deployment](#deployment)
   - [Repository secrets](#repository-secrets)
-  - [Server configuration](#server-configuration)
+  - [Server configuration](#server-configuration) — environment variables
+  - [Maps](#maps)
 - [Dependencies](#dependencies)
-- [Background](#background) — why some of the odder choices are the way they are
 
 ## Running locally
 
@@ -156,9 +156,36 @@ is, because the browser needs it; it is a public token, not a secret.
 
 ### Server configuration
 
-`scripts/update.sh` posts to Slack when an update fails. It reads the webhook
-from `/etc/vabusinesses.env`, which lives on the server and is deliberately not
-part of the deployed code:
+The website and the updater read their configuration from two different places,
+and it is worth being clear about which is which.
+
+**The website** reads environment variables that Apache passes to PHP. Setting a
+variable in a shell, or in `/etc/vabusinesses.env`, does *not* reach it: PHP
+under Apache sees only what Apache puts in its environment, and `php.ini` cannot
+set one under mod_php. `SetEnv` is the mechanism.
+
+These live in **`.htaccess`**, at the top, so that they sit in the repository
+next to the code that reads them rather than in a vhost nobody remembers to
+look at:
+
+```apache
+SetEnv STATIC_API_URL https://data.vabusinesses.org
+```
+
+A vhost can still override any of them, which is how one server can differ from
+the checked-in default. All are optional; the site works without any.
+
+| Variable | Effect if unset |
+| --- | --- |
+| `STATIC_API_URL` | Business records are fetched from this site's own `/api/` rather than from the static JSON in S3. See [Maps](#maps). |
+| `MAPBOX_TOKEN` | Falls back to the token committed in `includes/header.php`. Set this only to override it, for example in development. |
+| `MAPBOX_STYLE` | `mapbox/streets-v12`. |
+| `VABUSINESSES_API_URL` | The site works out how to reach its own API; see [Architecture](#architecture). Set it when that fails. |
+
+**The updater** is a shell script run from cron, so it reads a shell file rather
+than Apache's environment. It posts to Slack when an update fails, taking the
+webhook from `/etc/vabusinesses.env`, which lives on the server and is
+deliberately not part of the deployed code:
 
 ```sh
 sudo tee /etc/vabusinesses.env > /dev/null <<'ENV'
@@ -203,6 +230,28 @@ Leaflet is vendored at build time by `npm run build` into `vendor-assets/`, not
 loaded from a CDN, and is only requested on pages that actually have a map. The
 Content-Security-Policy in `.htaccess` allows `api.mapbox.com` for tiles;
 everything else stays same-origin.
+
+#### The static API
+
+Business records shown in map popups are fetched from a tree of JSON files in
+S3, one per entity, rather than from this site's API. A single popup can make 25
+requests, so serving those from object storage is the difference between 25
+database queries and none.
+
+Set `STATIC_API_URL` to its base (see [Server configuration](#server-configuration));
+without it, the map falls back to `/api/`. The files are laid out by the first
+four characters of the entity ID:
+
+    https://data.vabusinesses.org/entity/0000/00000828.json
+
+That requires three things of the bucket, none of which this repository controls:
+the objects must be publicly readable, `data.vabusinesses.org` must resolve to
+it, and CORS must allow `https://vabusinesses.org` as an origin. The tree is
+built by [crump](https://github.com/openva/crump), not here.
+
+Note that the static files use lowercase field names (`name`, `city`) while this
+site's own API uses the SCC's capitalisation (`Name`, `City`). The map accepts
+either.
 
 Coordinates come from `data/addresses.db`, a geocode cache built by the
 [crump](https://github.com/openva/crump) project. It is keyed by an MD5 of a

@@ -25,6 +25,7 @@ else
 {
     $page_body = '
     <div id="statewide-map"'
+        . ' data-static-api="' . htmlspecialchars(STATIC_API_URL, ENT_QUOTES, 'UTF-8') . '"'
         . ' data-tiles="' . htmlspecialchars(MAP_TILES, ENT_QUOTES, 'UTF-8') . '"'
         . ' data-attribution="' . htmlspecialchars(MAP_ATTRIBUTION, ENT_QUOTES, 'UTF-8') . '"'
         . '></div>

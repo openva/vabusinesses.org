@@ -139,6 +139,18 @@ define(
 );
 
 /*
+ * The static API: a tree of JSON files in S3, one per entity, which the browser
+ * fetches directly. Set STATIC_API_URL in the environment to enable it; without
+ * it, pages fall back to this site's own /api/, which is what local development
+ * uses.
+ *
+ * The map's popups make up to 25 requests on a single click, so serving those
+ * from object storage rather than from PHP is the difference between 25 database
+ * queries and none.
+ */
+define('STATIC_API_URL', rtrim(getenv('STATIC_API_URL') ?: '', '/'));
+
+/*
  * The hostnames this site answers to. The first is the canonical one, used when
  * SERVER_NAME cannot be trusted. Add any alias the site is also served under.
  */
