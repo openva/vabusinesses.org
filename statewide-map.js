@@ -186,6 +186,26 @@
      */
     var NAMES_TO_FETCH = 25;
 
+    /*
+     * Where a business record is fetched from. The static API is a tree of JSON
+     * files, one per entity, sharded by the first four characters of the
+     * identifier: entity/0000/00000828.json. Fetching those directly means the
+     * 25 requests a popup makes never touch this server.
+     *
+     * Falls back to this site's own API when no static base is configured, which
+     * is what local development uses.
+     */
+    var staticBase = element.getAttribute('data-static-api') || '';
+
+    function recordUrl(identifier) {
+        if (staticBase === '') {
+            return '/api/business/' + encodeURIComponent(identifier);
+        }
+
+        return staticBase + '/entity/' + encodeURIComponent(identifier.slice(0, 4))
+            + '/' + encodeURIComponent(identifier) + '.json';
+    }
+
     function describe(marker, identifiers) {
         var total = identifiers.length;
 
@@ -194,14 +214,52 @@
         var wanted = identifiers.slice(0, NAMES_TO_FETCH);
 
         Promise.all(wanted.map(function (identifier) {
-            return fetch('/api/business/' + encodeURIComponent(identifier))
+            /*
+             * Falling back to this site's own API when the static one cannot be
+             * reached. The static tree lives in a bucket that may not be public
+             * yet, and is unreachable from a development machine in any case;
+             * without this the popup would list bare identifiers instead of
+             * names.
+             */
+            var fromApi = function () {
+                return fetch('/api/business/' + encodeURIComponent(identifier))
+                    .then(function (response) {
+                        return response.ok ? response.json() : null;
+                    })
+                    .catch(function () {
+                        return null;
+                    });
+            };
+
+            /*
+             * Falling back to this site's own API when the static one cannot be
+             * reached. The static tree lives in a bucket that may not be public
+             * yet, and its hostname does not resolve from a development machine,
+             * so the request can fail either with a non-ok response or by
+             * rejecting outright -- both are handled here. Without this the
+             * popup would list bare identifiers instead of names.
+             */
+            return fetch(recordUrl(identifier))
                 .then(function (response) {
-                    return response.ok ? response.json() : null;
+                    if (response.ok) {
+                        return response.json();
+                    }
+
+                    return staticBase === '' ? null : fromApi();
+                })
+                .catch(function () {
+                    return staticBase === '' ? null : fromApi();
                 })
                 .then(function (business) {
+                    /*
+                     * The static files use lowercase field names; this site's
+                     * own API uses the SCC's capitalisation. Accept either.
+                     */
+                    var name = business && (business.name || business.Name);
+
                     return {
                         id: identifier,
-                        name: (business && business.Name) ? business.Name : identifier
+                        name: name || identifier
                     };
                 })
                 .catch(function () {
