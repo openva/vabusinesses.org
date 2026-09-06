@@ -26,9 +26,20 @@ class Business
     const ENTITY_TABLES = array('corp', 'llc', 'lp', 'gp', 'bt', 'psa');
 
     /*
-     * How many matches to take from each entity table when searching.
+     * How many matches a search returns in total. The limit is applied after
+     * the tables are combined and ordered, so it takes the first N of the whole
+     * result set rather than a fixed slice of each table.
      */
-    const PER_TABLE_SEARCH_LIMIT = 33;
+    const SEARCH_LIMIT = 200;
+
+    /*
+     * The Status values a search may filter on. Anything outside this list is
+     * ignored rather than queried, which keeps an edited URL from probing the
+     * column for values that are not there.
+     *
+     * PENDINACT is a business behind on its filings but not yet terminated.
+     */
+    const SEARCH_STATUSES = array('ACTIVE', 'INACTIVE', 'PENDINACT');
 
     /**
      * Fetch a single business's record
@@ -190,11 +201,19 @@ class Business
     }
 
      /**
-      * Search matching business records, return the first 99
+      * Search matching business records
       *
+      * Filtering and ordering are applied across the combined set rather than
+      * per table. Sorting each table separately and concatenating would order
+      * every table's rows among themselves and then staple six sorted lists
+      * together, which is not a sorted result.
+      *
+      * @param string $status restrict to one Status value, or '' for any
+      * @param string $sort   'name' or 'date'
+      * @param string $order  'asc' or 'desc'
       * @return array
       */
-    function search()
+    function search($status = '', $sort = 'name', $order = 'asc')
     {
 
         if (!isset($this->db) || !isset($this->query))
@@ -216,36 +235,76 @@ class Business
             $this->query
         );
 
+        /*
+         * Neither a column name nor a sort direction can be bound to a prepared
+         * statement, so both are resolved to literals here rather than taken
+         * from input. An unrecognised value falls back to the default instead
+         * of erroring: a hand-edited URL should not produce a 500.
+         */
+        $columns = array('name' => 'Name', 'date' => 'IncorpDate');
+        $column  = isset($columns[$sort]) ? $columns[$sort] : 'Name';
+        $descend = (strtolower($order) === 'desc');
+
+        /*
+         * NOCASE keeps "Acme" and "ACME" together; the SCC is not consistent
+         * about capitalisation. Dates are stored ISO-formatted, so they sort
+         * correctly as text and need no collation.
+         */
+        $collate = ($column === 'Name') ? ' COLLATE NOCASE' : '';
+
+        /*
+         * An unrecognised status is ignored rather than matched, so a bad value
+         * returns every result instead of silently returning none.
+         */
+        $filtering = in_array($status, self::SEARCH_STATUSES, TRUE);
+
+        /*
+         * One UNION ALL across the entity tables, so that ORDER BY and LIMIT
+         * see every match at once. Ordering cannot be done correctly against
+         * six independently truncated lists.
+         */
+        $selects = array();
+
         foreach (self::ENTITY_TABLES as $type)
         {
+            $selects[] = 'SELECT EntityID, Name, Status, IncorpDate
+                          FROM ' . $type . '
+                          WHERE Name LIKE :pattern ESCAPE \'\\\''
+                          . ($filtering ? ' AND Status = :status' : '');
+        }
 
-            $sql = 'SELECT *
-                    FROM ' . $type . '
-                    WHERE Name LIKE :pattern ESCAPE \'\\\'
-                    LIMIT ' . self::PER_TABLE_SEARCH_LIMIT;
+        $sql = implode(' UNION ALL ', $selects)
+             . ' ORDER BY ' . $column . $collate . ($descend ? ' DESC' : ' ASC')
+             . ' LIMIT ' . self::SEARCH_LIMIT;
 
-            $statement = $this->db->prepare($sql);
-            if ($statement === false)
-            {
-                continue;
-            }
-            $statement->bindValue(':pattern', '%' . $pattern . '%', SQLITE3_TEXT);
+        $statement = $this->db->prepare($sql);
+        if ($statement === FALSE)
+        {
+            return $this->results;
+        }
 
-            $result = $statement->execute();
-            if ($result === false)
-            {
-                continue;
-            }
+        $statement->bindValue(':pattern', '%' . $pattern . '%', SQLITE3_TEXT);
 
-            while ($business = $result->fetchArray(SQLITE3_ASSOC))
-            {
-                $this->results[] = $business;
-            }
+        if ($filtering)
+        {
+            $statement->bindValue(':status', $status, SQLITE3_TEXT);
+        }
+
+        $result = $statement->execute();
+        if ($result === FALSE)
+        {
+            return $this->results;
+        }
+
+        while ($business = $result->fetchArray(SQLITE3_ASSOC))
+        {
+            $this->results[] = $business;
         }
 
         return $this->results;
 
     }
+
 
     /**
      * Verify that a business identifier is syntatically valid

@@ -15,6 +15,45 @@ $page_title = 'Search';
 $query = trim($_GET['q'] ?? '');
 
 /*
+ * The filter and sort controls. These are normalised here so that the form
+ * below can mark the current choice as selected, and validated again in
+ * Business::search(), which is what actually builds the query.
+ */
+$status = strtoupper(trim($_GET['status'] ?? ''));
+$sort   = strtolower(trim($_GET['sort'] ?? 'name'));
+
+if (!in_array($status, Business::SEARCH_STATUSES, TRUE))
+{
+    $status = '';
+}
+
+if ($sort !== 'date')
+{
+    $sort = 'name';
+}
+
+/*
+ * Newest first is the useful default for a date sort, alphabetical for a name
+ * sort, so the direction follows the column unless the reader chose one.
+ */
+$order = strtolower(trim($_GET['order'] ?? ''));
+
+if ($order !== 'asc' && $order !== 'desc')
+{
+    $order = ($sort === 'date') ? 'desc' : 'asc';
+}
+
+/*
+ * Human-readable labels for the Status codes the SCC uses. PENDINACT is a
+ * business behind on its filings but not yet terminated.
+ */
+$status_labels = array(
+    'ACTIVE'    => 'Active',
+    'INACTIVE'  => 'Inactive',
+    'PENDINACT' => 'Pending inactive',
+);
+
+/*
  * With no query, show the search form rather than an error. This page is linked
  * from the site navigation, so arriving here without a term is the normal way to
  * begin a search, not a bad request.
@@ -40,7 +79,12 @@ $template->assign('needs_statewide_map', FALSE);
 /*
  * Query our own API 
  */
-$api_url = API_URL . '/api/search/' . rawurlencode($query);
+$api_url = API_URL . '/api/search/' . rawurlencode($query)
+    . '?' . http_build_query(array(
+        'status' => $status,
+        'sort'   => $sort,
+        'order'  => $order,
+    ));
 $results_json = get_content($api_url);
 
 /*
@@ -67,11 +111,31 @@ if ($results === null)
 
 if ( !is_array($results) || count($results) == 0 )
 {
+    /*
+     * A filter is the likeliest reason a search that would otherwise match
+     * comes back empty, so offer a way out of it rather than leaving the
+     * reader to edit the URL or start over.
+     */
+    $escape = '<p>Please try another search</p>';
+
+    if ($status !== '')
+    {
+        $unfiltered = '/search/?' . htmlspecialchars(http_build_query(array(
+            'q'     => $query,
+            'sort'  => $sort,
+            'order' => $order,
+        )), ENT_QUOTES, 'UTF-8');
+
+        $escape = '<p>No ' . strtolower($status_labels[$status])
+            . ' businesses matched. <a href="' . $unfiltered
+            . '">Search all statuses</a> instead.</p>';
+    }
+
     $page_body = '
     <div class="row">
         <div class="card warning">
             <h3>No results found</h3>
-            <p>Please try another search</p>
+            ' . $escape . '
         </div>
     </div>';
 }
@@ -82,13 +146,105 @@ else
     $page_summary = count($results) . ' result' . (count($results) === 1 ? '' : 's')
         . ' for &#8220;' . htmlspecialchars($query, ENT_QUOTES, 'UTF-8') . '&#8221;';
 
+    if ($status !== '')
+    {
+        $page_summary .= ', ' . strtolower($status_labels[$status]) . ' only';
+    }
+
+    /*
+     * A result set at the limit is a truncated one, and a reader sorting by
+     * name has no way to tell that from the page. Say so rather than implying
+     * these are all the matches.
+     */
+    if (count($results) >= Business::SEARCH_LIMIT)
+    {
+        $page_summary .= ' (showing the first ' . Business::SEARCH_LIMIT . ')';
+    }
+
+    /*
+     * Clicking a column heading sorts by it; clicking the one already in use
+     * reverses it. The link carries the query and filter along so that neither
+     * is lost by sorting.
+     */
+    $sort_link = function ($column) use ($query, $status, $sort, $order)
+    {
+
+        $descend = ($sort === $column && $order === 'asc') ? 'desc' : 'asc';
+
+        /*
+         * A column the reader has not sorted by yet opens in its most useful
+         * direction: A-Z for names, newest first for dates.
+         */
+        if ($sort !== $column)
+        {
+            $descend = ($column === 'date') ? 'desc' : 'asc';
+        }
+
+        return '/search/?' . htmlspecialchars(http_build_query(array(
+            'q'      => $query,
+            'status' => $status,
+            'sort'   => $column,
+            'order'  => $descend,
+        )), ENT_QUOTES, 'UTF-8');
+
+    };
+
+    /*
+     * The arrow marks the sorted column, and aria-sort tells a screen reader
+     * the same thing the arrow tells everyone else.
+     */
+    $heading = function ($column, $label) use ($sort, $order, $sort_link)
+    {
+
+        $active = ($sort === $column);
+        $arrow  = $active ? ($order === 'desc' ? ' &#9662;' : ' &#9652;') : '';
+        $aria   = $active ? ($order === 'desc' ? 'descending' : 'ascending') : 'none';
+
+        return '<th scope="col" aria-sort="' . $aria . '">'
+            . '<a href="' . $sort_link($column) . '">' . $label . $arrow . '</a>'
+            . '</th>';
+
+    };
+
+    /*
+     * The filter submits as a GET form so that a filtered search is a URL the
+     * reader can bookmark or share. The query and sort ride along as hidden
+     * fields, so changing the filter does not reset them.
+     */
     $page_body = '
+    <form method="get" action="/search/" class="row" style="align-items: flex-end;">
+        <input type="hidden" name="q" value="'
+            . htmlspecialchars($query, ENT_QUOTES, 'UTF-8') . '">
+        <input type="hidden" name="sort" value="'
+            . htmlspecialchars($sort, ENT_QUOTES, 'UTF-8') . '">
+        <input type="hidden" name="order" value="'
+            . htmlspecialchars($order, ENT_QUOTES, 'UTF-8') . '">
+        <div class="col-sm-8 col-md-4">
+            <label for="status">Status</label>
+            <select name="status" id="status">
+                <option value="">All statuses</option>';
+
+    foreach ($status_labels as $code => $label)
+    {
+        $page_body .= '<option value="' . $code . '"'
+            . ($status === $code ? ' selected' : '') . '>'
+            . $label . '</option>';
+    }
+
+    $page_body .= '
+            </select>
+        </div>
+        <div class="col-sm-4 col-md-2">
+            <button type="submit">Filter</button>
+        </div>
+    </form>
+
     <article>
         <table>
             <thead>
                 <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Inc. Date</th>
+                    ' . $heading('name', 'Name') . '
+                    ' . $heading('date', 'Inc. Date') . '
                     <th scope="col">Status</th>
                 </tr>
             </thead>

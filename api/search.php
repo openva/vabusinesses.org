@@ -24,12 +24,28 @@ if (!$db)
 }
 
 /*
- * Get the first 50 matching records
+ * Filtering and ordering come from the query string rather than the path, so
+ * that the route keeps matching on the search term alone. Each value is
+ * validated inside search(), which falls back to a default rather than
+ * erroring on anything it does not recognise.
  */
+$status = strtoupper(trim($_GET['status'] ?? ''));
+$sort   = strtolower(trim($_GET['sort'] ?? 'name'));
+$order  = strtolower(trim($_GET['order'] ?? ''));
+
+/*
+ * Newest-first is the useful default for a date sort and alphabetical for a
+ * name sort, so the direction follows the column unless it is given.
+ */
+if ($order === '')
+{
+    $order = ($sort === 'date') ? 'desc' : 'asc';
+}
+
 $business = new Business;
 $business->db = $db;
 $business->query = $query;
-$results = $business->search();
+$results = $business->search($status, $sort, $order);
 
 if (!is_array($results))
 {

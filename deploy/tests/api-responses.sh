@@ -55,9 +55,10 @@ if [[ "$SEARCH_COUNT" -lt 1 ]]; then
     ERRORED=true
 fi
 
-# 33 rows per table across corp, llc and lp.
-if [[ "$SEARCH_COUNT" -gt 99 ]]; then
-    echo "ERROR: API is returning $SEARCH_COUNT search results, above the 99 cap" >&2
+# The limit is applied once to the combined, ordered result set rather than to
+# each entity table, so it caps the whole response at SEARCH_LIMIT.
+if [[ "$SEARCH_COUNT" -gt 200 ]]; then
+    echo "ERROR: API is returning $SEARCH_COUNT search results, above the 200 cap" >&2
     ERRORED=true
 fi
 
@@ -71,7 +72,7 @@ if [[ "$(echo "$SEARCH_JSON" | jq '. | length')" -ne '0' ]]; then
 fi
 
 # A search for SQL metacharacters must be treated as a literal string. Before
-# these queries were parameterized, this returned the whole 99-row cap.
+# these queries were parameterized, this returned the whole result cap.
 # Assert the security property directly against the API, rather than inferring
 # it from the front end: a payload full of metacharacters is rejected by the
 # router before it reaches the search, so the front end now returns 500 rather
@@ -106,8 +107,38 @@ fi
 # as a literal string rather than as SQL.
 LITERAL_COUNT="$(curl -s "http://localhost/api/search/OR1eq1" | jq '. | length' 2>/dev/null || echo 0)"
 
-if [[ "$LITERAL_COUNT" -gt 99 ]]; then
-    echo "ERROR: a literal search returned $LITERAL_COUNT results, above the per-table cap" >&2
+if [[ "$LITERAL_COUNT" -gt 200 ]]; then
+    echo "ERROR: a literal search returned $LITERAL_COUNT results, above the cap" >&2
+    ERRORED=true
+fi
+
+# The status filter must actually restrict the result set. An unrecognised value
+# is ignored rather than matched, so a filtered search can never return more than
+# an unfiltered one.
+FILTERED_COUNT="$(curl -s "http://localhost/api/search/test?status=ACTIVE" | jq '[.[] | select(.Status != "ACTIVE")] | length' 2>/dev/null || echo 1)"
+
+if [[ "$FILTERED_COUNT" -ne 0 ]]; then
+    echo "ERROR: status=ACTIVE returned $FILTERED_COUNT results with another status" >&2
+    ERRORED=true
+fi
+
+# Sorting has to order the combined set, not each table in turn. Comparing the
+# first and last names asserts the ordering without hard-coding any record that
+# a data refresh would invalidate.
+SORTED_FIRST="$(curl -s "http://localhost/api/search/test?sort=name&order=asc" | jq -r '.[0].Name | ascii_downcase' 2>/dev/null || echo "")"
+SORTED_LAST="$(curl -s "http://localhost/api/search/test?sort=name&order=desc" | jq -r '.[0].Name | ascii_downcase' 2>/dev/null || echo "")"
+
+if [[ -n "$SORTED_FIRST" ]] && [[ -n "$SORTED_LAST" ]] && [[ "$SORTED_FIRST" > "$SORTED_LAST" ]]; then
+    echo "ERROR: name sort is not ordering across tables ($SORTED_FIRST vs $SORTED_LAST)" >&2
+    ERRORED=true
+fi
+
+# An invalid sort column must fall back to the default rather than reaching the
+# query. A 500 here would mean the value was interpolated.
+BAD_SORT="$(curl -s -o /dev/null -w '%{http_code}' "http://localhost/api/search/test?sort=EntityID%27--")"
+
+if [[ "$BAD_SORT" != "200" ]]; then
+    echo "ERROR: an invalid sort column returned HTTP $BAD_SORT rather than falling back" >&2
     ERRORED=true
 fi
 
