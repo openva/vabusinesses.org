@@ -5,7 +5,7 @@ require 'includes/header.php';
 $template = new Smarty;
 
 $browser_title = 'Virginia Businesses';
-$page_title = 'Virginia Businesses';
+$page_title = '';
 $page_body = '';
 
 /*
