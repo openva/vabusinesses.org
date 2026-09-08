@@ -24,7 +24,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # database, and regenerates the map data from it.
 #
 # flock keeps a slow or stuck run from being overlapped by the next one.
-0 3 * * 0 flock -n /tmp/vabusinesses-update.lock __WEBROOT__/scripts/update.sh
+0 5 * * 0 flock -n /tmp/vabusinesses-update.lock __WEBROOT__/scripts/update.sh
 
 # Retry once on Monday, but only if the Sunday run did not leave a current
 # database behind. A failed download or an SCC outage otherwise means stale data
