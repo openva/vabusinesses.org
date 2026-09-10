@@ -31,7 +31,7 @@ if (!empty($recent))
 	
 	$page_body .= '
 		<article>
-		<h2>Newest Businesses</h2>
+		<h2>Newest Registrations</h2>
 		<ul class="listing">';
 
 	foreach (array_slice($recent, 0, 9) as $business)
