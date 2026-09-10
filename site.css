@@ -309,6 +309,32 @@ main section h2 {
     margin: 0 0 0.5rem;
 }
 
+/*
+ * The other businesses at one address. Often a few dozen of them, so they are
+ * set in columns: a single column of fifty names pushes everything below the
+ * fold for a list most readers only skim.
+ */
+ul.related {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    columns: 18rem;
+    column-gap: 2rem;
+}
+
+ul.related li {
+    margin: 0 0 0.25rem;
+    /* Keeps a name from being split across the foot of one column and the head
+     * of the next. */
+    break-inside: avoid;
+}
+
+.truncated {
+    margin: 0.75rem 0 0;
+    font-size: 0.9rem;
+    color: var(--secondary-fore-color, #444);
+}
+
 /* ---- Statewide map ----------------------------------------------------- */
 
 #statewide-map {

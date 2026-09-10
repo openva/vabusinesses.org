@@ -247,6 +247,59 @@ if (trim($rows) !== '' || $map !== '')
 }
 
 /*
+ * The other businesses at this address, which the API matched on the geocoded
+ * coordinates rather than on the address text.
+ *
+ * This sits with the location because that is what it is about: the address
+ * above is shared, and these are the businesses sharing it.
+ */
+if (!empty($business['RelatedBusinesses']) && is_array($business['RelatedBusinesses']))
+{
+    $related = $business['RelatedBusinesses'];
+
+    /*
+     * The API returns one more than it will show, so that a list which was cut
+     * short can say so rather than looking complete.
+     */
+    $truncated = count($related) > RelatedBusinesses::LIMIT;
+    $related = array_slice($related, 0, RelatedBusinesses::LIMIT);
+
+    $items = '';
+
+    foreach ($related as $neighbour)
+    {
+        $neighbour_id = trim($neighbour['EntityID'] ?? '');
+        $neighbour_name = preg_replace('/\s+/', ' ', trim($neighbour['Name'] ?? ''));
+
+        if ($neighbour_id === '' || $neighbour_name === '')
+        {
+            continue;
+        }
+
+        $items .= "\n\t\t\t\t<li><a href=\"/business/" . rawurlencode($neighbour_id) . '">'
+            . htmlspecialchars($neighbour_name, ENT_QUOTES, 'UTF-8')
+            . '</a></li>';
+    }
+
+    if ($items !== '')
+    {
+        $page_body .= "\n\t<section id=\"related\">"
+            . "\n\t\t<h2>Also at this address</h2>"
+            . "\n\t\t\t<ul class=\"related\">" . $items . "\n\t\t\t</ul>";
+
+        if ($truncated)
+        {
+            $page_body .= "\n\t\t<p class=\"truncated\">Only the first "
+                . number_format(RelatedBusinesses::LIMIT)
+                . ' are listed. Addresses like this one are usually'
+                . " registered agents, who file on behalf of many businesses.</p>";
+        }
+
+        $page_body .= "\n\t</section>";
+    }
+}
+
+/*
  * Registration. Entity ID comes last: it is a lookup key, not something anyone
  * reads a page to find out.
  */

@@ -294,6 +294,21 @@ do
     fi
 done
 
+# Fill in each business's coordinates from data/addresses.db, so that the site
+# can find the businesses sharing an address. This runs before the promotion,
+# against the new database rather than the live one, so a failure here leaves the
+# existing database serving rather than replacing it with one whose "related
+# businesses" would all be empty.
+#
+# Unlike the map, this is fatal: the map is rebuilt from whatever database is
+# live and can lag a week behind without anyone noticing, but these columns are
+# part of the database being built and there is no second chance to fill them in
+# once it is promoted.
+if ! php ../scripts/geocode-businesses.php temp.sqlite; then
+    MESSAGE="Failed: could not geocode businesses in the newly built database; keeping the existing one"
+    exit 1
+fi
+
 # Put the file in its final location
 mv -f temp.sqlite vabusinesses.sqlite
 

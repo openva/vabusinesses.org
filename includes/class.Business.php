@@ -93,9 +93,15 @@ class Business
             return false;
         }
 
+        /*
+         * Cast before trimming: Latitude and Longitude are NULL for a business
+         * whose address is not in the geocode cache, and PHP 8.1 onwards emits a
+         * deprecation notice for trim(NULL). Those notices are printed straight
+         * into the response, which is enough to make the API's JSON unparseable.
+         */
         foreach ($this->business as &$field)
         {
-            $field = trim($field);
+            $field = trim((string) $field);
         }
         unset($field);
 
@@ -477,7 +483,8 @@ class Business
                     $this->lookup_table['court-locality-code'] = array();
                 }
 
-                $this->lookup_table['court-locality-code'] += $localities;
+                $this->lookup_table['court-locality-code'] = $localities
+                    + $this->lookup_table['court-locality-code'];
             }
         }
 

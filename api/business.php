@@ -64,4 +64,17 @@ $officers->db = $db;
 $officers->id = $id;
 $biz['Officers'] = $officers->fetch();
 
+/*
+ * Get the other businesses at this address.
+ *
+ * The coordinates are deliberately not passed in from the record above: they
+ * have been trimmed to strings by then, which costs enough precision that they
+ * match nothing. The class reads them from the table itself.
+ */
+$related = new RelatedBusinesses;
+$related->db = $db;
+$related->id = $id;
+$related->type = $business->type;
+$biz['RelatedBusinesses'] = $related->fetch();
+
 echo json_encode($biz);
