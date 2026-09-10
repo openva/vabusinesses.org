@@ -441,10 +441,23 @@ class Business
         }
 
         /*
-         * The SCC's own locality table stops at code 901 and covers only a
-         * seventh of the codes that actually appear in the data: the values in
-         * RA-Loc are now mostly Virginia FIPS county and city codes. Fold those
-         * in, without letting them displace anything the SCC does define.
+         * RA-Loc holds Virginia FIPS county and city codes, so the FIPS names
+         * are authoritative and replace the SCC's own.
+         *
+         * These are two different numbering systems that happen to share a range
+         * rather than one list supplementing another. The SCC's court-locality
+         * table numbers its localities alphabetically -- 101 is Albemarle, 103
+         * Amelia, 105 Appomattox -- while FIPS numbers its own alphabetical
+         * sequence in odd steps, so 101 is King William, 103 Lancaster, 105 Lee.
+         * They collide on 44 codes and disagree on 43 of them.
+         *
+         * Which one RA-Loc speaks is not a judgement call: of the 488,411
+         * records that carry a locality, 352,488 use a code only FIPS defines
+         * and none use a code only the SCC defines. Where the agent's own city
+         * names its county outright, 7,304 records agree with the FIPS reading
+         * and none with the SCC's. Letting the SCC table win, as this did, filed
+         * a library in Nassawadox under Floyd County, 300 miles away, because
+         * its registered agent's code was 131.
          *
          * includes/localities.json is generated from municipalities.geojson,
          * which is a Census TIGER file; it is extracted rather than read

@@ -74,4 +74,34 @@ class BusinessTest extends PHPUnit\Framework\TestCase
         $this->assertFalse($result);
     }
 
+    /**
+     * RA-Loc is a FIPS code, and FIPS has to win where the two lists collide.
+     *
+     * The SCC's court-locality table numbers localities alphabetically and FIPS
+     * numbers its own alphabetical sequence in odd steps, so the two disagree on
+     * 43 of the 44 codes they share. Reading 131 from the SCC's list filed a
+     * library in Nassawadox under Floyd County, on the far side of the state.
+     */
+    public function testFipsLocalityCodesOutrankTheSccTable()
+    {
+        $business = new Business();
+        $localities = $business->lookup_table()['court-locality-code'];
+
+        $this->assertEquals('Northampton County', $localities['131']);
+        $this->assertEquals('King William County', $localities['101']);
+        $this->assertEquals('Lancaster County', $localities['103']);
+    }
+
+    /**
+     * The SCC's list is still the only source for the codes FIPS does not
+     * define, which are the ones that name something other than a place.
+     */
+    public function testNonFipsLocalityCodesSurvive()
+    {
+        $business = new Business();
+        $localities = $business->lookup_table()['court-locality-code'];
+
+        $this->assertEquals('EXEMPT', $localities['901']);
+    }
+
 }
