@@ -6,7 +6,7 @@ $template = new Smarty;
 
 $browser_title = 'Map of Virginia businesses';
 $page_title = 'Map of Virginia businesses';
-$page_summary = 'Every registered business in the Commonwealth that has not expired.';
+$page_summary = 'Every active, registered business in the Commonwealth.';
 
 $summary_file = __DIR__ . '/data/map/summary.json';
 $summary = is_readable($summary_file) ? json_decode(file_get_contents($summary_file), TRUE) : NULL;
