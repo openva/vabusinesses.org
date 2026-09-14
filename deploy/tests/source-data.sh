@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+# update.sh geocodes the newly built database against data/addresses.db and
+# treats a missing cache as fatal -- correctly, in production, since promoting a
+# database with no coordinates would silently break "related businesses" on
+# every page. That cache is ~100 MB, gitignored, and only ever fetched from S3
+# during deploy (see deploy/postdeploy.sh), so it never exists here. Stand up an
+# empty one with the schema Geocode::connect()/coordinates() expect (see
+# includes/class.Geocode.php) so the real geocoding code path runs in CI; every
+# lookup simply misses, the same as any address the real cache doesn't cover.
+if [[ ! -e ../../data/addresses.db ]]; then
+    mkdir -p ../../data
+    sqlite3 ../../data/addresses.db \
+        'CREATE TABLE addresses (address_hash TEXT PRIMARY KEY, latitude REAL, longitude REAL);'
+fi
+
 # See if the remote ZIP file is available. The SCC gates downloads behind a
 # cookie-consent interstitial, so an unauthenticated request is answered with a
 # 302 to /Cookie/CookieConsent rather than the file -- record consent first, the
