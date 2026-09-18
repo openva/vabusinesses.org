@@ -11,6 +11,11 @@ function finish {
         rm -f "$COOKIE_JAR"
     fi
 
+    # Never leave the working directory behind, successful run or not.
+    if [[ -n "${WORKDIR:-}" ]]; then
+        rm -rf "$WORKDIR"
+    fi
+
     # Any non-zero exit that didn't set its own message is still a failure, and
     # must be reported as one rather than silently reporting success.
     if [[ "$STATUS" -ne 0 ]] && [[ -z "${MESSAGE:-}" ]]; then
@@ -62,6 +67,12 @@ fi
 
 echo "Downloading data from SCC"
 
+# Use a fresh, uniquely-named directory rather than a fixed /tmp/data path: a
+# previous run (e.g. under a different user, or root) can leave that path
+# behind owned by someone else, which then makes every later run fail with
+# "Permission denied" instead of just downloading its own data.
+WORKDIR=$(mktemp -d "${TMPDIR:-/tmp}/vabusinesses-data.XXXXXX")
+
 # The SCC now gates downloads behind a cookie-consent interstitial: requesting
 # the file without consent returns a 302 to /Cookie/CookieConsent instead of the
 # ZIP. On that page, "Accept" POSTs to /Cookie/StoreCookieConsent, which sets a
@@ -86,7 +97,7 @@ fi
 # and the script only fell over later, at unzip.
 if ! curl -sS -f -L -b "$COOKIE_JAR" -c "$COOKIE_JAR" \
         --max-time 1800 \
-        -o /tmp/data.zip \
+        -o "$WORKDIR/data.zip" \
         "$DOWNLOAD_URL"; then
     MESSAGE="Failed: $DOWNLOAD_URL could not be downloaded"
     exit 1
@@ -96,22 +107,22 @@ rm -f "$COOKIE_JAR"
 
 # Verify we actually got a ZIP, not an interstitial or error page dressed up as
 # one. This is the check whose absence masked the original breakage.
-if ! unzip -tqq /tmp/data.zip > /dev/null 2>&1; then
-    MESSAGE="Failed: $DOWNLOAD_URL did not return a valid ZIP file (got $(file -b /tmp/data.zip 2>/dev/null || echo 'unknown content'))"
+if ! unzip -tqq "$WORKDIR/data.zip" > /dev/null 2>&1; then
+    MESSAGE="Failed: $DOWNLOAD_URL did not return a valid ZIP file (got $(file -b "$WORKDIR/data.zip" 2>/dev/null || echo 'unknown content'))"
     exit 1
 fi
 
-echo "Data downloaded ($(du -h /tmp/data.zip | cut -f1))"
+echo "Data downloaded ($(du -h "$WORKDIR/data.zip" | cut -f1))"
 
 # Uncompress the ZIP file
-if ! unzip -q -o -d /tmp/data/ /tmp/data.zip; then
+if ! unzip -q -o -d "$WORKDIR/data/" "$WORKDIR/data.zip"; then
     MESSAGE="CISbemon.CSV.zip could not be unzipped"
     exit 1
 fi
 echo "Data files unzipped"
 
 # Delete temporary artifacts
-rm /tmp/data.zip
+rm "$WORKDIR/data.zip"
 
 echo Deleted stuff
 
@@ -141,19 +152,19 @@ for rename in "${renames[@]}"
 do
     source_file="${rename%%:*}"
     target_file="${rename##*:}"
-    if [[ ! -f "/tmp/data/$source_file" ]]; then
-        MESSAGE="Failed: expected $source_file in the SCC archive, but it is not there. Contents: $(cd /tmp/data && echo *)"
+    if [[ ! -f "$WORKDIR/data/$source_file" ]]; then
+        MESSAGE="Failed: expected $source_file in the SCC archive, but it is not there. Contents: $(cd "$WORKDIR/data" && echo *)"
         exit 1
     fi
-    mv -f "/tmp/data/$source_file" "/tmp/data/$target_file"
+    mv -f "$WORKDIR/data/$source_file" "$WORKDIR/data/$target_file"
 done
 
 for rename in "${optional_renames[@]}"
 do
     source_file="${rename%%:*}"
     target_file="${rename##*:}"
-    if [[ -f "/tmp/data/$source_file" ]]; then
-        mv -f "/tmp/data/$source_file" "/tmp/data/$target_file"
+    if [[ -f "$WORKDIR/data/$source_file" ]]; then
+        mv -f "$WORKDIR/data/$source_file" "$WORKDIR/data/$target_file"
     else
         echo "Note: $source_file is not in this archive, skipping it"
     fi
@@ -173,7 +184,7 @@ echo removed old CSV files maybe
 cd ../data/ || exit 1
 
 # Move over our new CSV files
-mv -f /tmp/data/*.csv .
+mv -f "$WORKDIR"/data/*.csv .
 
 echo Moved files
 
